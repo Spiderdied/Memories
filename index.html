@@ -1661,7 +1661,7 @@
     const inner = document.getElementById('card-inner-content');
     inner.innerHTML = `
       <div class="card-season-badge" style="background:rgba(123,47,255,0.2);color:#e040fb;border:1px solid rgba(224,64,251,0.3)">✨ ذكرى سرية</div>
-      <h2 class="card-title">تحدي المعرفة 🎯</h2>
+      <h2 class="card-title">عرّف عن نفسك 🧐</h2>
       <div class="secret-challenge">
         <p class="secret-challenge-q">أكمل جملة دكتور نبيل المشهورة من الترم الأول:</p>
         <div class="secret-inputs">
@@ -1675,7 +1675,7 @@
           </div>
         </div>
         <button class="secret-submit-btn" id="secret-submit-btn">تأكيد</button>
-        <p class="secret-retry-msg" id="secret-retry-msg">إجابة خاطئة، حاول مرة أخرى! 😅</p>
+        <p class="secret-retry-msg" id="secret-retry-msg">حاجة من الاتنين يا إما أنت مش تبعنا يا إما أنت مش تبعنا 😅</p>
       </div>
     `;
 
@@ -1703,10 +1703,13 @@
       const inner = document.getElementById('card-inner-content');
       inner.innerHTML = `
         <div class="card-season-badge" style="background:rgba(123,47,255,0.2);color:#e040fb;border:1px solid rgba(224,64,251,0.3)">✨ ذكرى سرية</div>
-        <h2 class="card-title">أحسنت! 🎉</h2>
+        <h2 class="card-title">برافو! 🎉</h2>
         <div class="card-description">
-          <p>"إذا كنت تعرف هذه الجملة...</p>
-          <p>فأنت بالفعل عشت معنا تفاصيل هذا العام 😄"</p>
+          <p>"ما دام عرفت الجملة دي ...</p>
+          <p>فأنت بالفعل  تبع القافلة  😄"</p>
+          <p>"في مقولة بتقول:</p>
+          <p>"ابتسم فأسنانك ليست عورة😁</p>
+          <p>"أضحك الله سنك وزادك سعادة فوق سعادتك😊</p>
         </div>
       `;
       gsap.fromTo(inner.querySelectorAll('*'), { opacity:0, y:15 }, { opacity:1, y:0, duration:0.5, stagger:0.1, ease:'power2.out' });
