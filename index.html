@@ -505,7 +505,7 @@
     ============================================================ */
     #ending-cinematic {
       position: fixed; inset: 0; z-index: 750;
-      background: #000; display: none; flex-direction: column;
+      background: rgba(0,0,0,0); display: none; flex-direction: column;
       align-items: center; justify-content: center;
       text-align: center; padding: 40px 32px;
     }
@@ -514,17 +514,6 @@
       font-family: var(--font-display); font-size: clamp(1.4rem, 5vw, 2.2rem);
       color: var(--text-primary); line-height: 1.8; opacity: 0;
       position: absolute;
-    }
-    /* Balloon float-up particles on burst */
-    .burst-balloon-particle {
-      position: fixed; z-index: 760; pointer-events: none;
-      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-      animation: floatUpAndFade 3s ease-out forwards;
-    }
-    @keyframes floatUpAndFade {
-      0%   { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.9; }
-      60%  { transform: translateY(-40vh) scale(0.8) rotate(10deg); opacity: 0.5; }
-      100% { transform: translateY(-100vh) scale(0.3) rotate(20deg); opacity: 0; }
     }
     /* Rope fade overlay */
     #rope-fade-overlay {
@@ -693,7 +682,7 @@
     .scroll-label { font-size: 0.6rem; color: rgba(255,255,255,0.35); letter-spacing: 0.15em; text-transform: uppercase; }
 
     /* ============================================================
-       CREDITS SECTION
+       CREDITS SECTION (keeping for faculty display)
     ============================================================ */
     #credits-section {
       position: fixed; inset: 0; z-index: 900; background: #000;
@@ -854,6 +843,7 @@
     secretFound: false,
     layoutBuilt: false,
     balloonPositions: [],
+    finalSequenceRunning: false, // Flag عشان نوقف التغيير بالسكرول أثناء النهاية السينمائية
   };
 
   /* ----------------------------------------------------------------
@@ -1246,6 +1236,7 @@
      10. OPEN MEMORY
   ---------------------------------------------------------------- */
   function openMemory(idx) {
+    if (state.finalSequenceRunning) return; // منع التفاعل أثناء النهاية السينمائية
     const mem       = state.memories[idx];
     if (!mem) return;
     const season    = detectSeason(mem);
@@ -1264,7 +1255,7 @@
 
     if (isFinal) {
       closeCard();
-      launchFinalCinematic(idx);
+      launchFinalBurstSequence(idx);
       return;
     }
 
@@ -1417,54 +1408,93 @@
   });
 
   /* ----------------------------------------------------------------
-     14. FINAL CINEMATIC BURST SEQUENCE
+     14. ★ FINAL BURST & FLOATING BALLOONS SEQUENCE ★
   ---------------------------------------------------------------- */
-  function launchFinalCinematic(finalIdx) {
-    const wrapper = document.getElementById(`balloon-${finalIdx}`);
-    if (!wrapper) { showCinematicText(); return; }
+  function launchFinalBurstSequence(finalIdx) {
+    state.finalSequenceRunning = true;
+    closeCard();
+    document.body.style.overflow = 'hidden';
 
-    wrapper.classList.add('burst');
+    const finalWrapper = document.getElementById(`balloon-${finalIdx}`);
+    const finalBody    = finalWrapper?.querySelector('.balloon-body');
 
-    setTimeout(() => {
-      spawnFloatingBalloons();
-    }, 300);
-
-    const svg = document.getElementById('rope-svg');
-    gsap.to(svg, { opacity:0, duration:2.5, delay:0.5, ease:'power2.in' });
-
-    setTimeout(() => {
-      showCinematicText();
-    }, 2000);
-  }
-
-  function spawnFloatingBalloons() {
-    const colorPool = [
-      'linear-gradient(135deg,#c0392b,#e8722a)',
-      'linear-gradient(135deg,#2c5f8a,#7ab8d4)',
-      'linear-gradient(135deg,#6a3d9a,#f0c060)',
-      'linear-gradient(135deg,#1a6b2a,#88d8a0)',
-      'linear-gradient(135deg,#b85c00,#ffd700)',
-    ];
-
-    const opened = [...state.openedSet];
-    const count  = Math.min(opened.length, 12);
-
-    for (let i = 0; i < count; i++) {
-      const div = document.createElement('div');
-      div.className = 'burst-balloon-particle';
-      const w = 30 + Math.random() * 20;
-      const h = w * 1.25;
-      div.style.cssText = `
-        width:${w}px; height:${h}px;
-        background:${colorPool[i % colorPool.length]};
-        left:${10 + Math.random()*80}%;
-        top:${40 + Math.random()*40}%;
-        animation-delay:${i*0.08}s;
-        animation-duration:${2.5 + Math.random()}s;
-      `;
-      document.body.appendChild(div);
-      setTimeout(() => div.remove(), 4000);
+    // فرقعة آخر بالونة
+    if (finalBody) {
+      gsap.timeline()
+        .to(finalBody, { scale: 1.35, duration: 0.18, ease: 'power2.out' })
+        .to(finalBody, { scale: 0, opacity: 0, duration: 0.35, ease: 'back.in(2)', onComplete: () => {
+          if (finalWrapper) finalWrapper.style.visibility = 'hidden';
+        }});
+    } else {
+      if (finalWrapper) finalWrapper.classList.add('burst');
     }
+
+    // إخفاء الحبل
+    const ropeSvg = document.getElementById('rope-svg');
+    if (ropeSvg) gsap.to(ropeSvg, { opacity:0, duration:2.2, delay:0.3, ease:'power1.inOut' });
+
+    // تحليق كل البالونات الأساسية على الشاشة
+    setTimeout(() => {
+      const allBalloons = [...document.querySelectorAll('.balloon-wrapper.visible')]
+        .filter(el => el.id !== `balloon-${finalIdx}`); // نستثني البالونة الأخيرة لأنها فرقعت
+
+      // إخفاء النصوص من جنب البالونة عشان الطيران يكون شكله أهدى وأحلى
+      allBalloons.forEach(el => {
+        const label = el.querySelector('.balloon-label');
+        const hint  = el.querySelector('.balloon-tap-hint');
+        if (label) gsap.to(label, { opacity:0, duration:0.3 });
+        if (hint)  gsap.to(hint,  { opacity:0, duration:0.3 });
+        el.style.pointerEvents = 'none';
+      });
+
+      allBalloons.forEach((el, i) => {
+        const body   = el.querySelector('.balloon-body');
+        const string = el.querySelector('.balloon-string');
+
+        const delay      = 0.05 + Math.random() * 0.6;
+        const duration   = 2.8  + Math.random() * 1.8;
+        const driftX     = (Math.random() - 0.5) * 160;
+        const wobbleAmt  = (Math.random() - 0.5) * 30;
+
+        el.classList.remove('opened');
+        if (body) body.style.animation = 'none';
+
+        // أنيميشن طيران البالونة لفوق خارج الشاشة
+        gsap.to(el, {
+          y:        -(window.innerHeight + 250),
+          x:        driftX,
+          opacity:  0,
+          scale:    0.35 + Math.random() * 0.2,
+          rotation: wobbleAmt,
+          duration: duration,
+          delay:    delay,
+          ease:     'power1.in',
+          onComplete: () => {
+            el.style.visibility = 'hidden';
+          }
+        });
+
+        // إخفاء خيط البالونة بشكل تدريجي
+        if (string) {
+          gsap.to(string, { opacity:0, duration:duration * 0.5, delay:delay, ease:'power1.in' });
+        }
+      });
+
+      // إخفاء الهيدر وخلفية التايم لاين للدخول في المود السينمائي
+      const longestDuration = 0.6 + 2.8 + 1.8;
+      gsap.to(document.getElementById('timeline-container'), {
+        opacity: 0, duration: 1.5, delay: longestDuration * 0.6, ease: 'power2.inOut'
+      });
+      gsap.to(document.getElementById('site-header'), {
+        opacity: 0, duration: 1.2, delay: longestDuration * 0.5, ease: 'power2.inOut'
+      });
+
+      // تشغيل النص السينمائي
+      setTimeout(() => {
+        showCinematicText();
+      }, (longestDuration + 0.4) * 1000);
+
+    }, 400);
   }
 
   /* ----------------------------------------------------------------
@@ -1488,7 +1518,15 @@
     screen.classList.add('active');
     screen.innerHTML = '';
 
-    let delay = 0;
+    // تظليم جميع الخلفيات والتأثيرات عشان التركيز يكون على الكلام السينمائي
+    gsap.to([
+      '#bg-autumn', '#bg-winter', '#bg-ramadan', '#bg-spring', '#bg-summer',
+      '#particle-canvas', '#ramadan-deco', '#ramadan-ambient'
+    ], { opacity:0, duration:1.5, ease:'power2.inOut', stagger:0.05 });
+
+    gsap.to(screen, { background:'rgba(0,0,0,1)', duration:1.5, ease:'power2.inOut' });
+
+    let delay = 400;
     CINEMATIC_LINES.forEach((line, i) => {
       const el = document.createElement('p');
       el.className = 'cinematic-line';
@@ -1496,7 +1534,7 @@
       screen.appendChild(el);
 
       setTimeout(() => {
-        gsap.to(el, { opacity:1, y:0, duration:0.7, ease:'power2.out', onStart:() => { el.style.transform='translateY(20px)'; }});
+        gsap.fromTo(el, { opacity:0, y:18 }, { opacity:1, y:0, duration:0.75, ease:'power2.out' });
         if (i < CINEMATIC_LINES.length - 1) {
           setTimeout(() => gsap.to(el, { opacity:0, duration:0.5, ease:'power2.in' }), 1400);
         }
@@ -1506,10 +1544,13 @@
     });
 
     setTimeout(() => {
-      gsap.to(screen, { opacity:0, duration:0.8, ease:'power2.in', onComplete: () => {
-        screen.classList.remove('active');
-        showEnding();
-      }});
+      gsap.to(screen, {
+        opacity:0, duration:0.9, ease:'power2.in',
+        onComplete: () => {
+          screen.classList.remove('active');
+          showEnding();
+        }
+      });
     }, delay + 800);
   }
 
@@ -1708,9 +1749,8 @@
   function setupScrollSeasonSync() {
     const obs = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        // الحل هنا: بنشترط إن البالونة تكون واخدة كلاس visible 
-        // عشان المخفي ميعملش تغيير للخلفية وإنت بتعمل سكرول
-        if (entry.isIntersecting && entry.target.classList.contains('visible')) {
+        // ضفنا هنا !state.finalSequenceRunning عشان نوقف استدعاء أي خلفيات أو فصول وقت النهاية السينمائية
+        if (entry.isIntersecting && entry.target.classList.contains('visible') && !state.finalSequenceRunning) {
           const idx = parseInt(entry.target.dataset.index || '0');
           const mem = state.memories[idx];
           if (mem) {
