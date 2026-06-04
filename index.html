@@ -12,718 +12,696 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
   <style>
-    /* ============================================================
-       CSS CUSTOM PROPERTIES & RESET
-    ============================================================ */
     :root {
       --font-display: 'Scheherazade New', serif;
       --font-body: 'Cairo', sans-serif;
       --font-accent: 'Amiri', serif;
-      --autumn-bg-1: #1a0a00;
-      --autumn-bg-2: #2d1200;
-      --autumn-warm: #e8722a;
-      --autumn-gold: #d4a853;
-      --autumn-leaf: #c0392b;
-      --winter-bg-1: #050d1a;
-      --winter-bg-2: #0a1628;
-      --winter-cool: #7ab8d4;
-      --winter-mist: rgba(180, 210, 240, 0.08);
-      --winter-ice: #b8d4e8;
-      --ramadan-bg-1: #0a0518;
-      --ramadan-bg-2: #1a0a30;
-      --ramadan-gold: #f0c060;
-      --ramadan-amber: #e8900a;
-      --ramadan-glow: rgba(240, 192, 96, 0.3);
-      --spring-bg-1: #050f05;
-      --spring-bg-2: #0a1f0a;
-      --spring-green: #4caf50;
-      --spring-blossom: #f8a5c2;
-      --spring-fresh: #88d8a0;
-      --summer-bg-1: #0a0810;
-      --summer-bg-2: #150f20;
-      --summer-gold: #ffd700;
-      --summer-sky: #87ceeb;
-      --summer-warm: #ff8c42;
+      --autumn-bg-1: #1a0a00; --autumn-bg-2: #2d1200;
+      --autumn-warm: #e8722a; --autumn-gold: #d4a853; --autumn-leaf: #c0392b;
+      --winter-bg-1: #050d1a; --winter-bg-2: #0a1628;
+      --winter-cool: #7ab8d4; --winter-mist: rgba(180,210,240,0.08); --winter-ice: #b8d4e8;
+      --ramadan-bg-1: #0a0518; --ramadan-bg-2: #1a0a30;
+      --ramadan-gold: #f0c060; --ramadan-amber: #e8900a; --ramadan-glow: rgba(240,192,96,0.3);
+      --spring-bg-1: #050f05; --spring-bg-2: #0a1f0a;
+      --spring-green: #4caf50; --spring-blossom: #f8a5c2; --spring-fresh: #88d8a0;
+      --summer-bg-1: #0a0810; --summer-bg-2: #150f20;
+      --summer-gold: #ffd700; --summer-sky: #87ceeb; --summer-warm: #ff8c42;
       --text-primary: #f5f0e8;
-      --text-secondary: rgba(245, 240, 232, 0.65);
-      --balloon-default: rgba(255, 255, 255, 0.12);
-      --balloon-border: rgba(255, 255, 255, 0.25);
-      --card-bg: rgba(10, 8, 20, 0.92);
-      --rope-color: rgba(200, 180, 140, 0.6);
-      --radius-balloon: 50%;
-      --radius-card: 20px;
-      --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-      --transition-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --text-secondary: rgba(245,240,232,0.65);
+      --card-bg: rgba(10,8,20,0.92);
+      --rope-color: rgba(200,180,140,0.6);
+      --radius-balloon: 50%; --radius-card: 20px;
+      --transition-smooth: cubic-bezier(0.4,0,0.2,1);
+      --transition-spring: cubic-bezier(0.34,1.56,0.64,1);
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; overflow-x: hidden; }
-    body {
-      font-family: var(--font-body);
-      color: var(--text-primary);
-      background: #050508;
-      min-height: 100vh;
-      overflow-x: hidden;
-      cursor: default;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;overflow-x:hidden;}
+    body{
+      font-family:var(--font-body);color:var(--text-primary);
+      background:#050508;min-height:100vh;overflow-x:hidden;
+      cursor:default;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
     }
 
     /* ============================================================
        LOADING SCREEN
     ============================================================ */
-    #loading-screen {
-      position: fixed; inset: 0; background: #050508; z-index: 9999;
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: 24px;
+    #loading-screen{
+      position:fixed;inset:0;background:#050508;z-index:9999;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;
     }
-    .loading-title {
-      font-family: var(--font-display); font-size: clamp(1.6rem, 6vw, 2.4rem);
-      color: var(--text-primary); text-align: center; line-height: 1.4;
-      opacity: 0; animation: fadeInUp 0.8s 0.3s forwards;
+    .loading-title{
+      font-family:var(--font-display);font-size:clamp(1.6rem,6vw,2.4rem);
+      color:var(--text-primary);text-align:center;line-height:1.4;
+      opacity:0;animation:fadeInUp 0.8s 0.3s forwards;
     }
-    .loading-subtitle {
-      font-family: var(--font-body); font-size: 0.85rem; color: var(--text-secondary);
-      letter-spacing: 0.15em; text-transform: uppercase;
-      opacity: 0; animation: fadeInUp 0.8s 0.6s forwards;
+    .loading-subtitle{
+      font-family:var(--font-body);font-size:0.85rem;color:var(--text-secondary);
+      letter-spacing:0.15em;text-transform:uppercase;
+      opacity:0;animation:fadeInUp 0.8s 0.6s forwards;
     }
-    .loading-bar-wrap {
-      width: min(260px, 70vw); height: 2px; background: rgba(255,255,255,0.1);
-      border-radius: 2px; overflow: hidden; opacity: 0; animation: fadeInUp 0.8s 0.9s forwards;
+    .loading-bar-wrap{
+      width:min(260px,70vw);height:2px;background:rgba(255,255,255,0.1);
+      border-radius:2px;overflow:hidden;opacity:0;animation:fadeInUp 0.8s 0.9s forwards;
     }
-    .loading-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #d4a853, #e8722a); border-radius: 2px; transition: width 0.1s linear; }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .loading-bar{height:100%;width:0%;background:linear-gradient(90deg,#d4a853,#e8722a);border-radius:2px;transition:width 0.1s linear;}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 
     /* ============================================================
-       SCENE BACKGROUND LAYERS
+       SEASON BACKGROUND LAYERS
     ============================================================ */
-    .bg-layer { position: fixed; inset: 0; z-index: 0; transition: opacity 1.8s var(--transition-smooth); pointer-events: none; }
-    .bg-autumn  { background: radial-gradient(ellipse 80% 60% at 30% 20%, #3a1a00 0%, #1a0800 50%, #0d0500 100%); }
-    .bg-winter  { background: radial-gradient(ellipse 80% 60% at 70% 20%, #051028 0%, #040c1e 50%, #020608 100%); }
-    .bg-ramadan { background: radial-gradient(ellipse 70% 70% at 50% 10%, #1a0a30 0%, #0d0522 50%, #070312 100%); }
-    .bg-spring  { background: radial-gradient(ellipse 80% 60% at 40% 20%, #0a1f0a 0%, #060e06 50%, #030703 100%); }
-    .bg-summer  { background: radial-gradient(ellipse 80% 60% at 50% 15%, #150f20 0%, #0a0810 50%, #050408 100%); }
+    .bg-layer{
+      position:fixed;inset:0;z-index:0;
+      transition:opacity 1.8s var(--transition-smooth);
+      pointer-events:none;
+    }
+    /* Autumn — warm deep amber */
+    .bg-autumn{
+      background:
+        radial-gradient(ellipse 80% 60% at 30% 20%, #3a1a00 0%, #1a0800 50%, #0d0500 100%);
+    }
+    /* Autumn ember overlay */
+    #autumn-overlay{
+      position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;
+      transition:opacity 1.8s var(--transition-smooth);
+      background:
+        radial-gradient(ellipse 50% 40% at 70% 80%, rgba(200,80,20,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 30% at 20% 60%, rgba(180,100,10,0.08) 0%, transparent 60%);
+    }
+    #autumn-overlay.visible{opacity:1;}
 
-    #particle-canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.7; }
+    /* Winter — deep cold blue */
+    .bg-winter{
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 20%, #051028 0%, #040c1e 50%, #020608 100%);
+    }
+    /* Winter mist overlay */
+    #winter-mist-overlay{
+      position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;
+      transition:opacity 1.8s var(--transition-smooth);
+      background:
+        radial-gradient(ellipse 100% 30% at 50% 100%, rgba(120,180,220,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 20% at 50% 85%, rgba(180,210,240,0.05) 0%, transparent 60%);
+    }
+    #winter-mist-overlay.visible{opacity:1;}
+
+    /* Ramadan — deep purple/indigo */
+    .bg-ramadan{
+      background:
+        radial-gradient(ellipse 70% 70% at 50% 10%, #1a0a30 0%, #0d0522 50%, #070312 100%);
+    }
+    /* Ramadan golden veil */
+    #ramadan-ambient{
+      position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0;
+      transition:opacity 1.8s var(--transition-smooth);
+      background:
+        radial-gradient(ellipse 60% 40% at 50% 0%, rgba(240,192,96,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 30% at 20% 30%, rgba(200,100,220,0.05) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 80% 30%, rgba(200,100,220,0.05) 0%, transparent 60%);
+    }
+    #ramadan-ambient.visible{opacity:1;}
+
+    /* Spring — deep forest */
+    .bg-spring{
+      background:
+        radial-gradient(ellipse 80% 60% at 40% 20%, #0a1f0a 0%, #060e06 50%, #030703 100%);
+    }
+    /* Spring bloom overlay */
+    #spring-bloom{
+      position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;
+      transition:opacity 1.8s var(--transition-smooth);
+      background:
+        radial-gradient(ellipse 50% 40% at 60% 70%, rgba(80,180,80,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 30% at 30% 40%, rgba(248,165,194,0.06) 0%, transparent 60%);
+    }
+    #spring-bloom.visible{opacity:1;}
+
+    /* Summer — warm dark violet/gold */
+    .bg-summer{
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 15%, #150f20 0%, #0a0810 50%, #050408 100%);
+    }
+    /* Summer sun haze */
+    #summer-haze{
+      position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;
+      transition:opacity 1.8s var(--transition-smooth);
+      background:
+        radial-gradient(ellipse 60% 40% at 50% 10%, rgba(255,180,50,0.09) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 30% at 80% 60%, rgba(255,140,66,0.06) 0%, transparent 60%);
+    }
+    #summer-haze.visible{opacity:1;}
 
     /* ============================================================
-       HEADER / HERO
+       PARTICLE CANVAS
     ============================================================ */
-    #site-header {
-      position: relative; z-index: 10; text-align: center;
-      padding: 60px 24px 40px; display: flex; flex-direction: column;
-      align-items: center; gap: 12px;
-    }
-    .header-eyebrow { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-secondary); font-weight: 300; }
-    .header-title {
-      font-family: var(--font-display); font-size: clamp(2rem, 8vw, 3.5rem); line-height: 1.25;
-      background: linear-gradient(135deg, #f5f0e8 0%, #d4a853 60%, #e8722a 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .header-sub { font-family: var(--font-body); font-size: 0.9rem; color: var(--text-secondary); font-weight: 300; }
-    .header-divider { width: 60px; height: 1px; background: linear-gradient(90deg, transparent, var(--autumn-gold), transparent); margin: 8px auto; }
+    #particle-canvas{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0.75;}
 
     /* ============================================================
-       MAIN TIMELINE CONTAINER — BRANCHING NETWORK
+       HEADER
     ============================================================ */
-    #timeline-container {
-      position: relative; z-index: 10; padding: 20px 0 80px;
-      width: 100%; max-width: 500px; margin: 0 auto;
+    #site-header{
+      position:relative;z-index:10;text-align:center;
+      padding:60px 24px 40px;display:flex;flex-direction:column;align-items:center;gap:12px;
+    }
+    .header-eyebrow{font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--text-secondary);font-weight:300;}
+    .header-title{
+      font-family:var(--font-display);font-size:clamp(2rem,8vw,3.5rem);line-height:1.25;
+      background:linear-gradient(135deg,#f5f0e8 0%,#d4a853 60%,#e8722a 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    }
+    .header-sub{font-family:var(--font-body);font-size:0.9rem;color:var(--text-secondary);font-weight:300;}
+    .header-divider{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--autumn-gold),transparent);margin:8px auto;}
+
+    /* ============================================================
+       PROGRESS TRACKER
+    ============================================================ */
+    #progress-tracker{
+      position:fixed;top:20px;left:50%;transform:translateX(-50%);
+      z-index:100;background:rgba(5,5,15,0.75);
+      backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+      border:1px solid rgba(255,255,255,0.12);border-radius:40px;
+      padding:8px 20px;font-size:0.75rem;color:var(--text-secondary);
+      white-space:nowrap;transition:opacity 0.3s;
+    }
+    #progress-tracker span{color:var(--autumn-gold);font-weight:700;}
+
+    /* ============================================================
+       TIMELINE CONTAINER — BRANCHING NETWORK
+    ============================================================ */
+    #timeline-container{
+      position:relative;z-index:10;padding:20px 0 80px;
+      width:100%;max-width:500px;margin:0 auto;
+    }
+    #rope-svg{
+      position:absolute;top:0;left:0;width:100%;height:100%;
+      pointer-events:none;z-index:1;overflow:visible;
     }
 
-    /* SVG rope canvas behind nodes */
-    #rope-svg {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none; z-index: 1; overflow: visible;
+    .timeline-row{
+      position:relative;z-index:2;width:100%;
+      display:flex;align-items:flex-start;
+      min-height:120px;margin-bottom:0;
     }
-
-    /* Each memory node row */
-    .timeline-row {
-      position: relative; z-index: 2; width: 100%;
-      display: flex; align-items: flex-start;
-      min-height: 120px; margin-bottom: 0;
-    }
-
-    /* Left / right / center alignment */
-    .timeline-row.side-left  { justify-content: flex-start;  padding-left: 12%; }
-    .timeline-row.side-right { justify-content: flex-end;    padding-right: 12%; }
-    .timeline-row.side-center { justify-content: center; }
-    .timeline-row.side-branch-left  { justify-content: flex-start; padding-left: 5%; }
-    .timeline-row.side-branch-right { justify-content: flex-end; padding-right: 5%; }
+    .timeline-row.side-left   {justify-content:flex-start; padding-left:12%;}
+    .timeline-row.side-right  {justify-content:flex-end;   padding-right:12%;}
+    .timeline-row.side-center {justify-content:center;}
+    .timeline-row.side-branch-left  {justify-content:flex-start; padding-left:5%;}
+    .timeline-row.side-branch-right {justify-content:flex-end;   padding-right:5%;}
 
     /* ============================================================
        BALLOON
     ============================================================ */
-    .balloon-wrapper {
-      display: flex; flex-direction: column; align-items: center;
-      opacity: 0; transform: translateY(30px) scale(0.8);
-      transition: opacity 0.6s var(--transition-spring), transform 0.6s var(--transition-spring);
-      cursor: pointer; position: relative; z-index: 3;
+    .balloon-wrapper{
+      display:flex;flex-direction:column;align-items:center;
+      opacity:0;transform:translateY(30px) scale(0.8);
+      transition:opacity 0.6s var(--transition-spring),transform 0.6s var(--transition-spring);
+      cursor:pointer;position:relative;z-index:3;
     }
-    .balloon-wrapper.visible { opacity: 1; transform: translateY(0) scale(1); }
-    .balloon-wrapper.opened .balloon-body { transform: scale(0.85); opacity: 0.5; animation: none !important; }
-    .balloon-wrapper.burst .balloon-body { animation: balloonBurst 0.6s forwards !important; }
+    .balloon-wrapper.visible{opacity:1;transform:translateY(0) scale(1);}
+    .balloon-wrapper.opened .balloon-body{transform:scale(0.85);opacity:0.5;animation:none !important;}
+    .balloon-wrapper.burst-anim .balloon-body{animation:balloonBurst 0.6s forwards !important;}
 
-    @keyframes balloonBurst {
-      0%   { transform: scale(1); opacity: 1; }
-      30%  { transform: scale(1.4); opacity: 0.8; }
-      60%  { transform: scale(0.2) rotate(30deg); opacity: 0.3; }
-      100% { transform: scale(0); opacity: 0; }
+    @keyframes balloonBurst{
+      0%  {transform:scale(1);opacity:1;}
+      30% {transform:scale(1.4);opacity:0.8;}
+      60% {transform:scale(0.2) rotate(30deg);opacity:0.3;}
+      100%{transform:scale(0);opacity:0;}
     }
 
-    .balloon-string { width: 2px; height: 28px; background: linear-gradient(180deg, rgba(200,180,140,0.6), transparent); }
+    .balloon-string{width:2px;height:28px;background:linear-gradient(180deg,rgba(200,180,140,0.6),transparent);}
 
-    .balloon-body {
-      width: min(85px, 21vw); height: min(105px, 25vw);
-      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-      position: relative; display: flex; align-items: center; justify-content: center;
-      flex-direction: column; gap: 4px;
-      transition: transform 0.5s var(--transition-spring), opacity 0.5s ease;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 2px 8px rgba(255,255,255,0.15);
-      animation: balloonFloat 4s ease-in-out infinite;
+    .balloon-body{
+      width:min(85px,21vw);height:min(105px,25vw);
+      border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+      position:relative;display:flex;align-items:center;justify-content:center;
+      flex-direction:column;gap:4px;
+      transition:transform 0.5s var(--transition-spring),opacity 0.5s ease;
+      box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 2px 8px rgba(255,255,255,0.15);
+      animation:balloonFloat 4s ease-in-out infinite;
     }
-    .balloon-body::before {
-      content: ''; position: absolute; top: 12%; right: 20%; width: 28%; height: 20%;
-      background: rgba(255,255,255,0.25); border-radius: 50%; filter: blur(3px);
+    .balloon-body::before{
+      content:'';position:absolute;top:12%;right:20%;width:28%;height:20%;
+      background:rgba(255,255,255,0.25);border-radius:50%;filter:blur(3px);
     }
-    .balloon-body::after {
-      content: ''; position: absolute; bottom: -6px; left: 50%;
-      transform: translateX(-50%); width: 10px; height: 8px;
-      background: inherit; clip-path: polygon(50% 100%, 0 0, 100% 0); filter: brightness(0.7);
+    .balloon-body::after{
+      content:'';position:absolute;bottom:-6px;left:50%;
+      transform:translateX(-50%);width:10px;height:8px;
+      background:inherit;clip-path:polygon(50% 100%,0 0,100% 0);filter:brightness(0.7);
     }
-    @keyframes balloonFloat {
-      0%, 100% { transform: translateY(0px) rotate(-1deg); }
-      33%       { transform: translateY(-8px) rotate(1deg); }
-      66%       { transform: translateY(-4px) rotate(-0.5deg); }
+    @keyframes balloonFloat{
+      0%,100%{transform:translateY(0px) rotate(-1deg);}
+      33%    {transform:translateY(-8px) rotate(1deg);}
+      66%    {transform:translateY(-4px) rotate(-0.5deg);}
     }
 
     /* Season colours */
-    .balloon-autumn  { background: linear-gradient(135deg, #c0392b, #e8722a, #d4a853); }
-    .balloon-winter  { background: linear-gradient(135deg, #2c5f8a, #7ab8d4, #b8d4e8); }
-    .balloon-ramadan { background: linear-gradient(135deg, #6a3d9a, #c077e0, #f0c060); }
-    .balloon-spring  { background: linear-gradient(135deg, #1a6b2a, #4caf50, #88d8a0); }
-    .balloon-summer  { background: linear-gradient(135deg, #b85c00, #ff8c42, #ffd700); }
-    .balloon-gold    { background: linear-gradient(135deg, #b8860b, #ffd700, #fffacd, #ffd700); box-shadow: 0 0 30px rgba(255,215,0,0.5), 0 8px 32px rgba(0,0,0,0.4); }
-    .balloon-secret  { background: linear-gradient(135deg, #2d0050, #7b2fff, #e040fb); }
+    .balloon-autumn {background:linear-gradient(135deg,#c0392b,#e8722a,#d4a853);}
+    .balloon-winter {background:linear-gradient(135deg,#2c5f8a,#7ab8d4,#b8d4e8);}
+    .balloon-ramadan{background:linear-gradient(135deg,#6a3d9a,#c077e0,#f0c060);}
+    .balloon-spring {background:linear-gradient(135deg,#1a6b2a,#4caf50,#88d8a0);}
+    .balloon-summer {background:linear-gradient(135deg,#b85c00,#ff8c42,#ffd700);}
+    .balloon-gold   {
+      background:linear-gradient(135deg,#b8860b,#ffd700,#fffacd,#ffd700);
+      box-shadow:0 0 30px rgba(255,215,0,0.5),0 8px 32px rgba(0,0,0,0.4);
+    }
+    .balloon-secret {background:linear-gradient(135deg,#2d0050,#7b2fff,#e040fb);}
 
     /* Ramadan lantern balloon */
-    .balloon-lantern {
-      width: min(80px, 20vw) !important;
-      height: min(110px, 27vw) !important;
-      border-radius: 15% 15% 20% 20% / 10% 10% 25% 25% !important;
-      background: linear-gradient(160deg, #8b4513 0%, #c8860a 30%, #f0c060 55%, #e8900a 80%, #8b4513 100%) !important;
-      box-shadow: 0 0 20px rgba(240,192,96,0.6), 0 0 60px rgba(232,144,10,0.3), inset 0 0 20px rgba(255,200,80,0.4) !important;
-      animation: lanternGlow 2s ease-in-out infinite, balloonFloat 4s ease-in-out infinite !important;
-      position: relative;
+    .balloon-lantern{
+      width:min(80px,20vw) !important;height:min(110px,27vw) !important;
+      border-radius:15% 15% 20% 20% / 10% 10% 25% 25% !important;
+      background:linear-gradient(160deg,#8b4513 0%,#c8860a 30%,#f0c060 55%,#e8900a 80%,#8b4513 100%) !important;
+      box-shadow:0 0 20px rgba(240,192,96,0.6),0 0 60px rgba(232,144,10,0.3),inset 0 0 20px rgba(255,200,80,0.4) !important;
+      animation:lanternGlow 2s ease-in-out infinite,balloonFloat 4s ease-in-out infinite !important;
     }
-    .balloon-lantern::before {
-      content: '' !important; position: absolute !important;
-      top: 5% !important; left: 15% !important; right: 15% !important; height: 8% !important;
-      background: rgba(139,69,19,0.8) !important; border-radius: 2px !important; filter: none !important;
+    .balloon-lantern::before{
+      content:'' !important;position:absolute !important;
+      top:5% !important;left:15% !important;right:15% !important;height:8% !important;
+      background:rgba(139,69,19,0.8) !important;border-radius:2px !important;filter:none !important;
     }
-    .balloon-lantern::after {
-      content: '' !important; position: absolute !important;
-      bottom: -12px !important; left: 50% !important; transform: translateX(-50%) !important;
-      width: 3px !important; height: 14px !important;
-      background: rgba(200,134,10,0.8) !important;
-      clip-path: none !important; filter: none !important;
+    .balloon-lantern::after{
+      content:'' !important;position:absolute !important;
+      bottom:-12px !important;left:50% !important;transform:translateX(-50%) !important;
+      width:3px !important;height:14px !important;
+      background:rgba(200,134,10,0.8) !important;
+      clip-path:none !important;filter:none !important;
     }
-    @keyframes lanternGlow {
-      0%, 100% { box-shadow: 0 0 15px rgba(240,192,96,0.5), 0 0 40px rgba(232,144,10,0.25), inset 0 0 15px rgba(255,200,80,0.3); }
-      50%       { box-shadow: 0 0 30px rgba(240,192,96,0.9), 0 0 80px rgba(232,144,10,0.5), inset 0 0 30px rgba(255,200,80,0.6); }
+    @keyframes lanternGlow{
+      0%,100%{box-shadow:0 0 15px rgba(240,192,96,0.5),0 0 40px rgba(232,144,10,0.25),inset 0 0 15px rgba(255,200,80,0.3);}
+      50%    {box-shadow:0 0 30px rgba(240,192,96,0.9),0 0 80px rgba(232,144,10,0.5),inset 0 0 30px rgba(255,200,80,0.6);}
     }
 
-    .balloon-number { font-family: var(--font-body); font-size: 0.65rem; font-weight: 700; color: rgba(255,255,255,0.9); letter-spacing: 0.05em; position: relative; z-index: 1; }
-    .balloon-icon { font-size: 1.1rem; position: relative; z-index: 1; }
-    .balloon-tap-hint { font-size: 0.6rem; color: rgba(255,255,255,0.5); margin-top: 6px; letter-spacing: 0.1em; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
-
-    /* Label beside balloon */
-    .balloon-label {
-      font-size: 0.68rem; color: var(--text-secondary); margin-top: 5px;
-      text-align: center; max-width: 90px; line-height: 1.3;
-    }
-
-    /* ============================================================
-       RAMADAN SECTION EXTRAS
-    ============================================================ */
-    .ramadan-section-glow {
-      position: absolute; inset: -40px; border-radius: 20px;
-      background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(240,192,96,0.06) 0%, transparent 70%);
-      pointer-events: none; z-index: 0;
-    }
-
-    /* Hanging rope across Ramadan balloons */
-    .ramadan-hanging-rope {
-      position: absolute; top: 0; left: 0; width: 100%; height: 4px;
-      background: linear-gradient(90deg,
-        transparent 0%, rgba(200,160,60,0.5) 15%,
-        rgba(200,160,60,0.7) 50%, rgba(200,160,60,0.5) 85%, transparent 100%);
-      z-index: 2;
-    }
-
-    /* Islamic geometric overlay (subtle SVG pattern via CSS) */
-    .islamic-geo {
-      position: absolute; width: 180px; height: 180px; pointer-events: none; z-index: 0; opacity: 0.07;
-    }
+    .balloon-number{font-family:var(--font-body);font-size:0.65rem;font-weight:700;color:rgba(255,255,255,0.9);letter-spacing:0.05em;position:relative;z-index:1;}
+    .balloon-icon  {font-size:1.1rem;position:relative;z-index:1;}
+    .balloon-tap-hint{font-size:0.6rem;color:rgba(255,255,255,0.5);margin-top:6px;letter-spacing:0.1em;animation:pulse 2s infinite;}
+    @keyframes pulse{0%,100%{opacity:0.5;}50%{opacity:1;}}
+    .balloon-label{font-size:0.68rem;color:var(--text-secondary);margin-top:5px;text-align:center;max-width:90px;line-height:1.3;}
 
     /* ============================================================
        MEMORY CARD OVERLAY
     ============================================================ */
-    .memory-card-overlay {
-      position: fixed; inset: 0; z-index: 500;
-      background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px); display: flex;
-      align-items: flex-end; justify-content: center;
-      opacity: 0; pointer-events: none; transition: opacity 0.35s ease;
+    .memory-card-overlay{
+      position:fixed;inset:0;z-index:500;
+      background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+      display:flex;align-items:flex-end;justify-content:center;
+      opacity:0;pointer-events:none;transition:opacity 0.35s ease;
     }
-    .memory-card-overlay.active { opacity: 1; pointer-events: all; }
+    .memory-card-overlay.active{opacity:1;pointer-events:all;}
+    .memory-card{
+      width:min(480px,100vw);max-height:88vh;background:var(--card-bg);
+      border:1px solid rgba(255,255,255,0.12);border-radius:24px 24px 0 0;
+      padding:0 0 env(safe-area-inset-bottom,0px);overflow-y:auto;overflow-x:hidden;
+      transform:translateY(100%);transition:transform 0.5s var(--transition-spring);position:relative;
+    }
+    .memory-card-overlay.active .memory-card{transform:translateY(0);}
+    .card-drag-handle{width:40px;height:4px;background:rgba(255,255,255,0.2);border-radius:2px;margin:16px auto 0;}
+    .card-inner{padding:20px 24px 32px;}
 
-    .memory-card {
-      width: min(480px, 100vw); max-height: 88vh; background: var(--card-bg);
-      border: 1px solid rgba(255,255,255,0.12); border-radius: 24px 24px 0 0;
-      padding: 0 0 env(safe-area-inset-bottom, 0px); overflow-y: auto; overflow-x: hidden;
-      transform: translateY(100%); transition: transform 0.5s var(--transition-spring);
-      position: relative;
+    .card-season-badge{
+      display:inline-flex;align-items:center;gap:6px;font-size:0.65rem;
+      letter-spacing:0.15em;text-transform:uppercase;padding:4px 12px;
+      border-radius:20px;margin-bottom:14px;font-weight:600;
     }
-    .memory-card-overlay.active .memory-card { transform: translateY(0); }
+    .badge-autumn {background:rgba(232,114,42,0.2);color:#e8c490;border:1px solid rgba(232,114,42,0.3);}
+    .badge-winter {background:rgba(122,184,212,0.2);color:#b8d4e8;border:1px solid rgba(122,184,212,0.3);}
+    .badge-ramadan{background:rgba(240,192,96,0.2);color:#f0c060;border:1px solid rgba(240,192,96,0.3);}
+    .badge-spring {background:rgba(76,175,80,0.2);color:#88d8a0;border:1px solid rgba(76,175,80,0.3);}
+    .badge-summer {background:rgba(255,215,0,0.2);color:#ffd700;border:1px solid rgba(255,215,0,0.3);}
 
-    .card-drag-handle { width: 40px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin: 16px auto 0; }
-    .card-inner { padding: 20px 24px 32px; }
+    .card-date {font-size:0.7rem;color:var(--text-secondary);margin-bottom:8px;letter-spacing:0.08em;}
+    .card-title{font-family:var(--font-display);font-size:clamp(1.6rem,5vw,2.2rem);line-height:1.3;color:var(--text-primary);margin-bottom:16px;}
 
-    .card-season-badge {
-      display: inline-flex; align-items: center; gap: 6px; font-size: 0.65rem;
-      letter-spacing: 0.15em; text-transform: uppercase; padding: 4px 12px;
-      border-radius: 20px; margin-bottom: 14px; font-weight: 600;
+    .card-image-wrap{
+      width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;
+      margin-bottom:18px;background:rgba(255,255,255,0.05);
+      border:1px dashed rgba(255,255,255,0.12);position:relative;
+      display:flex;align-items:center;justify-content:center;
     }
-    .badge-autumn  { background: rgba(232,114,42,0.2); color: #e8c490; border: 1px solid rgba(232,114,42,0.3); }
-    .badge-winter  { background: rgba(122,184,212,0.2); color: #b8d4e8; border: 1px solid rgba(122,184,212,0.3); }
-    .badge-ramadan { background: rgba(240,192,96,0.2); color: #f0c060; border: 1px solid rgba(240,192,96,0.3); }
-    .badge-spring  { background: rgba(76,175,80,0.2); color: #88d8a0; border: 1px solid rgba(76,175,80,0.3); }
-    .badge-summer  { background: rgba(255,215,0,0.2); color: #ffd700; border: 1px solid rgba(255,215,0,0.3); }
+    .card-image-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
 
-    .card-date { font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 8px; letter-spacing: 0.08em; }
-    .card-title { font-family: var(--font-display); font-size: clamp(1.6rem, 5vw, 2.2rem); line-height: 1.3; color: var(--text-primary); margin-bottom: 16px; }
+    .card-extra-images{
+      display:flex;gap:8px;overflow-x:auto;margin-bottom:18px;
+      padding-bottom:4px;scroll-snap-type:x mandatory;
+    }
+    .card-extra-images img{
+      min-width:120px;height:80px;object-fit:cover;border-radius:10px;
+      scroll-snap-align:start;flex-shrink:0;border:1px solid rgba(255,255,255,0.1);
+    }
+    .card-chat-wrap{width:100%;border-radius:14px;overflow:hidden;margin-bottom:18px;border:1px solid rgba(255,255,255,0.1);}
+    .card-chat-wrap img{width:100%;display:block;}
 
-    /* Images */
-    .card-image-wrap {
-      width: 100%; aspect-ratio: 16/9; border-radius: 14px; overflow: hidden;
-      margin-bottom: 18px; background: rgba(255,255,255,0.05);
-      border: 1px dashed rgba(255,255,255,0.12); position: relative;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .card-image-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .placeholder-icon{display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0.3;}
+    .placeholder-icon svg{width:40px;height:40px;stroke:var(--text-primary);fill:none;}
+    .placeholder-icon span{font-size:0.7rem;letter-spacing:0.1em;color:var(--text-secondary);}
 
-    /* Extra images strip */
-    .card-extra-images {
-      display: flex; gap: 8px; overflow-x: auto; margin-bottom: 18px;
-      padding-bottom: 4px; scroll-snap-type: x mandatory;
+    /* Video cinematic */
+    .card-video-cinematic{
+      width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;
+      margin-bottom:18px;position:relative;background:#000;cursor:pointer;
     }
-    .card-extra-images img {
-      min-width: 120px; height: 80px; object-fit: cover; border-radius: 10px;
-      scroll-snap-align: start; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.1);
+    .cinematic-poster{
+      position:absolute;inset:0;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;gap:16px;
+      background:linear-gradient(160deg,#0a0a1a 0%,#1a1030 40%,#0a0a1a 100%);
+      z-index:2;transition:opacity 0.6s ease;
     }
+    .cinematic-poster.hidden{opacity:0;pointer-events:none;}
+    .cinematic-intro-text{
+      font-family:var(--font-display);font-size:clamp(1rem,3.5vw,1.4rem);
+      color:var(--autumn-gold);text-align:center;line-height:1.6;
+      padding:0 20px;opacity:0;animation:cinematicFadeIn 1s 0.4s forwards;
+    }
+    @keyframes cinematicFadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+    .cinematic-play-btn{
+      width:70px;height:70px;border-radius:50%;
+      background:rgba(255,255,255,0.12);border:2px solid rgba(255,255,255,0.4);
+      display:flex;align-items:center;justify-content:center;
+      transition:transform 0.3s var(--transition-spring),background 0.3s;
+      animation:cinematicFadeIn 1s 0.8s both;
+    }
+    .cinematic-play-btn:hover{transform:scale(1.12);background:rgba(255,255,255,0.22);}
+    .cinematic-play-btn svg{width:28px;height:28px;fill:white;margin-left:4px;}
+    .cinematic-reveal-anim{animation:cinematicReveal 0.8s var(--transition-spring) forwards;}
+    @keyframes cinematicReveal{
+      0%  {opacity:1;transform:scale(1);}
+      40% {opacity:0.6;transform:scale(1.05);}
+      100%{opacity:0;transform:scale(0.95);}
+    }
+    .card-video-wrap{width:100%;height:100%;position:absolute;inset:0;}
+    .card-video-wrap iframe,.card-video-wrap video{width:100%;height:100%;border:none;display:block;}
 
-    /* Chat screenshot */
-    .card-chat-wrap {
-      width: 100%; border-radius: 14px; overflow: hidden; margin-bottom: 18px;
-      border: 1px solid rgba(255,255,255,0.1);
+    .video-placeholder{
+      width:100%;aspect-ratio:16/9;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;gap:12px;
+      background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.12);
+      border-radius:14px;margin-bottom:18px;
     }
-    .card-chat-wrap img { width: 100%; display: block; }
+    .video-placeholder svg{width:48px;height:48px;stroke:var(--text-secondary);fill:none;}
+    .video-placeholder span{font-size:0.75rem;color:var(--text-secondary);}
 
-    .placeholder-icon { display: flex; flex-direction: column; align-items: center; gap: 10px; opacity: 0.3; }
-    .placeholder-icon svg { width: 40px; height: 40px; stroke: var(--text-primary); fill: none; }
-    .placeholder-icon span { font-size: 0.7rem; letter-spacing: 0.1em; color: var(--text-secondary); }
+    .card-quote{
+      font-family:var(--font-display);font-size:1.1rem;line-height:1.8;
+      color:var(--autumn-gold);text-align:center;margin-bottom:14px;
+      padding:12px 16px;border-radius:10px;
+      background:rgba(212,168,83,0.08);border:1px solid rgba(212,168,83,0.2);
+    }
+    .card-description{font-family:var(--font-body);font-size:1rem;line-height:1.85;color:var(--text-secondary);direction:rtl;}
+    .card-description p+p{margin-top:12px;}
 
-    /* ============================================================
-       VIDEO — ENHANCED CINEMATIC PRESENTATION (#8)
-    ============================================================ */
-    .card-video-cinematic {
-      width: 100%; aspect-ratio: 16/9; border-radius: 14px; overflow: hidden;
-      margin-bottom: 18px; position: relative; background: #000;
-      cursor: pointer;
+    .card-close{
+      position:absolute;top:14px;left:16px;width:32px;height:32px;
+      border-radius:50%;background:rgba(255,255,255,0.1);border:none;
+      color:var(--text-primary);font-size:1rem;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;transition:background 0.2s;
     }
-    .cinematic-poster {
-      position: absolute; inset: 0; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 16px;
-      background: linear-gradient(160deg, #0a0a1a 0%, #1a1030 40%, #0a0a1a 100%);
-      z-index: 2; transition: opacity 0.6s ease;
-    }
-    .cinematic-poster.hidden { opacity: 0; pointer-events: none; }
-    .cinematic-intro-text {
-      font-family: var(--font-display); font-size: clamp(1rem, 3.5vw, 1.4rem);
-      color: var(--autumn-gold); text-align: center; line-height: 1.6;
-      padding: 0 20px; opacity: 0; animation: cinematicFadeIn 1s 0.4s forwards;
-    }
-    @keyframes cinematicFadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .cinematic-play-btn {
-      width: 70px; height: 70px; border-radius: 50%;
-      background: rgba(255,255,255,0.12); border: 2px solid rgba(255,255,255,0.4);
-      display: flex; align-items: center; justify-content: center;
-      transition: transform 0.3s var(--transition-spring), background 0.3s;
-      animation: cinematicFadeIn 1s 0.8s both;
-    }
-    .cinematic-play-btn:hover { transform: scale(1.12); background: rgba(255,255,255,0.22); }
-    .cinematic-play-btn svg { width: 28px; height: 28px; fill: white; margin-left: 4px; }
-    .cinematic-reveal-anim {
-      animation: cinematicReveal 0.8s var(--transition-spring) forwards;
-    }
-    @keyframes cinematicReveal {
-      0%   { opacity: 1; transform: scale(1); }
-      40%  { opacity: 0.6; transform: scale(1.05); }
-      100% { opacity: 0; transform: scale(0.95); }
-    }
-    .card-video-wrap { width: 100%; height: 100%; position: absolute; inset: 0; }
-    .card-video-wrap iframe, .card-video-wrap video { width: 100%; height: 100%; border: none; display: block; }
-
-    .video-placeholder {
-      width: 100%; aspect-ratio: 16/9; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 12px;
-      background: rgba(255,255,255,0.04); border: 1px dashed rgba(255,255,255,0.12);
-      border-radius: 14px; margin-bottom: 18px;
-    }
-    .video-placeholder svg { width: 48px; height: 48px; stroke: var(--text-secondary); fill: none; }
-    .video-placeholder span { font-size: 0.75rem; color: var(--text-secondary); }
-
-    /* Quote highlight */
-    .card-quote {
-      font-family: var(--font-display); font-size: 1.1rem; line-height: 1.8;
-      color: var(--autumn-gold); text-align: center; margin-bottom: 14px;
-      padding: 12px 16px; border-radius: 10px;
-      background: rgba(212,168,83,0.08); border: 1px solid rgba(212,168,83,0.2);
-    }
-
-    .card-description { font-family: var(--font-body); font-size: 1rem; line-height: 1.85; color: var(--text-secondary); direction: rtl; }
-    .card-description p + p { margin-top: 12px; }
-
-    .card-close {
-      position: absolute; top: 14px; left: 16px; width: 32px; height: 32px;
-      border-radius: 50%; background: rgba(255,255,255,0.1); border: none;
-      color: var(--text-primary); font-size: 1rem; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; transition: background 0.2s;
-    }
-    .card-close:hover { background: rgba(255,255,255,0.2); }
+    .card-close:hover{background:rgba(255,255,255,0.2);}
 
     /* ============================================================
        SECRET CHALLENGE CARD
     ============================================================ */
-    .secret-challenge {
-      padding: 8px 0 12px;
+    .secret-challenge{padding:8px 0 12px;}
+    .secret-challenge-q{font-family:var(--font-display);font-size:1.1rem;line-height:1.7;color:var(--text-primary);margin-bottom:20px;}
+    .secret-inputs{display:flex;flex-direction:column;gap:12px;margin-bottom:16px;}
+    .secret-input-row{display:flex;align-items:center;gap:10px;}
+    .secret-input-label{font-size:0.85rem;color:var(--text-secondary);min-width:80px;direction:ltr;}
+    .secret-input{
+      flex:1;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.18);
+      border-radius:10px;padding:10px 14px;color:var(--text-primary);
+      font-family:var(--font-body);font-size:0.9rem;outline:none;
+      transition:border-color 0.2s;direction:ltr;
     }
-    .secret-challenge-q {
-      font-family: var(--font-display); font-size: 1.1rem; line-height: 1.7;
-      color: var(--text-primary); margin-bottom: 20px;
+    .secret-input:focus{border-color:rgba(224,64,251,0.6);}
+    .secret-input.error{border-color:rgba(255,80,80,0.7);animation:shake 0.4s ease;}
+    @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+    .secret-submit-btn{
+      width:100%;padding:12px;border-radius:12px;
+      background:linear-gradient(135deg,#7b2fff,#e040fb);
+      border:none;color:white;font-family:var(--font-body);
+      font-size:0.9rem;font-weight:700;cursor:pointer;
+      transition:opacity 0.2s,transform 0.2s;
     }
-    .secret-inputs { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
-    .secret-input-row { display: flex; align-items: center; gap: 10px; }
-    .secret-input-label { font-size: 0.85rem; color: var(--text-secondary); min-width: 80px; direction: ltr; }
-    .secret-input {
-      flex: 1; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 10px; padding: 10px 14px; color: var(--text-primary);
-      font-family: var(--font-body); font-size: 0.9rem; outline: none;
-      transition: border-color 0.2s; direction: ltr;
-    }
-    .secret-input:focus { border-color: rgba(224,64,251,0.6); }
-    .secret-input.error { border-color: rgba(255,80,80,0.7); animation: shake 0.4s ease; }
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-6px); }
-      75% { transform: translateX(6px); }
-    }
-    .secret-submit-btn {
-      width: 100%; padding: 12px; border-radius: 12px;
-      background: linear-gradient(135deg, #7b2fff, #e040fb);
-      border: none; color: white; font-family: var(--font-body);
-      font-size: 0.9rem; font-weight: 700; cursor: pointer;
-      transition: opacity 0.2s, transform 0.2s;
-    }
-    .secret-submit-btn:hover { opacity: 0.9; transform: scale(1.02); }
-    .secret-retry-msg {
-      text-align: center; color: rgba(255,120,120,0.9);
-      font-size: 0.85rem; margin-top: 10px; display: none;
-    }
-    .secret-retry-msg.visible { display: block; }
+    .secret-submit-btn:hover{opacity:0.9;transform:scale(1.02);}
+    .secret-retry-msg{text-align:center;color:rgba(255,120,120,0.9);font-size:0.85rem;margin-top:10px;display:none;}
+    .secret-retry-msg.visible{display:block;}
 
     /* ============================================================
        RAMADAN DECORATIVE ELEMENTS
     ============================================================ */
-    #ramadan-deco {
-      position: fixed; inset: 0; z-index: 2; pointer-events: none;
-      opacity: 0; transition: opacity 1.5s ease;
+    #ramadan-deco{
+      position:fixed;inset:0;z-index:2;pointer-events:none;
+      opacity:0;transition:opacity 1.5s ease;
     }
-    #ramadan-deco.visible { opacity: 1; }
-    .ramadan-lantern {
-      position: absolute; font-size: clamp(1.5rem, 5vw, 2.5rem);
-      animation: lanternSway 3s ease-in-out infinite;
-      filter: drop-shadow(0 0 8px rgba(240,192,96,0.6));
+    #ramadan-deco.visible{opacity:1;}
+    .ramadan-lantern{
+      position:absolute;font-size:clamp(1.5rem,5vw,2.5rem);
+      animation:lanternSway 3s ease-in-out infinite;
+      filter:drop-shadow(0 0 8px rgba(240,192,96,0.6));
     }
-    @keyframes lanternSway {
-      0%, 100% { transform: rotate(-5deg) translateY(0); }
-      50%       { transform: rotate(5deg) translateY(-8px); }
+    @keyframes lanternSway{
+      0%,100%{transform:rotate(-5deg) translateY(0);}
+      50%    {transform:rotate(5deg) translateY(-8px);}
     }
-    .ramadan-star {
-      position: absolute; background: rgba(240,192,96,0.8); border-radius: 50%;
-      animation: starTwinkle 2s ease-in-out infinite;
+    .ramadan-star{
+      position:absolute;background:rgba(240,192,96,0.8);border-radius:50%;
+      animation:starTwinkle 2s ease-in-out infinite;
     }
-    @keyframes starTwinkle {
-      0%, 100% { opacity: 0.3; transform: scale(1); }
-      50%       { opacity: 1; transform: scale(1.5); }
+    @keyframes starTwinkle{
+      0%,100%{opacity:0.3;transform:scale(1);}
+      50%    {opacity:1;transform:scale(1.5);}
     }
-    .ramadan-crescent {
-      position: absolute; top: 40px; left: 50%; transform: translateX(-50%);
-      font-size: 3rem; filter: drop-shadow(0 0 20px rgba(240,192,96,0.8));
-      animation: crescentGlow 4s ease-in-out infinite;
+    .ramadan-crescent{
+      position:absolute;top:40px;left:50%;transform:translateX(-50%);
+      font-size:3rem;filter:drop-shadow(0 0 20px rgba(240,192,96,0.8));
+      animation:crescentGlow 4s ease-in-out infinite;
     }
-    @keyframes crescentGlow {
-      0%, 100% { filter: drop-shadow(0 0 15px rgba(240,192,96,0.6)); }
-      50%       { filter: drop-shadow(0 0 30px rgba(240,192,96,1)); }
+    @keyframes crescentGlow{
+      0%,100%{filter:drop-shadow(0 0 15px rgba(240,192,96,0.6));}
+      50%    {filter:drop-shadow(0 0 30px rgba(240,192,96,1));}
     }
-    .geometric-pattern {
-      position: absolute; width: 200px; height: 200px; border-radius: 50%;
-      border: 1px solid rgba(240,192,96,0.08); animation: geometricRotate 20s linear infinite;
+    .geometric-pattern{
+      position:absolute;width:200px;height:200px;border-radius:50%;
+      border:1px solid rgba(240,192,96,0.08);animation:geometricRotate 20s linear infinite;
     }
-    .geometric-pattern::before, .geometric-pattern::after {
-      content: ''; position: absolute; inset: 15%; border-radius: 50%;
-      border: 1px solid rgba(240,192,96,0.06);
+    .geometric-pattern::before,.geometric-pattern::after{
+      content:'';position:absolute;inset:15%;border-radius:50%;
+      border:1px solid rgba(240,192,96,0.06);
     }
-    .geometric-pattern::after { inset: 30%; border-color: rgba(240,192,96,0.1); }
-    @keyframes geometricRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .geometric-pattern::after{inset:30%;border-color:rgba(240,192,96,0.1);}
+    @keyframes geometricRotate{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
 
-    /* Ramadan golden ambient overlay */
-    #ramadan-ambient {
-      position: fixed; inset: 0; z-index: 2; pointer-events: none;
-      opacity: 0; transition: opacity 1.5s ease;
-      background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(240,192,96,0.06) 0%, transparent 70%);
+    /* ============================================================
+       WINTER MIST LAYER (CSS — no canvas needed)
+    ============================================================ */
+    #winter-fog{
+      position:fixed;inset:0;z-index:1;pointer-events:none;
+      opacity:0;transition:opacity 1.8s ease;
+      background:
+        linear-gradient(0deg,
+          rgba(120,180,220,0.06) 0%,
+          transparent 40%,
+          transparent 60%,
+          rgba(120,180,220,0.03) 100%);
     }
-    #ramadan-ambient.visible { opacity: 1; }
+    #winter-fog.visible{opacity:1;}
 
     /* ============================================================
        CINEMATIC ENDING SEQUENCE
     ============================================================ */
-    #ending-cinematic {
-      position: fixed; inset: 0; z-index: 750;
-      background: #000; display: none; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center; padding: 40px 32px;
+    #ending-cinematic{
+      position:fixed;inset:0;z-index:750;
+      background:#000;display:none;flex-direction:column;
+      align-items:center;justify-content:center;
+      text-align:center;padding:40px 32px;
     }
-    #ending-cinematic.active { display: flex; }
-    .cinematic-line {
-      font-family: var(--font-display); font-size: clamp(1.4rem, 5vw, 2.2rem);
-      color: var(--text-primary); line-height: 1.8; opacity: 0;
-      position: absolute;
-    }
-    /* Balloon float-up particles on burst */
-    .burst-balloon-particle {
-      position: fixed; z-index: 760; pointer-events: none;
-      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-      animation: floatUpAndFade 3s ease-out forwards;
-    }
-    @keyframes floatUpAndFade {
-      0%   { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.9; }
-      60%  { transform: translateY(-40vh) scale(0.8) rotate(10deg); opacity: 0.5; }
-      100% { transform: translateY(-100vh) scale(0.3) rotate(20deg); opacity: 0; }
-    }
-    /* Rope fade overlay */
-    #rope-fade-overlay {
-      position: fixed; inset: 0; z-index: 755; pointer-events: none;
-      background: transparent; opacity: 0;
+    #ending-cinematic.active{display:flex;}
+    .cinematic-line{
+      font-family:var(--font-display);font-size:clamp(1.4rem,5vw,2.2rem);
+      color:var(--text-primary);line-height:1.8;opacity:0;
+      position:absolute;
     }
 
     /* ============================================================
        FINAL ENDING SCREEN
     ============================================================ */
-    #ending-screen {
-      position: fixed; inset: 0; z-index: 800; background: #000;
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; opacity: 0; pointer-events: none;
-      transition: opacity 1s ease; text-align: center; padding: 40px 32px; gap: 28px;
+    #ending-screen{
+      position:fixed;inset:0;z-index:800;background:#000;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      opacity:0;pointer-events:none;transition:opacity 1s ease;
+      text-align:center;padding:40px 32px;gap:28px;
     }
-    #ending-screen.active { opacity: 1; pointer-events: all; }
-    .ending-gold-ring {
-      width: 120px; height: 120px; border-radius: 50%;
-      border: 2px solid var(--autumn-gold); display: flex;
-      align-items: center; justify-content: center;
-      animation: ringPulse 3s ease-in-out infinite;
+    #ending-screen.active{opacity:1;pointer-events:all;}
+    .ending-gold-ring{
+      width:120px;height:120px;border-radius:50%;
+      border:2px solid var(--autumn-gold);display:flex;
+      align-items:center;justify-content:center;
+      animation:ringPulse 3s ease-in-out infinite;
     }
-    @keyframes ringPulse {
-      0%, 100% { box-shadow: 0 0 20px rgba(212,168,83,0.3); }
-      50%       { box-shadow: 0 0 60px rgba(212,168,83,0.7); }
+    @keyframes ringPulse{
+      0%,100%{box-shadow:0 0 20px rgba(212,168,83,0.3);}
+      50%    {box-shadow:0 0 60px rgba(212,168,83,0.7);}
     }
-    .ending-emoji { font-size: 3rem; }
-    .ending-quote { font-family: var(--font-display); font-size: clamp(1.4rem, 5vw, 2rem); line-height: 1.7; color: var(--text-primary); max-width: 340px; }
-    .ending-year { font-size: 0.75rem; color: var(--text-secondary); letter-spacing: 0.2em; }
-    .ending-cta { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .ending-emoji{font-size:3rem;}
+    .ending-quote{
+      font-family:var(--font-display);font-size:clamp(1.4rem,5vw,2rem);
+      line-height:1.7;color:var(--text-primary);max-width:340px;
+    }
+    .ending-year{font-size:0.75rem;color:var(--text-secondary);letter-spacing:0.2em;}
+    .ending-cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
 
-    .btn-ghost {
-      background: transparent; border: 1px solid rgba(255,255,255,0.25);
-      color: var(--text-primary); padding: 12px 24px; border-radius: 40px;
-      font-family: var(--font-body); font-size: 0.85rem; cursor: pointer;
-      transition: background 0.25s, border-color 0.25s;
+    .btn-ghost{
+      background:transparent;border:1px solid rgba(255,255,255,0.25);
+      color:var(--text-primary);padding:12px 24px;border-radius:40px;
+      font-family:var(--font-body);font-size:0.85rem;cursor:pointer;
+      transition:background 0.25s,border-color 0.25s;
     }
-    .btn-ghost:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.5); }
-    .btn-gold {
-      background: linear-gradient(135deg, #d4a853, #ffd700); border: none; color: #000;
-      padding: 12px 24px; border-radius: 40px; font-family: var(--font-body);
-      font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: opacity 0.25s;
+    .btn-ghost:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.5);}
+    .btn-gold{
+      background:linear-gradient(135deg,#d4a853,#ffd700);border:none;color:#000;
+      padding:12px 24px;border-radius:40px;font-family:var(--font-body);
+      font-size:0.85rem;font-weight:700;cursor:pointer;transition:opacity 0.25s;
     }
-    .btn-gold:hover { opacity: 0.9; }
+    .btn-gold:hover{opacity:0.9;}
 
     /* ============================================================
        FUTURE LETTERS SECTION
     ============================================================ */
-    #future-letters {
-      position: relative; z-index: 10; padding: 80px 20px;
-      max-width: 600px; margin: 0 auto; display: none;
+    #future-letters{
+      position:relative;z-index:10;padding:80px 20px;
+      max-width:600px;margin:0 auto;display:none;
     }
-    #future-letters.visible { display: block; }
-    .section-heading {
-      font-family: var(--font-display); font-size: clamp(1.8rem, 6vw, 2.5rem);
-      text-align: center; margin-bottom: 8px;
-      background: linear-gradient(135deg, #f5f0e8, #d4a853);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    #future-letters.visible{display:block;}
+    .section-heading{
+      font-family:var(--font-display);font-size:clamp(1.8rem,6vw,2.5rem);
+      text-align:center;margin-bottom:8px;
+      background:linear-gradient(135deg,#f5f0e8,#d4a853);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
     }
-    .section-sub { text-align: center; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 40px; letter-spacing: 0.08em; }
-    .letter-card {
-      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 18px; padding: 24px; margin-bottom: 16px; position: relative; overflow: hidden;
+    .section-sub{text-align:center;font-size:0.8rem;color:var(--text-secondary);margin-bottom:40px;letter-spacing:0.08em;}
+    .letter-card{
+      background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);
+      border-radius:18px;padding:24px;margin-bottom:16px;position:relative;overflow:hidden;
     }
-    .letter-card::before {
-      content: '"'; position: absolute; top: -10px; right: 16px;
-      font-family: var(--font-display); font-size: 5rem;
-      color: rgba(212,168,83,0.12); line-height: 1;
+    .letter-card::before{
+      content:'"';position:absolute;top:-10px;right:16px;
+      font-family:var(--font-display);font-size:5rem;
+      color:rgba(212,168,83,0.12);line-height:1;
     }
-    .letter-author { font-size: 0.75rem; color: var(--autumn-gold); font-weight: 700; margin-bottom: 10px; letter-spacing: 0.08em; }
-    .letter-body { font-size: 0.92rem; line-height: 1.9; color: var(--text-secondary); direction: rtl; }
-    .letter-year { font-size: 0.65rem; color: rgba(255,255,255,0.25); margin-top: 12px; text-align: left; }
+    .letter-author{font-size:0.75rem;color:var(--autumn-gold);font-weight:700;margin-bottom:10px;letter-spacing:0.08em;}
+    .letter-body  {font-size:0.92rem;line-height:1.9;color:var(--text-secondary);direction:rtl;}
+    .letter-year  {font-size:0.65rem;color:rgba(255,255,255,0.25);margin-top:12px;text-align:left;}
 
     /* ============================================================
-       THANK YOU / شكر وامتنان SECTION
+       THANKS SECTION
     ============================================================ */
-    #thanks-section {
-      position: relative; z-index: 10; padding: 80px 20px 100px;
-      max-width: 600px; margin: 0 auto; display: none; text-align: center;
+    #thanks-section{
+      position:relative;z-index:10;padding:80px 20px 100px;
+      max-width:600px;margin:0 auto;display:none;text-align:center;
     }
-    #thanks-section.visible { display: block; }
-    .thanks-heading {
-      font-family: var(--font-display); font-size: clamp(2rem, 7vw, 3rem);
-      margin-bottom: 10px;
-      background: linear-gradient(135deg, #f0c060, #d4a853, #ffd700);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    #thanks-section.visible{display:block;}
+    .thanks-heading{
+      font-family:var(--font-display);font-size:clamp(2rem,7vw,3rem);margin-bottom:10px;
+      background:linear-gradient(135deg,#f0c060,#d4a853,#ffd700);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
     }
-    .thanks-divider {
-      width: 80px; height: 1px; margin: 16px auto 36px;
-      background: linear-gradient(90deg, transparent, var(--ramadan-gold), transparent);
+    .thanks-divider{width:80px;height:1px;margin:16px auto 36px;background:linear-gradient(90deg,transparent,var(--ramadan-gold),transparent);}
+    .thanks-lines{display:flex;flex-direction:column;gap:20px;margin-bottom:48px;}
+    .thanks-line{
+      font-family:var(--font-display);font-size:clamp(1.05rem,3.5vw,1.3rem);
+      color:var(--text-secondary);line-height:1.7;
+      opacity:0;transform:translateY(20px);
+      transition:opacity 0.7s ease,transform 0.7s ease;
     }
-    .thanks-lines { display: flex; flex-direction: column; gap: 20px; margin-bottom: 48px; }
-    .thanks-line {
-      font-family: var(--font-display); font-size: clamp(1.05rem, 3.5vw, 1.3rem);
-      color: var(--text-secondary); line-height: 1.7;
-      opacity: 0; transform: translateY(20px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
+    .thanks-line.revealed{opacity:1;transform:translateY(0);}
+    .thanks-final-line{
+      font-family:var(--font-display);font-size:clamp(1.2rem,4vw,1.6rem);
+      color:var(--ramadan-gold);opacity:0;transform:translateY(20px);
+      transition:opacity 0.7s 0.3s ease,transform 0.7s 0.3s ease;
     }
-    .thanks-line.revealed { opacity: 1; transform: translateY(0); }
-    .thanks-final-line {
-      font-family: var(--font-display); font-size: clamp(1.2rem, 4vw, 1.6rem);
-      color: var(--ramadan-gold); opacity: 0; transform: translateY(20px);
-      transition: opacity 0.7s 0.3s ease, transform 0.7s 0.3s ease;
+    .thanks-final-line.revealed{opacity:1;transform:translateY(0);}
+    .faculty-thanks{
+      margin-top:56px;padding:32px 24px;
+      background:rgba(240,192,96,0.05);border:1px solid rgba(240,192,96,0.15);border-radius:20px;
     }
-    .thanks-final-line.revealed { opacity: 1; transform: translateY(0); }
-    .faculty-thanks {
-      margin-top: 56px; padding: 32px 24px;
-      background: rgba(240,192,96,0.05); border: 1px solid rgba(240,192,96,0.15);
-      border-radius: 20px;
-    }
-    .faculty-thanks-title {
-      font-family: var(--font-display); font-size: clamp(1.4rem, 5vw, 1.9rem);
-      color: var(--ramadan-gold); margin-bottom: 24px;
-    }
-    .faculty-list { display: flex; flex-direction: column; gap: 10px; }
-    .faculty-name {
-      font-family: var(--font-body); font-size: 0.95rem;
-      color: var(--text-secondary); line-height: 1.8;
-      padding: 8px 16px; border-radius: 10px;
-      background: rgba(240,192,96,0.04);
-      border: 1px solid rgba(240,192,96,0.08);
+    .faculty-thanks-title{font-family:var(--font-display);font-size:clamp(1.4rem,5vw,1.9rem);color:var(--ramadan-gold);margin-bottom:24px;}
+    .faculty-list{display:flex;flex-direction:column;gap:10px;}
+    .faculty-name{
+      font-family:var(--font-body);font-size:0.95rem;color:var(--text-secondary);line-height:1.8;
+      padding:8px 16px;border-radius:10px;background:rgba(240,192,96,0.04);
+      border:1px solid rgba(240,192,96,0.08);
     }
 
     /* ============================================================
        SECRET BALLOON FLOATING BUTTON
     ============================================================ */
-    #secret-balloon {
-      position: fixed; bottom: 80px; right: 16px; z-index: 50;
-      opacity: 0; transform: scale(0);
-      transition: opacity 0.5s ease, transform 0.5s var(--transition-spring);
-      cursor: pointer;
+    #secret-balloon{
+      position:fixed;bottom:80px;right:16px;z-index:50;
+      opacity:0;transform:scale(0);
+      transition:opacity 0.5s ease,transform 0.5s var(--transition-spring);cursor:pointer;
     }
-    #secret-balloon.revealed { opacity: 1; transform: scale(1); }
-    .secret-balloon-body {
-      width: 55px; height: 68px;
-      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-      background: linear-gradient(135deg, #2d0050, #7b2fff, #e040fb);
-      display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
-      box-shadow: 0 0 20px rgba(123,47,255,0.5);
-      animation: secretPulse 2s ease-in-out infinite;
+    #secret-balloon.revealed{opacity:1;transform:scale(1);}
+    .secret-balloon-body{
+      width:55px;height:68px;
+      border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+      background:linear-gradient(135deg,#2d0050,#7b2fff,#e040fb);
+      display:flex;align-items:center;justify-content:center;font-size:1.4rem;
+      box-shadow:0 0 20px rgba(123,47,255,0.5);animation:secretPulse 2s ease-in-out infinite;
     }
-    @keyframes secretPulse {
-      0%, 100% { box-shadow: 0 0 20px rgba(123,47,255,0.5); }
-      50%       { box-shadow: 0 0 40px rgba(224,64,251,0.8); }
+    @keyframes secretPulse{
+      0%,100%{box-shadow:0 0 20px rgba(123,47,255,0.5);}
+      50%    {box-shadow:0 0 40px rgba(224,64,251,0.8);}
     }
 
     /* ============================================================
        SCROLL PROMPT
     ============================================================ */
-    #scroll-prompt {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-      z-index: 50; display: flex; flex-direction: column; align-items: center; gap: 6px;
-      opacity: 1; transition: opacity 0.5s ease;
+    #scroll-prompt{
+      position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+      z-index:50;display:flex;flex-direction:column;align-items:center;gap:6px;
+      opacity:1;transition:opacity 0.5s ease;
     }
-    #scroll-prompt.hidden { opacity: 0; pointer-events: none; }
-    .scroll-arrow {
-      width: 24px; height: 24px;
-      border-right: 2px solid rgba(255,255,255,0.4); border-bottom: 2px solid rgba(255,255,255,0.4);
-      transform: rotate(45deg); animation: scrollBounce 1.5s ease-in-out infinite;
+    #scroll-prompt.hidden{opacity:0;pointer-events:none;}
+    .scroll-arrow{
+      width:24px;height:24px;
+      border-right:2px solid rgba(255,255,255,0.4);border-bottom:2px solid rgba(255,255,255,0.4);
+      transform:rotate(45deg);animation:scrollBounce 1.5s ease-in-out infinite;
     }
-    @keyframes scrollBounce {
-      0%, 100% { transform: rotate(45deg) translateY(0); }
-      50%       { transform: rotate(45deg) translateY(6px); }
+    @keyframes scrollBounce{
+      0%,100%{transform:rotate(45deg) translateY(0);}
+      50%    {transform:rotate(45deg) translateY(6px);}
     }
-    .scroll-label { font-size: 0.6rem; color: rgba(255,255,255,0.35); letter-spacing: 0.15em; text-transform: uppercase; }
+    .scroll-label{font-size:0.6rem;color:rgba(255,255,255,0.35);letter-spacing:0.15em;text-transform:uppercase;}
 
     /* ============================================================
-       CREDITS SECTION (keeping for faculty display)
+       CREDITS SECTION
     ============================================================ */
-    #credits-section {
-      position: fixed; inset: 0; z-index: 900; background: #000;
-      display: none; flex-direction: column; align-items: center; overflow: hidden;
+    #credits-section{
+      position:fixed;inset:0;z-index:900;background:#000;
+      display:none;flex-direction:column;align-items:center;overflow:hidden;
     }
-    #credits-section.active { display: flex; }
-    .credits-scroll-wrap { width: 100%; height: 100%; overflow: hidden; position: relative; }
-    .credits-inner {
-      position: absolute; bottom: -100%; width: 100%; text-align: center;
-      padding: 80px 32px; animation: creditsScroll 60s linear forwards;
-      animation-play-state: paused;
+    #credits-section.active{display:flex;}
+    .credits-scroll-wrap{width:100%;height:100%;overflow:hidden;position:relative;}
+    .credits-inner{
+      position:absolute;bottom:-100%;width:100%;text-align:center;
+      padding:80px 32px;animation:creditsScroll 60s linear forwards;animation-play-state:paused;
     }
-    .credits-inner.playing { animation-play-state: running; }
-    @keyframes creditsScroll { from { transform: translateY(0); } to { transform: translateY(calc(-100% - 100vh)); } }
-    .credits-title { font-family: var(--font-display); font-size: 1.4rem; color: var(--autumn-gold); margin: 40px 0 20px; letter-spacing: 0.1em; }
-    .credits-name { font-family: var(--font-body); font-size: 0.95rem; color: rgba(245,240,232,0.75); line-height: 2; }
-    .credits-close-btn {
-      position: fixed; top: 20px; right: 20px; z-index: 902;
-      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-      color: white; width: 44px; height: 44px; border-radius: 50%;
-      font-size: 1.2rem; cursor: pointer; display: none; align-items: center; justify-content: center;
+    .credits-inner.playing{animation-play-state:running;}
+    @keyframes creditsScroll{from{transform:translateY(0);}to{transform:translateY(calc(-100% - 100vh));}}
+    .credits-title{font-family:var(--font-display);font-size:1.4rem;color:var(--autumn-gold);margin:40px 0 20px;letter-spacing:0.1em;}
+    .credits-name{font-family:var(--font-body);font-size:0.95rem;color:rgba(245,240,232,0.75);line-height:2;}
+    .credits-close-btn{
+      position:fixed;top:20px;right:20px;z-index:902;
+      background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);
+      color:white;width:44px;height:44px;border-radius:50%;
+      font-size:1.2rem;cursor:pointer;display:none;align-items:center;justify-content:center;
     }
 
     /* ============================================================
        UTILITY
     ============================================================ */
-    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
-    @media (min-width: 600px) { .balloon-body { width: 100px; height: 120px; } }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.3s !important; }
+    .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);}
+    @media(min-width:600px){.balloon-body{width:100px;height:120px;}}
+    @media(prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation-duration:0.01ms !important;transition-duration:0.3s !important;}
     }
   </style>
 </head>
@@ -743,6 +721,14 @@
   <div class="bg-layer bg-spring"  id="bg-spring"  style="opacity:0"></div>
   <div class="bg-layer bg-summer"  id="bg-summer"  style="opacity:0"></div>
 
+  <!-- SEASON OVERLAYS -->
+  <div id="autumn-overlay"      aria-hidden="true"></div>
+  <div id="winter-mist-overlay" aria-hidden="true"></div>
+  <div id="winter-fog"          aria-hidden="true"></div>
+  <div id="ramadan-ambient"     aria-hidden="true"></div>
+  <div id="spring-bloom"        aria-hidden="true"></div>
+  <div id="summer-haze"         aria-hidden="true"></div>
+
   <!-- PARTICLE CANVAS -->
   <canvas id="particle-canvas" aria-hidden="true"></canvas>
 
@@ -752,7 +738,11 @@
     <div class="geometric-pattern" style="top:80px;left:10%;opacity:0.4"></div>
     <div class="geometric-pattern" style="bottom:100px;right:5%;opacity:0.3;animation-direction:reverse"></div>
   </div>
-  <div id="ramadan-ambient" aria-hidden="true"></div>
+
+  <!-- PROGRESS TRACKER -->
+  <div id="progress-tracker" role="status" aria-live="polite">
+    تم اكتشاف: <span id="prog-count">0</span> / <span id="prog-total">20</span> ذكرى
+  </div>
 
   <!-- SCROLL PROMPT -->
   <div id="scroll-prompt" aria-hidden="true">
@@ -764,24 +754,21 @@
   <main id="main" style="display:none">
     <header id="site-header">
       <p class="header-eyebrow">العام الدراسي ٢٠٢٥ — ٢٠٢٦</p>
-      <h1 class="header-title">شعبة أساسي إنجليزي<br/> </h1>
+      <h1 class="header-title">أساسي إنجليزي<br/>الفرقة الأولى</h1>
       <div class="header-divider"></div>
       <p class="header-sub">رحلة لن تُنسى</p>
     </header>
 
-    <!-- TIMELINE — branching network built by JS -->
     <div id="timeline-container" role="list" aria-label="خط الذكريات التفاعلي">
       <svg id="rope-svg" aria-hidden="true"></svg>
     </div>
 
-    <!-- FUTURE LETTERS -->
     <section id="future-letters" aria-labelledby="letters-heading">
       <h2 class="section-heading" id="letters-heading">رسائل إلى المستقبل</h2>
       <p class="section-sub">كلمات كتبها من عاشوا هذه اللحظات</p>
       <div id="letters-container"></div>
     </section>
 
-    <!-- THANK YOU SECTION -->
     <section id="thanks-section" aria-labelledby="thanks-heading">
       <h2 class="thanks-heading" id="thanks-heading">شكر وامتنان</h2>
       <div class="thanks-divider"></div>
@@ -792,7 +779,7 @@
         <p class="thanks-line">إلى من ساعد زميلًا...</p>
         <p class="thanks-line">إلى من كان سببًا في ابتسامة...</p>
       </div>
-      <p class="thanks-final-line" id="thanks-final">شكرًا لكم جميعًا موفقين بإذن الله + كالمعتاد (دعوة حلوة لاخوكم😁).</p>
+      <p class="thanks-final-line" id="thanks-final">شكرًا لكم جميعًا.</p>
       <div class="faculty-thanks">
         <h3 class="faculty-thanks-title">إلى هيئة التدريس</h3>
         <div class="faculty-list" id="faculty-thanks-list"></div>
@@ -817,22 +804,22 @@
 
   <!-- CINEMATIC ENDING SEQUENCE -->
   <div id="ending-cinematic" role="presentation" aria-hidden="true"></div>
-  <div id="rope-fade-overlay"></div>
 
   <!-- FINAL ENDING SCREEN -->
   <div id="ending-screen" role="dialog" aria-modal="true" aria-label="نهاية الرحلة">
     <div class="ending-gold-ring"><span class="ending-emoji">🎓</span></div>
     <blockquote class="ending-quote">
-      "ربما انتهت السنة...<br/>لكن الذكريات ستبقى دائمًا في قلوبنا."
+      "ربما انتهت السنة...<br/>لكن الذكريات ستبقى دائمًا."
     </blockquote>
     <p class="ending-year">أساسي إنجليزي — الفرقة الأولى — ٢٠٢٥/٢٠٢٦</p>
     <div class="ending-cta">
       <button class="btn-ghost" id="show-letters-btn">رسائل إلى المستقبل</button>
+      <button class="btn-gold"  id="show-credits-btn">شاهد الأسماء</button>
     </div>
     <button class="btn-ghost" id="close-ending-btn" style="margin-top:8px;font-size:0.75rem;padding:8px 20px;">العودة للذكريات</button>
   </div>
 
-  <!-- CREDITS (faculty only) -->
+  <!-- CREDITS -->
   <div id="credits-section" aria-label="هيئة التدريس">
     <button class="credits-close-btn" id="credits-close-btn" aria-label="إغلاق">✕</button>
     <div class="credits-scroll-wrap">
@@ -844,7 +831,7 @@
         <p class="credits-title">أعضاء هيئة التدريس</p>
         <div id="credits-faculty-container"></div>
         <div style="height:80px"></div>
-        <p style="font-family:var(--font-display);font-size:1.2rem;color:var(--autumn-gold)">شكراً لكم جميعاً </p>
+        <p style="font-family:var(--font-display);font-size:1.2rem;color:var(--autumn-gold)">شكراً لكم جميعاً</p>
         <p style="font-size:0.8rem;color:rgba(255,255,255,0.35);margin-top:12px">نهاية · ٢٠٢٥/٢٠٢٦</p>
         <div style="height:100px"></div>
       </div>
@@ -853,22 +840,19 @@
 
   <script>
   /* ================================================================
-     MEMORY BALLOON — BRANCHING NETWORK TIMELINE
-     All 13 requirements applied
+     MEMORY BALLOON TIMELINE
   ================================================================ */
 
   /* ----------------------------------------------------------------
      1. STATE
   ---------------------------------------------------------------- */
   const state = {
-    memories: [],
-    letters: [],
-    faculty: [],
+    memories: [], letters: [], faculty: [],
     openedSet: new Set(),
     currentSeason: 'autumn',
     secretFound: false,
     layoutBuilt: false,
-    balloonPositions: [],   // {x, y, el, idx} for rope drawing
+    finalLaunched: false,
   };
 
   /* ----------------------------------------------------------------
@@ -880,6 +864,15 @@
     ramadan: { months:[],         bg:'bg-ramadan', balloonClass:'balloon-ramadan', badge:'badge-ramadan', label:'رمضان', icon:'🌙' },
     spring:  { months:[3,4],      bg:'bg-spring',  balloonClass:'balloon-spring',  badge:'badge-spring',  label:'ربيع',  icon:'🌸' },
     summer:  { months:[5,6],      bg:'bg-summer',  balloonClass:'balloon-summer',  badge:'badge-summer',  label:'صيف',   icon:'☀️' },
+  };
+
+  // Per-season overlay IDs
+  const SEASON_OVERLAYS = {
+    autumn:  ['autumn-overlay'],
+    winter:  ['winter-mist-overlay','winter-fog'],
+    ramadan: ['ramadan-ambient'],
+    spring:  ['spring-bloom'],
+    summer:  ['summer-haze'],
   };
 
   function detectSeason(mem) {
@@ -897,7 +890,7 @@
   ---------------------------------------------------------------- */
   function getDefaultMemories() {
     return [
-      { id:1,  title:'أول يوم',                    date:'28 سبتمبر 2025',  season:'autumn',  type:'image', imageUrl:'01-first-day.jpg', description:'هنا بدأت الرحلة...' },
+      { id:1,  title:'أول يوم',                    date:'28 سبتمبر 2025',  season:'autumn',  type:'image', imagePlaceholder:true, description:'هنا بدأت الرحلة...' },
       { id:2,  title:'أول محاضرة',                 date:'أكتوبر 2025',     season:'autumn',  type:'image', imagePlaceholder:true, description:'بعد أسبوع تقريبًا 😅' },
       { id:3,  title:'أول تكليف',                  date:'أكتوبر 2025',     season:'autumn',  type:'image', imagePlaceholder:true, description:'د. هبة القاضي\nWhat is Speaking and What is Listening?' },
       { id:4,  title:'محاضرات د. وفاء',            date:'نوفمبر 2025',     season:'autumn',  type:'image', imagePlaceholder:true, description:'كنا نجلس نحاول متابعة الشرح...\nبينما كانت د. وفاء تتحدث الإنجليزية بطلاقة واحترافية 😅' },
@@ -919,17 +912,15 @@
       { id:20, title:'آخر فاينال',                 date:'10 يونيو 2026',   season:'summer',  type:'text',  isFinal:true, description:'وصلنا للنهاية.\n\nبعد كل هذا الجهد، كل هذه الليالي، كل هذه اللحظات — وصلنا.' },
     ];
   }
-
   function getDefaultLetters() {
     return [
-      { author:'طالبة من الفرقة الأولى', year:2026, body:'إلى من سيمشي في هذا الطريق... صبرا، لأن كل شيء يستحق في النهاية.' },
-      { author:'طالب من الفرقة الأولى',  year:2026, body:'صدقني الإنجليزي مش مستحيل، بس محتاج وقت ومجهود. لا تستسلم.' },
+      { author:'طالبة من الفرقة الأولى', year:2026, body:'إلى من سيمشي في هذا الطريق... صبر، لأن كل شيء يستحق في النهاية.' },
+      { author:'طالب من الفرقة الأولى',  year:2026, body:'الإنجليزي مش مستحيل، بس محتاج وقت ومجهود. لا تستسلم.' },
       { author:'من قلب الفرقة الأولى',   year:2026, body:'أجمل ما في هذا العام هو الناس اللي عشنا معاهم كل لحظة منه.' },
     ];
   }
-
   function getDefaultFaculty() {
-    return ['شكر خاص لأعضاء هيئة التدريس المحترمون'];
+    return ['د. هبة القاضي','د. وفاء','د. أماني','أعضاء هيئة التدريس المحترمون'];
   }
 
   /* ----------------------------------------------------------------
@@ -942,19 +933,12 @@
         fetch('data/future_letters.json'),
         fetch('data/students.json'),
       ]);
-
-      state.memories = (memRes.status==='fulfilled' && memRes.value.ok)
-        ? await memRes.value.json() : getDefaultMemories();
-
-      state.letters = (letRes.status==='fulfilled' && letRes.value.ok)
-        ? await letRes.value.json() : getDefaultLetters();
-
+      state.memories = (memRes.status==='fulfilled' && memRes.value.ok) ? await memRes.value.json() : getDefaultMemories();
+      state.letters  = (letRes.status==='fulfilled' && letRes.value.ok)  ? await letRes.value.json()  : getDefaultLetters();
       if (stuRes.status==='fulfilled' && stuRes.value.ok) {
         const d = await stuRes.value.json();
         state.faculty = d.faculty || getDefaultFaculty();
-      } else {
-        state.faculty = getDefaultFaculty();
-      }
+      } else { state.faculty = getDefaultFaculty(); }
     } catch {
       state.memories = getDefaultMemories();
       state.letters  = getDefaultLetters();
@@ -963,10 +947,10 @@
   }
 
   /* ----------------------------------------------------------------
-     5. PARTICLE ENGINE
+     5. PARTICLE ENGINE — full seasonal particles
   ---------------------------------------------------------------- */
-  const canvas = document.getElementById('particle-canvas');
-  const ctx    = canvas.getContext('2d');
+  const canvas  = document.getElementById('particle-canvas');
+  const ctx     = canvas.getContext('2d');
   const particles = [];
   let animFrame;
 
@@ -975,59 +959,126 @@
     canvas.height = window.innerHeight;
   }
 
+  const PARTICLE_COLORS = {
+    autumn:  ['#c0392b','#e8722a','#d4a853','#8b4513','#a0522d'],
+    winter:  ['rgba(184,212,232,0.9)','rgba(200,225,245,0.8)','rgba(160,200,230,0.7)'],
+    ramadan: ['rgba(240,192,96,1)','rgba(255,215,120,0.9)','rgba(200,160,60,0.8)'],
+    spring:  ['#f8a5c2','#88d8a0','#fffde7','#fce4ec','#b2dfdb'],
+    summer:  ['rgba(255,215,0,0.8)','rgba(255,180,50,0.7)','rgba(255,140,66,0.6)'],
+  };
+
   class Particle {
-    constructor() { this.reset(true); }
+    constructor(initial=false) { this.reset(initial); }
     reset(initial=false) {
-      this.x = Math.random() * canvas.width;
-      this.y = initial ? Math.random() * canvas.height : -20;
+      this.x       = Math.random() * canvas.width;
+      this.y       = initial ? Math.random() * canvas.height : -20;
       this.size    = Math.random() * 5 + 2;
-      this.speedX  = (Math.random() - 0.5) * 1.2;
-      this.speedY  = Math.random() * 1.5 + 0.5;
+      this.speedX  = (Math.random() - 0.5) * 1.4;
+      this.speedY  = Math.random() * 1.5 + 0.4;
       this.opacity = Math.random() * 0.7 + 0.2;
       this.rotation= Math.random() * Math.PI * 2;
-      this.rotSpeed= (Math.random() - 0.5) * 0.04;
+      this.rotSpeed= (Math.random() - 0.5) * 0.05;
       this.wobble  = Math.random() * Math.PI * 2;
-      this.colorIdx= Math.floor(Math.random() * 4);
+      this.colorIdx= Math.floor(Math.random() * 5);
+      // For snowflakes: arm count
+      this.arms    = 6;
     }
     update() {
-      this.x += this.speedX + Math.sin(this.wobble) * 0.4;
+      this.x += this.speedX + Math.sin(this.wobble) * 0.5;
       this.y += this.speedY;
       this.rotation += this.rotSpeed;
-      this.wobble += 0.02;
-      if (this.y > canvas.height + 20) this.reset();
+      this.wobble   += 0.018;
+      if (this.y > canvas.height + 30) this.reset();
     }
     draw(season) {
+      const colors = PARTICLE_COLORS[season] || PARTICLE_COLORS.autumn;
+      const color  = colors[this.colorIdx % colors.length];
       ctx.save();
       ctx.translate(this.x, this.y);
       ctx.rotate(this.rotation);
       ctx.globalAlpha = this.opacity;
+
       switch(season) {
-        case 'autumn':
-          ctx.fillStyle = ['#c0392b','#e8722a','#d4a853','#8b4513'][this.colorIdx];
-          ctx.beginPath(); ctx.ellipse(0,0,this.size,this.size*1.6,0,0,Math.PI*2); ctx.fill(); break;
-        case 'winter':
-          ctx.strokeStyle = 'rgba(184,212,232,0.8)'; ctx.lineWidth = 0.8;
+        case 'autumn': {
+          // Leaf ellipse with vein
+          ctx.fillStyle = color;
+          ctx.beginPath();
+          ctx.ellipse(0,0,this.size,this.size*1.7,0,0,Math.PI*2);
+          ctx.fill();
+          // Centre vein
+          ctx.strokeStyle = 'rgba(0,0,0,0.18)';
+          ctx.lineWidth   = 0.7;
+          ctx.beginPath();
+          ctx.moveTo(0,-this.size*1.7);
+          ctx.lineTo(0, this.size*1.7);
+          ctx.stroke();
+          break;
+        }
+        case 'winter': {
+          // Snowflake with crosshairs + dots
+          ctx.strokeStyle = color;
+          ctx.lineWidth   = 0.9;
+          const len = this.size * 2.2;
           for (let i=0;i<6;i++) {
-            ctx.save(); ctx.rotate((i*Math.PI*2)/6);
-            ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(0,this.size*2); ctx.stroke();
+            ctx.save();
+            ctx.rotate((i*Math.PI*2)/6);
+            ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(0,len); ctx.stroke();
+            // Side branches
+            ctx.beginPath(); ctx.moveTo(0,len*0.4); ctx.lineTo(len*0.25,len*0.65); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(0,len*0.4); ctx.lineTo(-len*0.25,len*0.65); ctx.stroke();
             ctx.restore();
           }
+          // Centre dot
+          ctx.fillStyle = color;
+          ctx.beginPath(); ctx.arc(0,0,this.size*0.35,0,Math.PI*2); ctx.fill();
           break;
-        case 'ramadan':
-          ctx.fillStyle = `rgba(240,192,96,${this.opacity})`;
-          ctx.beginPath(); ctx.arc(0,0,this.size*0.7,0,Math.PI*2); ctx.fill(); break;
-        case 'spring':
-          ctx.fillStyle = ['#f8a5c2','#88d8a0','#fffde7','#fce4ec'][this.colorIdx];
+        }
+        case 'ramadan': {
+          // Golden sparkle: small 4-point star
+          ctx.fillStyle = color;
+          const r1 = this.size * 0.9, r2 = this.size * 0.35;
           ctx.beginPath();
-          for (let p=0;p<5;p++) {
-            const ang = (p*4*Math.PI)/5 - Math.PI/2;
-            const r   = p===0 ? this.size : this.size*0.4;
-            p===0 ? ctx.moveTo(Math.cos(ang)*r,Math.sin(ang)*r) : ctx.lineTo(Math.cos(ang)*r,Math.sin(ang)*r);
+          for (let i=0;i<8;i++) {
+            const ang = (i*Math.PI)/4;
+            const r   = i%2===0 ? r1 : r2;
+            i===0 ? ctx.moveTo(Math.cos(ang)*r, Math.sin(ang)*r)
+                  : ctx.lineTo(Math.cos(ang)*r, Math.sin(ang)*r);
           }
-          ctx.closePath(); ctx.fill(); break;
-        case 'summer':
-          ctx.fillStyle = `rgba(255,215,0,${this.opacity*0.5})`;
-          ctx.beginPath(); ctx.arc(0,0,this.size*0.5,0,Math.PI*2); ctx.fill(); break;
+          ctx.closePath(); ctx.fill();
+          // Glow
+          ctx.shadowColor = 'rgba(240,192,96,0.8)';
+          ctx.shadowBlur  = 6;
+          ctx.fill();
+          break;
+        }
+        case 'spring': {
+          // 5-petal flower
+          ctx.fillStyle = color;
+          const petalR = this.size * 0.9;
+          for (let i=0;i<5;i++) {
+            const ang = (i*Math.PI*2)/5 - Math.PI/2;
+            ctx.beginPath();
+            ctx.ellipse(
+              Math.cos(ang)*petalR*0.6, Math.sin(ang)*petalR*0.6,
+              petalR*0.55, petalR*0.35,
+              ang, 0, Math.PI*2
+            );
+            ctx.fill();
+          }
+          // Centre
+          ctx.fillStyle = 'rgba(255,240,180,0.9)';
+          ctx.beginPath(); ctx.arc(0,0,this.size*0.28,0,Math.PI*2); ctx.fill();
+          break;
+        }
+        case 'summer': {
+          // Glowing orb / firefly
+          const grad = ctx.createRadialGradient(0,0,0,0,0,this.size*1.2);
+          grad.addColorStop(0, color);
+          grad.addColorStop(1, 'rgba(255,215,0,0)');
+          ctx.fillStyle = grad;
+          ctx.beginPath(); ctx.arc(0,0,this.size*1.2,0,Math.PI*2); ctx.fill();
+          break;
+        }
       }
       ctx.restore();
     }
@@ -1035,8 +1086,8 @@
 
   function initParticles(season) {
     particles.length = 0;
-    const count = season==='ramadan' ? 60 : season==='winter' ? 50 : 40;
-    for (let i=0;i<count;i++) particles.push(new Particle());
+    const count = { autumn:45, winter:55, ramadan:65, spring:50, summer:40 }[season] || 40;
+    for (let i=0;i<count;i++) particles.push(new Particle(true));
   }
 
   function animateParticles() {
@@ -1046,30 +1097,43 @@
   }
 
   /* ----------------------------------------------------------------
-     6. SEASON TRANSITION
+     6. SEASON TRANSITION — backgrounds + overlays + particles
   ---------------------------------------------------------------- */
   function transitionToSeason(season) {
     if (state.currentSeason === season) return;
     state.currentSeason = season;
+
+    // BG layers
     Object.keys(SEASONS).forEach(k => {
       const el = document.getElementById('bg-'+k);
       if (el) el.style.opacity = k===season ? '1' : '0';
     });
+
+    // All overlays off first
+    const allOverlayIds = ['autumn-overlay','winter-mist-overlay','winter-fog','ramadan-ambient','spring-bloom','summer-haze'];
+    allOverlayIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('visible');
+    });
+
+    // Ramadan deco
     const deco = document.getElementById('ramadan-deco');
-    const amb  = document.getElementById('ramadan-ambient');
-    if (season==='ramadan') {
-      deco.classList.add('visible'); amb.classList.add('visible');
-    } else {
-      deco.classList.remove('visible'); amb.classList.remove('visible');
-    }
+    if (season === 'ramadan') deco.classList.add('visible');
+    else deco.classList.remove('visible');
+
+    // Turn on season-specific overlays
+    const overlays = SEASON_OVERLAYS[season] || [];
+    overlays.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('visible');
+    });
+
+    // Refresh particles
     initParticles(season);
   }
 
   /* ----------------------------------------------------------------
-     7. BRANCHING LAYOUT SYSTEM
-     Positions:  L=left, R=right, BL=branch-left, BR=branch-right, C=center
-     Each memory gets a side assigned. Ramadan memories get lantern style.
-     Branch reconnections happen at specific indices.
+     7. LAYOUT SYSTEM
   ---------------------------------------------------------------- */
   const LAYOUT_PATTERN = [
     'C','R','L','R','L',
@@ -1077,23 +1141,15 @@
     'L','C','R','L','R',
     'C','L','R','L','C',
   ];
-
-  // Indices that are "branch" nodes (visual side branch feel)
-  const BRANCH_INDICES = new Set([3,7,11,15]);
-  // Indices that "reconnect" from branch
+  const BRANCH_INDICES    = new Set([3,7,11,15]);
   const RECONNECT_INDICES = new Set([5,9,13,17]);
 
-  function getSide(idx) {
-    return LAYOUT_PATTERN[idx % LAYOUT_PATTERN.length] || 'C';
-  }
-
+  function getSide(idx) { return LAYOUT_PATTERN[idx % LAYOUT_PATTERN.length] || 'C'; }
   function getRowClass(idx) {
     const s = getSide(idx);
     if (BRANCH_INDICES.has(idx))    return s==='R' ? 'side-branch-right' : 'side-branch-left';
     if (RECONNECT_INDICES.has(idx)) return s==='R' ? 'side-right' : 'side-left';
-    if (s==='L') return 'side-left';
-    if (s==='R') return 'side-right';
-    return 'side-center';
+    return s==='L' ? 'side-left' : s==='R' ? 'side-right' : 'side-center';
   }
 
   /* ----------------------------------------------------------------
@@ -1102,12 +1158,11 @@
   const timelineContainer = document.getElementById('timeline-container');
 
   function buildTimeline() {
-    // Clear everything except the SVG
     const svg = document.getElementById('rope-svg');
     timelineContainer.innerHTML = '';
     timelineContainer.appendChild(svg);
 
-    state.balloonPositions = [];
+    document.getElementById('prog-total').textContent = state.memories.length;
 
     state.memories.forEach((mem, idx) => {
       const season    = detectSeason(mem);
@@ -1119,20 +1174,15 @@
       row.className = `timeline-row ${getRowClass(idx)}`;
 
       const wrapper = document.createElement('div');
-      wrapper.className   = 'balloon-wrapper';
-      wrapper.id          = `balloon-${idx}`;
+      wrapper.className     = 'balloon-wrapper';
+      wrapper.id            = `balloon-${idx}`;
       wrapper.dataset.index = idx;
       wrapper.setAttribute('role','listitem');
       wrapper.setAttribute('aria-label',`ذكرى: ${mem.title}`);
       wrapper.setAttribute('tabindex','0');
 
-      const balloonClass = isLantern
-        ? 'balloon-lantern'
-        : isFinal
-          ? 'balloon-gold'
-          : seasonDef.balloonClass;
-
-      const icon = isFinal ? '⭐' : isLantern ? '🕌' : seasonDef.icon;
+      const balloonClass = isLantern ? 'balloon-lantern' : isFinal ? 'balloon-gold' : seasonDef.balloonClass;
+      const icon         = isFinal ? '⭐' : isLantern ? '🕌' : seasonDef.icon;
 
       wrapper.innerHTML = `
         <div class="balloon-string" aria-hidden="true"></div>
@@ -1145,30 +1195,26 @@
       `;
 
       wrapper.addEventListener('click',   () => openMemory(idx));
-      wrapper.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' ') { e.preventDefault(); openMemory(idx); } });
+      wrapper.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openMemory(idx); } });
 
       row.appendChild(wrapper);
       timelineContainer.appendChild(row);
     });
 
-    // First balloon visible immediately
     setTimeout(() => {
       const first = document.getElementById('balloon-0');
       if (first) first.classList.add('visible');
     }, 200);
 
-    // After layout paints, draw ropes
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      updateRopeSVG();
-    }));
+    requestAnimationFrame(() => requestAnimationFrame(() => updateRopeSVG()));
   }
 
   /* ----------------------------------------------------------------
-     9. ROPE SVG — CURVED BRANCHING ROPES
+     9. ROPE SVG
   ---------------------------------------------------------------- */
   function getBalloonCenter(el) {
-    const rect  = el.getBoundingClientRect();
-    const cont  = timelineContainer.getBoundingClientRect();
+    const rect = el.getBoundingClientRect();
+    const cont = timelineContainer.getBoundingClientRect();
     return {
       x: rect.left + rect.width/2  - cont.left,
       y: rect.top  + rect.height/2 - cont.top + timelineContainer.scrollTop,
@@ -1178,109 +1224,77 @@
   function updateRopeSVG() {
     const svg = document.getElementById('rope-svg');
     svg.innerHTML = '';
-
-    const visibleBalloons = [];
+    const visible = [];
     document.querySelectorAll('.balloon-wrapper.visible').forEach(el => {
-      const idx = parseInt(el.dataset.index);
-      visibleBalloons.push({ idx, el });
+      visible.push({ idx: parseInt(el.dataset.index), el });
     });
-    if (visibleBalloons.length < 2) return;
+    if (visible.length < 2) return;
 
-    // Update container height
     const contRect = timelineContainer.getBoundingClientRect();
     svg.setAttribute('viewBox', `0 0 ${contRect.width} ${timelineContainer.scrollHeight}`);
     svg.style.height = timelineContainer.scrollHeight + 'px';
 
-    for (let i = 0; i < visibleBalloons.length - 1; i++) {
-      const a = visibleBalloons[i];
-      const b = visibleBalloons[i+1];
-      const ca = getBalloonCenter(a.el);
-      const cb = getBalloonCenter(b.el);
+    for (let i=0; i<visible.length-1; i++) {
+      const a=visible[i], b=visible[i+1];
+      const ca=getBalloonCenter(a.el), cb=getBalloonCenter(b.el);
+      const dx=cb.x-ca.x, dy=cb.y-ca.y, dist=Math.sqrt(dx*dx+dy*dy);
 
-      // Determine curve control point based on position relationship
-      const midX = (ca.x + cb.x) / 2;
-      const midY = (ca.y + cb.y) / 2;
-
-      // Calculate control point offset for organic curve
-      const dx   = cb.x - ca.x;
-      const dy   = cb.y - ca.y;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-
-      // For branching nodes, exaggerate the curve
-      const isBranch = BRANCH_INDICES.has(b.idx) || RECONNECT_INDICES.has(b.idx);
-      const curveFactor = isBranch ? 0.35 : 0.18;
-      const curveOffset = dist * curveFactor;
-
-      // Perpendicular offset direction
-      const perpX = -dy / dist * curveOffset;
-      const perpY =  dx / dist * curveOffset;
-
-      // Alternate curve direction for organic look
-      const flip = (i % 2 === 0) ? 1 : -1;
-      const cpX = midX + perpX * flip;
-      const cpY = midY + perpY * flip;
+      const isBranch     = BRANCH_INDICES.has(b.idx)||RECONNECT_INDICES.has(b.idx);
+      const curveFactor  = isBranch ? 0.35 : 0.18;
+      const curveOffset  = dist * curveFactor;
+      const perpX = -dy/dist*curveOffset;
+      const perpY =  dx/dist*curveOffset;
+      const flip  = i%2===0 ? 1 : -1;
+      const cpX   = (ca.x+cb.x)/2 + perpX*flip;
+      const cpY   = (ca.y+cb.y)/2 + perpY*flip;
 
       const season = detectSeason(state.memories[a.idx]);
       const colorMap = {
-        autumn:  'rgba(212,168,83,0.5)',
-        winter:  'rgba(122,184,212,0.45)',
-        ramadan: 'rgba(240,192,96,0.6)',
-        spring:  'rgba(76,175,80,0.45)',
-        summer:  'rgba(255,140,66,0.45)',
+        autumn:'rgba(212,168,83,0.5)',winter:'rgba(122,184,212,0.45)',
+        ramadan:'rgba(240,192,96,0.65)',spring:'rgba(76,175,80,0.45)',
+        summer:'rgba(255,140,66,0.45)',
       };
-      const ropeColor = colorMap[season] || 'rgba(200,180,140,0.5)';
-      const isRamadanRope = season === 'ramadan';
+      const ropeColor  = colorMap[season] || 'rgba(200,180,140,0.5)';
+      const isRamadan  = season==='ramadan';
 
-      // Main rope path
       const path = document.createElementNS('http://www.w3.org/2000/svg','path');
       path.setAttribute('d', `M ${ca.x} ${ca.y} Q ${cpX} ${cpY} ${cb.x} ${cb.y}`);
       path.setAttribute('stroke', ropeColor);
-      path.setAttribute('stroke-width', isRamadanRope ? '2.5' : '2');
-      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke-width', isRamadan ? '2.5' : '2');
+      path.setAttribute('fill','none');
       path.setAttribute('stroke-linecap','round');
-      if (isRamadanRope) {
-        path.setAttribute('stroke-dasharray', '6 4');
-        path.style.filter = 'drop-shadow(0 0 3px rgba(240,192,96,0.4))';
-      }
+      if (isRamadan) { path.setAttribute('stroke-dasharray','6 4'); path.style.filter='drop-shadow(0 0 3px rgba(240,192,96,0.5))'; }
       svg.appendChild(path);
 
-      // For branches: add a small decorative side tendril
       if (BRANCH_INDICES.has(b.idx)) {
         const tendril = document.createElementNS('http://www.w3.org/2000/svg','path');
-        const tEndX = cpX + (flip * 30);
-        const tEndY = cpY - 20;
-        tendril.setAttribute('d', `M ${cpX} ${cpY} Q ${cpX + flip*20} ${cpY-30} ${tEndX} ${tEndY}`);
+        const tEndX = cpX + flip*30, tEndY = cpY - 20;
+        tendril.setAttribute('d', `M ${cpX} ${cpY} Q ${cpX+flip*20} ${cpY-30} ${tEndX} ${tEndY}`);
         tendril.setAttribute('stroke', ropeColor);
         tendril.setAttribute('stroke-width','1.5');
         tendril.setAttribute('fill','none');
         tendril.setAttribute('opacity','0.4');
         tendril.setAttribute('stroke-linecap','round');
         svg.appendChild(tendril);
-
-        // Small dot at tendril end
         const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
-        dot.setAttribute('cx', tEndX);
-        dot.setAttribute('cy', tEndY);
-        dot.setAttribute('r','3');
-        dot.setAttribute('fill', ropeColor);
-        dot.setAttribute('opacity','0.5');
+        dot.setAttribute('cx', tEndX); dot.setAttribute('cy', tEndY);
+        dot.setAttribute('r','3'); dot.setAttribute('fill', ropeColor); dot.setAttribute('opacity','0.5');
         svg.appendChild(dot);
       }
     }
   }
 
-  // Re-draw ropes on resize
   window.addEventListener('resize', () => {
     resizeCanvas();
     if (state.layoutBuilt) updateRopeSVG();
-  }, { passive: true });
+  }, { passive:true });
 
   /* ----------------------------------------------------------------
      10. OPEN MEMORY
   ---------------------------------------------------------------- */
   function openMemory(idx) {
-    const mem       = state.memories[idx];
-    if (!mem) return;
+    const mem = state.memories[idx];
+    if (!mem || state.finalLaunched) return;
     const season    = detectSeason(mem);
     const seasonDef = SEASONS[season];
     const wrapper   = document.getElementById(`balloon-${idx}`);
@@ -1288,16 +1302,17 @@
 
     if (!state.openedSet.has(idx)) {
       state.openedSet.add(idx);
+      state.revealed = state.openedSet.size;
+      document.getElementById('prog-count').textContent = state.revealed;
       wrapper.classList.add('opened');
     }
 
     transitionToSeason(season);
 
     const isFinal = mem.isFinal || idx === state.memories.length - 1;
-
     if (isFinal) {
       closeCard();
-      launchFinalCinematic(idx);
+      launchFinalSequence(idx);
       return;
     }
 
@@ -1319,27 +1334,21 @@
   }
 
   /* ----------------------------------------------------------------
-     11. BUILD CARD HTML — supports full data structure
+     11. BUILD CARD HTML
   ---------------------------------------------------------------- */
   function buildCardHTML(mem, seasonDef) {
     let parts = [];
-
-    // Badge + date + title
     parts.push(`<div class="card-season-badge ${seasonDef.badge}">${seasonDef.icon} ${seasonDef.label}</div>`);
     if (mem.date) parts.push(`<p class="card-date">${mem.date}</p>`);
     parts.push(`<h2 class="card-title">${mem.title}</h2>`);
+    if (mem.quote) parts.push(`<blockquote class="card-quote">${mem.quote}</blockquote>`);
 
-    // Quote (if present)
-    if (mem.quote) {
-      parts.push(`<blockquote class="card-quote">${mem.quote}</blockquote>`);
-    }
-
-    // Video (#8 cinematic treatment)
-    if (mem.type === 'video' || mem.video) {
+    // Video
+    if (mem.type==='video' || mem.video) {
       const videoSrc = mem.video || mem.videoUrl || '';
       if (videoSrc) {
         let embedHTML = '';
-        if (videoSrc.includes('youtube') || videoSrc.includes('youtu.be')) {
+        if (videoSrc.includes('youtube')||videoSrc.includes('youtu.be')) {
           const vid = videoSrc.includes('youtu.be')
             ? videoSrc.split('/').pop().split('?')[0]
             : (() => { try { return new URL(videoSrc).searchParams.get('v'); } catch { return ''; } })();
@@ -1359,46 +1368,28 @@
           </div>
         `);
       } else {
-        parts.push(`
-          <div class="video-placeholder">
-            <svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="rgba(255,255,255,0.3)" stroke="none"/></svg>
-            <span>فيديو قريبًا</span>
-          </div>
-        `);
+        parts.push(`<div class="video-placeholder"><svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="rgba(255,255,255,0.3)" stroke="none"/></svg><span>فيديو قريبًا</span></div>`);
       }
     }
 
-    // Primary image
+    // Image
     const imgSrc = mem.image || mem.imageUrl || '';
-    if ((mem.type === 'image' || mem.imagePlaceholder || imgSrc) && !mem.video && mem.type !== 'video') {
-      if (imgSrc) {
-        parts.push(`<div class="card-image-wrap"><img src="${imgSrc}" alt="${mem.title}" loading="lazy"/></div>`);
-      } else if (mem.imagePlaceholder) {
-        parts.push(`<div class="card-image-wrap"><div class="placeholder-icon"><svg viewBox="0 0 24 24" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>صورة قريبًا</span></div></div>`);
-      }
+    if ((mem.type==='image'||mem.imagePlaceholder||imgSrc) && !mem.video && mem.type!=='video') {
+      if (imgSrc) parts.push(`<div class="card-image-wrap"><img src="${imgSrc}" alt="${mem.title}" loading="lazy"/></div>`);
+      else if (mem.imagePlaceholder) parts.push(`<div class="card-image-wrap"><div class="placeholder-icon"><svg viewBox="0 0 24 24" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>صورة قريبًا</span></div></div>`);
     }
 
-    // Extra images strip
-    if (Array.isArray(mem.extraImages) && mem.extraImages.length) {
-      const imgs = mem.extraImages.map(src => `<img src="${src}" alt="" loading="lazy"/>`).join('');
-      parts.push(`<div class="card-extra-images">${imgs}</div>`);
+    if (Array.isArray(mem.extraImages)&&mem.extraImages.length) {
+      parts.push(`<div class="card-extra-images">${mem.extraImages.map(s=>`<img src="${s}" alt="" loading="lazy"/>`).join('')}</div>`);
     }
-
-    // Chat screenshot
-    if (mem.chatScreenshot) {
-      parts.push(`<div class="card-chat-wrap"><img src="${mem.chatScreenshot}" alt="لقطة شاشة" loading="lazy"/></div>`);
-    }
-
-    // Description
+    if (mem.chatScreenshot) parts.push(`<div class="card-chat-wrap"><img src="${mem.chatScreenshot}" alt="لقطة شاشة" loading="lazy"/></div>`);
     if (mem.description) {
       const desc = mem.description.split('\n').filter(Boolean).map(l=>`<p>${l}</p>`).join('');
       parts.push(`<div class="card-description">${desc}</div>`);
     }
-
     return parts.join('');
   }
 
-  // Global handler for cinematic video reveal
   window.revealCinematicVideo = function(memId) {
     const poster = document.getElementById(`cinematic-poster-${memId}`);
     if (!poster) return;
@@ -1413,20 +1404,14 @@
     const nextIdx   = idx + 1;
     const balloonEl = document.getElementById(`balloon-${nextIdx}`);
     if (!balloonEl || balloonEl.classList.contains('visible')) return;
-
     setTimeout(() => {
       balloonEl.classList.add('visible');
       state.layoutBuilt = true;
-
-      // Re-draw ropes
       requestAnimationFrame(() => updateRopeSVG());
-
       balloonEl.scrollIntoView({ behavior:'smooth', block:'center' });
-
-      // Clean up tap hints from earlier
       document.querySelectorAll('.balloon-tap-hint').forEach(el => {
         const wi = parseInt(el.closest('.balloon-wrapper')?.dataset.index||'0');
-        if (wi !== nextIdx) el.remove();
+        if (wi!==nextIdx) el.remove();
       });
     }, 500);
   }
@@ -1444,10 +1429,9 @@
 
   document.getElementById('card-close-btn').addEventListener('click', closeCard);
   document.getElementById('memory-card-overlay').addEventListener('click', e => {
-    if (e.target === e.currentTarget) closeCard();
+    if (e.target===e.currentTarget) closeCard();
   });
 
-  // Touch-drag to close
   let touchStartY = 0;
   const cardEl = document.getElementById('memory-card');
   cardEl.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive:true });
@@ -1461,75 +1445,84 @@
   });
 
   /* ----------------------------------------------------------------
-     14. FINAL CINEMATIC BURST SEQUENCE
+     14. FINAL BALLOON FLOAT-AWAY SEQUENCE
+         Uses the actual DOM balloons — no fake particles created
   ---------------------------------------------------------------- */
-  function launchFinalCinematic(finalIdx) {
-    const wrapper = document.getElementById(`balloon-${finalIdx}`);
-    if (!wrapper) { showCinematicText(); return; }
+  function launchFinalSequence(finalIdx) {
+    if (state.finalLaunched) return;
+    state.finalLaunched = true;
 
-    // Burst animation on final balloon
-    wrapper.classList.add('burst');
+    // Burst the final balloon
+    const finalWrapper = document.getElementById(`balloon-${finalIdx}`);
+    if (finalWrapper) finalWrapper.classList.add('burst-anim');
 
-    // Create floating particle balloons from all opened positions
+    // After burst, float ALL visible balloons upward
     setTimeout(() => {
-      spawnFloatingBalloons();
-    }, 300);
+      floatAllBalloonsAway(() => {
+        // After balloons disappear, fade timeline & show cinematic text
+        gsap.to('#timeline-container', { opacity:0, duration:1.2, ease:'power2.in',
+          onComplete: () => { showCinematicText(); }
+        });
+      });
+    }, 700);
 
-    // Fade the SVG rope
-    const svg = document.getElementById('rope-svg');
-    gsap.to(svg, { opacity:0, duration:2.5, delay:0.5, ease:'power2.in' });
-
-    // After burst + float, show cinematic text
-    setTimeout(() => {
-      showCinematicText();
-    }, 2000);
+    // Fade the SVG rope separately — starts immediately
+    gsap.to('#rope-svg', { opacity:0, duration:2, ease:'power2.in' });
   }
 
-  function spawnFloatingBalloons() {
-    const colorPool = [
-      'linear-gradient(135deg,#c0392b,#e8722a)',
-      'linear-gradient(135deg,#2c5f8a,#7ab8d4)',
-      'linear-gradient(135deg,#6a3d9a,#f0c060)',
-      'linear-gradient(135deg,#1a6b2a,#88d8a0)',
-      'linear-gradient(135deg,#b85c00,#ffd700)',
-    ];
+  function floatAllBalloonsAway(onComplete) {
+    const allBalloons = document.querySelectorAll('.balloon-wrapper.visible');
+    const total       = allBalloons.length;
+    let completed     = 0;
 
-    const opened = [...state.openedSet];
-    const count  = Math.min(opened.length, 12);
+    allBalloons.forEach((wrapper, i) => {
+      // Remove label text so it doesn't drift visibly
+      const label = wrapper.querySelector('.balloon-label');
+      if (label) label.style.opacity = '0';
 
-    for (let i = 0; i < count; i++) {
-      const div = document.createElement('div');
-      div.className = 'burst-balloon-particle';
-      const w = 30 + Math.random() * 20;
-      const h = w * 1.25;
-      div.style.cssText = `
-        width:${w}px; height:${h}px;
-        background:${colorPool[i % colorPool.length]};
-        left:${10 + Math.random()*80}%;
-        top:${40 + Math.random()*40}%;
-        animation-delay:${i*0.08}s;
-        animation-duration:${2.5 + Math.random()}s;
-      `;
-      document.body.appendChild(div);
-      setTimeout(() => div.remove(), 4000);
-    }
+      const body = wrapper.querySelector('.balloon-body');
+      if (!body) { completed++; if (completed===total && onComplete) onComplete(); return; }
+
+      // Stagger + randomise each balloon
+      const delay   = i * 0.08 + Math.random() * 0.15;
+      const driftX  = (Math.random() - 0.5) * 120;   // horizontal drift ±60px
+      const duration = 2.2 + Math.random() * 1.4;     // 2.2–3.6s
+
+      gsap.to(wrapper, {
+        y:         -(window.innerHeight + 200),
+        x:         driftX,
+        scale:     0.2 + Math.random() * 0.3,
+        opacity:   0,
+        duration:  duration,
+        delay:     delay,
+        ease:      'power1.inOut',
+        onComplete: () => {
+          wrapper.style.display = 'none';
+          completed++;
+          if (completed === total && onComplete) onComplete();
+        }
+      });
+
+      // Slight rotation for organic feel
+      gsap.to(body, {
+        rotation:  (Math.random() - 0.5) * 40,
+        duration:  duration,
+        delay:     delay,
+        ease:      'none',
+      });
+    });
+
+    // Fallback if no balloons
+    if (total === 0 && onComplete) onComplete();
   }
 
   /* ----------------------------------------------------------------
      15. CINEMATIC TEXT SEQUENCE
   ---------------------------------------------------------------- */
   const CINEMATIC_LINES = [
-    'من أول يوم...',
-    'إلى آخر فاينال...',
-    'مررنا بالكثير.',
-    '🤣ضحكنا.',
-    '🥲بكينا.',
-    '😖توترنا.',
-    '🥱سهرنا .',
-    '😊وتجاوزنا ما ظنناه مستحيلاً.',
-    'وفي النهاية.',
-    'انتهت السنة.',
-
+    'من أول يوم...','إلى آخر فاينال...','مررنا بالكثير.',
+    'ضحكنا.','توترنا.','اشتكينا من الامتحانات.',
+    'وتجاوزنا ما ظنناه مستحيلاً.',
   ];
 
   function showCinematicText() {
@@ -1544,10 +1537,10 @@
       el.textContent = line;
       screen.appendChild(el);
 
-      // Show each line, then hide it before showing next
       setTimeout(() => {
-        gsap.to(el, { opacity:1, y:0, duration:0.7, ease:'power2.out', onStart:() => { el.style.transform='translateY(20px)'; }});
-        // Keep last line visible, fade others
+        gsap.to(el, { opacity:1, y:0, duration:0.7, ease:'power2.out',
+          onStart: () => { el.style.transform = 'translateY(20px)'; }
+        });
         if (i < CINEMATIC_LINES.length - 1) {
           setTimeout(() => gsap.to(el, { opacity:0, duration:0.5, ease:'power2.in' }), 1400);
         }
@@ -1556,12 +1549,10 @@
       delay += 1800;
     });
 
-    // After all lines, transition to ending screen
     setTimeout(() => {
-      gsap.to(screen, { opacity:0, duration:0.8, ease:'power2.in', onComplete: () => {
-        screen.classList.remove('active');
-        showEnding();
-      }});
+      gsap.to(screen, { opacity:0, duration:0.8, ease:'power2.in',
+        onComplete: () => { screen.classList.remove('active'); showEnding(); }
+      });
     }, delay + 800);
   }
 
@@ -1571,11 +1562,10 @@
   function showEnding() {
     const endingScreen = document.getElementById('ending-screen');
     endingScreen.classList.add('active');
-
-    gsap.fromTo('.ending-gold-ring', { scale:0, opacity:0 }, { scale:1, opacity:1, duration:0.8, ease:'back.out(1.7)', delay:0.2 });
-    gsap.fromTo('.ending-quote',     { opacity:0, y:30 },    { opacity:1, y:0,    duration:0.8, ease:'power2.out',     delay:0.6 });
-    gsap.fromTo('.ending-year',      { opacity:0 },          { opacity:1,          duration:0.6, delay:1.1 });
-    gsap.fromTo('.ending-cta',       { opacity:0, y:20 },    { opacity:1, y:0,    duration:0.6, delay:1.4 });
+    gsap.fromTo('.ending-gold-ring', {scale:0,opacity:0}, {scale:1,opacity:1,duration:0.8,ease:'back.out(1.7)',delay:0.2});
+    gsap.fromTo('.ending-quote',     {opacity:0,y:30},    {opacity:1,y:0,duration:0.8,ease:'power2.out',delay:0.6});
+    gsap.fromTo('.ending-year',      {opacity:0},         {opacity:1,duration:0.6,delay:1.1});
+    gsap.fromTo('.ending-cta',       {opacity:0,y:20},    {opacity:1,y:0,duration:0.6,delay:1.4});
   }
 
   document.getElementById('close-ending-btn').addEventListener('click', () => {
@@ -1587,6 +1577,12 @@
     const ls = document.getElementById('future-letters');
     ls.classList.add('visible');
     setTimeout(() => ls.scrollIntoView({ behavior:'smooth' }), 100);
+    setTimeout(showThanksSection, 700);
+  });
+
+  document.getElementById('show-credits-btn').addEventListener('click', () => {
+    document.getElementById('ending-screen').classList.remove('active');
+    showCredits();
   });
 
   /* ----------------------------------------------------------------
@@ -1595,26 +1591,16 @@
   function buildLetters() {
     const container = document.getElementById('letters-container');
     container.innerHTML = '';
-    (state.letters || []).forEach(letter => {
+    (state.letters||[]).forEach(letter => {
       const card = document.createElement('div');
       card.className = 'letter-card';
       card.innerHTML = `
-        <p class="letter-author">${letter.author || 'مجهول'}</p>
-        <p class="letter-body">${letter.body || ''}</p>
-        <p class="letter-year">${letter.year || ''}</p>
+        <p class="letter-author">${letter.author||'مجهول'}</p>
+        <p class="letter-body">${letter.body||''}</p>
+        <p class="letter-year">${letter.year||''}</p>
       `;
       container.appendChild(card);
     });
-
-    // After letters are shown, auto-show thanks section
-    const lettersSection = document.getElementById('future-letters');
-    const observer = new MutationObserver(() => {
-      if (lettersSection.classList.contains('visible')) {
-        setTimeout(showThanksSection, 600);
-        observer.disconnect();
-      }
-    });
-    observer.observe(lettersSection, { attributes:true, attributeFilter:['class'] });
   }
 
   /* ----------------------------------------------------------------
@@ -1624,14 +1610,10 @@
     const section = document.getElementById('thanks-section');
     section.classList.add('visible');
     setTimeout(() => section.scrollIntoView({ behavior:'smooth', block:'start' }), 300);
-
-    // Animate lines in with IntersectionObserver
-    const lines = section.querySelectorAll('.thanks-line, .thanks-final-line');
+    const lines = section.querySelectorAll('.thanks-line,.thanks-final-line');
     const obs = new IntersectionObserver((entries) => {
       entries.forEach((entry, i) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => entry.target.classList.add('revealed'), i * 200);
-        }
+        if (entry.isIntersecting) setTimeout(() => entry.target.classList.add('revealed'), i*200);
       });
     }, { threshold:0.2 });
     lines.forEach(l => obs.observe(l));
@@ -1639,17 +1621,9 @@
 
   function buildThanksSection() {
     const list = document.getElementById('faculty-thanks-list');
-    list.innerHTML = (state.faculty || []).map(n =>
-      `<p class="faculty-name">${n}</p>`
-    ).join('');
-
-    // Also populate credits faculty
+    list.innerHTML = (state.faculty||[]).map(n => `<p class="faculty-name">${n}</p>`).join('');
     const creditsF = document.getElementById('credits-faculty-container');
-    if (creditsF) {
-      creditsF.innerHTML = (state.faculty || []).map(n =>
-        `<p class="credits-name">${n}</p>`
-      ).join('');
-    }
+    if (creditsF) creditsF.innerHTML = (state.faculty||[]).map(n => `<p class="credits-name">${n}</p>`).join('');
   }
 
   /* ----------------------------------------------------------------
@@ -1660,16 +1634,12 @@
 
   window.addEventListener('scroll', () => {
     scrollCount++;
-    if (scrollCount > 40 && !state.secretFound) {
-      secretBalloon.classList.add('revealed');
-    }
-    if (scrollCount > 10) {
-      document.getElementById('scroll-prompt').classList.add('hidden');
-    }
+    if (scrollCount > 40 && !state.secretFound) secretBalloon.classList.add('revealed');
+    if (scrollCount > 10) document.getElementById('scroll-prompt').classList.add('hidden');
   }, { passive:true });
 
   secretBalloon.addEventListener('click',   openSecretChallenge);
-  secretBalloon.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' ') { e.preventDefault(); openSecretChallenge(); } });
+  secretBalloon.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openSecretChallenge(); } });
 
   function openSecretChallenge() {
     const inner = document.getElementById('card-inner-content');
@@ -1681,18 +1651,17 @@
         <div class="secret-inputs">
           <div class="secret-input-row">
             <span class="secret-input-label">P for ______</span>
-            <input class="secret-input" id="secret-p" type="text" placeholder="..." autocomplete="off" dir="ltr" />
+            <input class="secret-input" id="secret-p" type="text" placeholder="..." autocomplete="off" dir="ltr"/>
           </div>
           <div class="secret-input-row">
             <span class="secret-input-label">B for ______</span>
-            <input class="secret-input" id="secret-b" type="text" placeholder="..." autocomplete="off" dir="ltr" />
+            <input class="secret-input" id="secret-b" type="text" placeholder="..." autocomplete="off" dir="ltr"/>
           </div>
         </div>
         <button class="secret-submit-btn" id="secret-submit-btn">تأكيد</button>
         <p class="secret-retry-msg" id="secret-retry-msg">إجابة خاطئة، حاول مرة أخرى! 😅</p>
       </div>
     `;
-
     const overlay = document.getElementById('memory-card-overlay');
     overlay.classList.add('active');
     overlay.setAttribute('aria-hidden','false');
@@ -1704,17 +1673,13 @@
   }
 
   function checkSecretAnswer() {
-    const pVal = (document.getElementById('secret-p')?.value || '').trim().toLowerCase();
-    const bVal = (document.getElementById('secret-b')?.value || '').trim().toLowerCase();
+    const pVal = (document.getElementById('secret-p')?.value||'').trim().toLowerCase();
+    const bVal = (document.getElementById('secret-b')?.value||'').trim().toLowerCase();
     const retryMsg = document.getElementById('secret-retry-msg');
-
-    const pCorrect = pVal === 'pen';
-    const bCorrect = bVal === 'book';
-
-    if (pCorrect && bCorrect) {
+    const pOk = pVal==='pen', bOk = bVal==='book';
+    if (pOk && bOk) {
       state.secretFound = true;
       secretBalloon.classList.remove('revealed');
-      // Reveal secret memory
       const inner = document.getElementById('card-inner-content');
       inner.innerHTML = `
         <div class="card-season-badge" style="background:rgba(123,47,255,0.2);color:#e040fb;border:1px solid rgba(224,64,251,0.3)">✨ ذكرى سرية</div>
@@ -1724,34 +1689,46 @@
           <p>فأنت بالفعل عشت معنا تفاصيل هذا العام 😄"</p>
         </div>
       `;
-      gsap.fromTo(inner.querySelectorAll('*'), { opacity:0, y:15 }, { opacity:1, y:0, duration:0.5, stagger:0.1, ease:'power2.out' });
+      gsap.fromTo(inner.querySelectorAll('*'), {opacity:0,y:15}, {opacity:1,y:0,duration:0.5,stagger:0.1,ease:'power2.out'});
     } else {
       if (retryMsg) retryMsg.classList.add('visible');
-      // Shake wrong fields
-      if (!pCorrect) {
-        const pInput = document.getElementById('secret-p');
-        if (pInput) { pInput.classList.add('error'); setTimeout(() => pInput.classList.remove('error'), 500); }
-      }
-      if (!bCorrect) {
-        const bInput = document.getElementById('secret-b');
-        if (bInput) { bInput.classList.add('error'); setTimeout(() => bInput.classList.remove('error'), 500); }
-      }
+      if (!pOk) { const el=document.getElementById('secret-p'); if(el){el.classList.add('error');setTimeout(()=>el.classList.remove('error'),500);} }
+      if (!bOk) { const el=document.getElementById('secret-b'); if(el){el.classList.add('error');setTimeout(()=>el.classList.remove('error'),500);} }
     }
   }
 
   /* ----------------------------------------------------------------
-     20. RAMADAN STARS
+     20. CREDITS
+  ---------------------------------------------------------------- */
+  function showCredits() {
+    const section = document.getElementById('credits-section');
+    const inner   = document.getElementById('credits-inner');
+    section.classList.add('active');
+    inner.classList.add('playing');
+    document.getElementById('credits-close-btn').style.display = 'flex';
+  }
+
+  document.getElementById('credits-close-btn').addEventListener('click', () => {
+    const section = document.getElementById('credits-section');
+    const inner   = document.getElementById('credits-inner');
+    section.classList.remove('active');
+    inner.classList.remove('playing');
+    document.getElementById('credits-close-btn').style.display = 'none';
+  });
+
+  /* ----------------------------------------------------------------
+     21. RAMADAN STARS
   ---------------------------------------------------------------- */
   function setupRamadanStars() {
     const deco = document.getElementById('ramadan-deco');
-    for (let i = 0; i < 4; i++) {
+    for (let i=0;i<4;i++) {
       const div = document.createElement('div');
       div.className = 'ramadan-lantern';
       div.textContent = ['🏮','🪔','✨','🌙'][i];
       div.style.cssText = `top:${10+Math.random()*25}%;${Math.random()>.5?'left':'right'}:${5+Math.random()*20}%;animation-delay:${Math.random()*2}s;animation-duration:${2.5+Math.random()*2}s;font-size:${1.2+Math.random()}rem;`;
       deco.appendChild(div);
     }
-    for (let i = 0; i < 30; i++) {
+    for (let i=0;i<35;i++) {
       const star = document.createElement('div');
       star.className = 'ramadan-star';
       star.style.cssText = `top:${Math.random()*70}%;left:${Math.random()*100}%;animation-delay:${Math.random()*3}s;animation-duration:${1.5+Math.random()*2}s;width:${2+Math.random()*3}px;height:${2+Math.random()*3}px;`;
@@ -1760,13 +1737,13 @@
   }
 
   /* ----------------------------------------------------------------
-     21. SCROLL-BASED SEASON SYNC
+     22. SCROLL SEASON SYNC
   ---------------------------------------------------------------- */
   function setupScrollSeasonSync() {
     const obs = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const idx = parseInt(entry.target.dataset.index || '0');
+          const idx = parseInt(entry.target.dataset.index||'0');
           const mem = state.memories[idx];
           if (mem) {
             const s = detectSeason(mem);
@@ -1779,26 +1756,18 @@
   }
 
   /* ----------------------------------------------------------------
-     22. CREDITS
-  ---------------------------------------------------------------- */
-  document.getElementById('credits-close-btn').addEventListener('click', () => {
-    const section = document.getElementById('credits-section');
-    const inner   = document.getElementById('credits-inner');
-    section.classList.remove('active');
-    inner.classList.remove('playing');
-    document.getElementById('credits-close-btn').style.display = 'none';
-  });
-
-  /* ----------------------------------------------------------------
      23. INIT
   ---------------------------------------------------------------- */
   async function init() {
     resizeCanvas();
 
+    // Autumn overlays on by default
+    document.getElementById('autumn-overlay').classList.add('visible');
+
     const bar = document.getElementById('loading-bar');
     let prog = 0;
     const barInt = setInterval(() => {
-      prog = Math.min(prog + Math.random() * 12, 88);
+      prog = Math.min(prog + Math.random()*12, 88);
       bar.style.width = prog + '%';
     }, 100);
 
@@ -1834,4 +1803,4 @@
   document.addEventListener('DOMContentLoaded', () => init());
   </script>
 </body>
-    </html>
+  </html>
