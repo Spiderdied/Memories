@@ -693,7 +693,7 @@
     .scroll-label { font-size: 0.6rem; color: rgba(255,255,255,0.35); letter-spacing: 0.15em; text-transform: uppercase; }
 
     /* ============================================================
-       CREDITS SECTION (keeping for faculty display)
+       CREDITS SECTION
     ============================================================ */
     #credits-section {
       position: fixed; inset: 0; z-index: 900; background: #000;
@@ -729,24 +729,20 @@
 </head>
 <body>
 
-  <!-- LOADING SCREEN -->
   <div id="loading-screen" role="status" aria-live="polite">
     <p class="loading-title">أساسي إنجليزي<br/>الفرقة الأولى</p>
     <p class="loading-subtitle">2025 — 2026</p>
     <div class="loading-bar-wrap"><div class="loading-bar" id="loading-bar"></div></div>
   </div>
 
-  <!-- BACKGROUND LAYERS -->
   <div class="bg-layer bg-autumn"  id="bg-autumn"  style="opacity:1"></div>
   <div class="bg-layer bg-winter"  id="bg-winter"  style="opacity:0"></div>
   <div class="bg-layer bg-ramadan" id="bg-ramadan" style="opacity:0"></div>
   <div class="bg-layer bg-spring"  id="bg-spring"  style="opacity:0"></div>
   <div class="bg-layer bg-summer"  id="bg-summer"  style="opacity:0"></div>
 
-  <!-- PARTICLE CANVAS -->
   <canvas id="particle-canvas" aria-hidden="true"></canvas>
 
-  <!-- RAMADAN DECORATION -->
   <div id="ramadan-deco" aria-hidden="true">
     <div class="ramadan-crescent">🌙</div>
     <div class="geometric-pattern" style="top:80px;left:10%;opacity:0.4"></div>
@@ -754,13 +750,11 @@
   </div>
   <div id="ramadan-ambient" aria-hidden="true"></div>
 
-  <!-- SCROLL PROMPT -->
   <div id="scroll-prompt" aria-hidden="true">
     <div class="scroll-arrow"></div>
     <span class="scroll-label">اكتشف</span>
   </div>
 
-  <!-- MAIN -->
   <main id="main" style="display:none">
     <header id="site-header">
       <p class="header-eyebrow">العام الدراسي ٢٠٢٥ — ٢٠٢٦</p>
@@ -769,19 +763,16 @@
       <p class="header-sub">رحلة لن تُنسى</p>
     </header>
 
-    <!-- TIMELINE — branching network built by JS -->
     <div id="timeline-container" role="list" aria-label="خط الذكريات التفاعلي">
       <svg id="rope-svg" aria-hidden="true"></svg>
     </div>
 
-    <!-- FUTURE LETTERS -->
     <section id="future-letters" aria-labelledby="letters-heading">
       <h2 class="section-heading" id="letters-heading">رسائل إلى المستقبل</h2>
       <p class="section-sub">كلمات كتبها من عاشوا هذه اللحظات</p>
       <div id="letters-container"></div>
     </section>
 
-    <!-- THANK YOU SECTION -->
     <section id="thanks-section" aria-labelledby="thanks-heading">
       <h2 class="thanks-heading" id="thanks-heading">شكر وامتنان</h2>
       <div class="thanks-divider"></div>
@@ -800,7 +791,6 @@
     </section>
   </main>
 
-  <!-- MEMORY CARD OVERLAY -->
   <div id="memory-card-overlay" class="memory-card-overlay" role="dialog" aria-modal="true" aria-label="ذكرى">
     <div class="memory-card" id="memory-card">
       <button class="card-close" id="card-close-btn" aria-label="إغلاق">✕</button>
@@ -809,17 +799,14 @@
     </div>
   </div>
 
-  <!-- SECRET BALLOON -->
   <div id="secret-balloon" role="button" aria-label="ذكرى سرية" tabindex="0">
     <div class="secret-balloon-body">✨</div>
     <div class="balloon-string"></div>
   </div>
 
-  <!-- CINEMATIC ENDING SEQUENCE -->
   <div id="ending-cinematic" role="presentation" aria-hidden="true"></div>
   <div id="rope-fade-overlay"></div>
 
-  <!-- FINAL ENDING SCREEN -->
   <div id="ending-screen" role="dialog" aria-modal="true" aria-label="نهاية الرحلة">
     <div class="ending-gold-ring"><span class="ending-emoji">🎓</span></div>
     <blockquote class="ending-quote">
@@ -832,7 +819,6 @@
     <button class="btn-ghost" id="close-ending-btn" style="margin-top:8px;font-size:0.75rem;padding:8px 20px;">العودة للذكريات</button>
   </div>
 
-  <!-- CREDITS (faculty only) -->
   <div id="credits-section" aria-label="هيئة التدريس">
     <button class="credits-close-btn" id="credits-close-btn" aria-label="إغلاق">✕</button>
     <div class="credits-scroll-wrap">
@@ -854,7 +840,6 @@
   <script>
   /* ================================================================
      MEMORY BALLOON — BRANCHING NETWORK TIMELINE
-     All 13 requirements applied
   ================================================================ */
 
   /* ----------------------------------------------------------------
@@ -868,7 +853,7 @@
     currentSeason: 'autumn',
     secretFound: false,
     layoutBuilt: false,
-    balloonPositions: [],   // {x, y, el, idx} for rope drawing
+    balloonPositions: [],
   };
 
   /* ----------------------------------------------------------------
@@ -1067,9 +1052,6 @@
 
   /* ----------------------------------------------------------------
      7. BRANCHING LAYOUT SYSTEM
-     Positions:  L=left, R=right, BL=branch-left, BR=branch-right, C=center
-     Each memory gets a side assigned. Ramadan memories get lantern style.
-     Branch reconnections happen at specific indices.
   ---------------------------------------------------------------- */
   const LAYOUT_PATTERN = [
     'C','R','L','R','L',
@@ -1078,9 +1060,7 @@
     'C','L','R','L','C',
   ];
 
-  // Indices that are "branch" nodes (visual side branch feel)
   const BRANCH_INDICES = new Set([3,7,11,15]);
-  // Indices that "reconnect" from branch
   const RECONNECT_INDICES = new Set([5,9,13,17]);
 
   function getSide(idx) {
@@ -1102,7 +1082,6 @@
   const timelineContainer = document.getElementById('timeline-container');
 
   function buildTimeline() {
-    // Clear everything except the SVG
     const svg = document.getElementById('rope-svg');
     timelineContainer.innerHTML = '';
     timelineContainer.appendChild(svg);
@@ -1151,20 +1130,18 @@
       timelineContainer.appendChild(row);
     });
 
-    // First balloon visible immediately
     setTimeout(() => {
       const first = document.getElementById('balloon-0');
       if (first) first.classList.add('visible');
     }, 200);
 
-    // After layout paints, draw ropes
     requestAnimationFrame(() => requestAnimationFrame(() => {
       updateRopeSVG();
     }));
   }
 
   /* ----------------------------------------------------------------
-     9. ROPE SVG — CURVED BRANCHING ROPES
+     9. ROPE SVG
   ---------------------------------------------------------------- */
   function getBalloonCenter(el) {
     const rect  = el.getBoundingClientRect();
@@ -1186,7 +1163,6 @@
     });
     if (visibleBalloons.length < 2) return;
 
-    // Update container height
     const contRect = timelineContainer.getBoundingClientRect();
     svg.setAttribute('viewBox', `0 0 ${contRect.width} ${timelineContainer.scrollHeight}`);
     svg.style.height = timelineContainer.scrollHeight + 'px';
@@ -1197,25 +1173,20 @@
       const ca = getBalloonCenter(a.el);
       const cb = getBalloonCenter(b.el);
 
-      // Determine curve control point based on position relationship
       const midX = (ca.x + cb.x) / 2;
       const midY = (ca.y + cb.y) / 2;
 
-      // Calculate control point offset for organic curve
       const dx   = cb.x - ca.x;
       const dy   = cb.y - ca.y;
       const dist = Math.sqrt(dx*dx + dy*dy);
 
-      // For branching nodes, exaggerate the curve
       const isBranch = BRANCH_INDICES.has(b.idx) || RECONNECT_INDICES.has(b.idx);
       const curveFactor = isBranch ? 0.35 : 0.18;
       const curveOffset = dist * curveFactor;
 
-      // Perpendicular offset direction
       const perpX = -dy / dist * curveOffset;
       const perpY =  dx / dist * curveOffset;
 
-      // Alternate curve direction for organic look
       const flip = (i % 2 === 0) ? 1 : -1;
       const cpX = midX + perpX * flip;
       const cpY = midY + perpY * flip;
@@ -1231,7 +1202,6 @@
       const ropeColor = colorMap[season] || 'rgba(200,180,140,0.5)';
       const isRamadanRope = season === 'ramadan';
 
-      // Main rope path
       const path = document.createElementNS('http://www.w3.org/2000/svg','path');
       path.setAttribute('d', `M ${ca.x} ${ca.y} Q ${cpX} ${cpY} ${cb.x} ${cb.y}`);
       path.setAttribute('stroke', ropeColor);
@@ -1244,7 +1214,6 @@
       }
       svg.appendChild(path);
 
-      // For branches: add a small decorative side tendril
       if (BRANCH_INDICES.has(b.idx)) {
         const tendril = document.createElementNS('http://www.w3.org/2000/svg','path');
         const tEndX = cpX + (flip * 30);
@@ -1257,7 +1226,6 @@
         tendril.setAttribute('stroke-linecap','round');
         svg.appendChild(tendril);
 
-        // Small dot at tendril end
         const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
         dot.setAttribute('cx', tEndX);
         dot.setAttribute('cy', tEndY);
@@ -1269,7 +1237,6 @@
     }
   }
 
-  // Re-draw ropes on resize
   window.addEventListener('resize', () => {
     resizeCanvas();
     if (state.layoutBuilt) updateRopeSVG();
@@ -1319,22 +1286,19 @@
   }
 
   /* ----------------------------------------------------------------
-     11. BUILD CARD HTML — supports full data structure
+     11. BUILD CARD HTML
   ---------------------------------------------------------------- */
   function buildCardHTML(mem, seasonDef) {
     let parts = [];
 
-    // Badge + date + title
     parts.push(`<div class="card-season-badge ${seasonDef.badge}">${seasonDef.icon} ${seasonDef.label}</div>`);
     if (mem.date) parts.push(`<p class="card-date">${mem.date}</p>`);
     parts.push(`<h2 class="card-title">${mem.title}</h2>`);
 
-    // Quote (if present)
     if (mem.quote) {
       parts.push(`<blockquote class="card-quote">${mem.quote}</blockquote>`);
     }
 
-    // Video (#8 cinematic treatment)
     if (mem.type === 'video' || mem.video) {
       const videoSrc = mem.video || mem.videoUrl || '';
       if (videoSrc) {
@@ -1368,7 +1332,6 @@
       }
     }
 
-    // Primary image
     const imgSrc = mem.image || mem.imageUrl || '';
     if ((mem.type === 'image' || mem.imagePlaceholder || imgSrc) && !mem.video && mem.type !== 'video') {
       if (imgSrc) {
@@ -1378,18 +1341,15 @@
       }
     }
 
-    // Extra images strip
     if (Array.isArray(mem.extraImages) && mem.extraImages.length) {
       const imgs = mem.extraImages.map(src => `<img src="${src}" alt="" loading="lazy"/>`).join('');
       parts.push(`<div class="card-extra-images">${imgs}</div>`);
     }
 
-    // Chat screenshot
     if (mem.chatScreenshot) {
       parts.push(`<div class="card-chat-wrap"><img src="${mem.chatScreenshot}" alt="لقطة شاشة" loading="lazy"/></div>`);
     }
 
-    // Description
     if (mem.description) {
       const desc = mem.description.split('\n').filter(Boolean).map(l=>`<p>${l}</p>`).join('');
       parts.push(`<div class="card-description">${desc}</div>`);
@@ -1398,7 +1358,6 @@
     return parts.join('');
   }
 
-  // Global handler for cinematic video reveal
   window.revealCinematicVideo = function(memId) {
     const poster = document.getElementById(`cinematic-poster-${memId}`);
     if (!poster) return;
@@ -1418,12 +1377,10 @@
       balloonEl.classList.add('visible');
       state.layoutBuilt = true;
 
-      // Re-draw ropes
       requestAnimationFrame(() => updateRopeSVG());
 
       balloonEl.scrollIntoView({ behavior:'smooth', block:'center' });
 
-      // Clean up tap hints from earlier
       document.querySelectorAll('.balloon-tap-hint').forEach(el => {
         const wi = parseInt(el.closest('.balloon-wrapper')?.dataset.index||'0');
         if (wi !== nextIdx) el.remove();
@@ -1447,7 +1404,6 @@
     if (e.target === e.currentTarget) closeCard();
   });
 
-  // Touch-drag to close
   let touchStartY = 0;
   const cardEl = document.getElementById('memory-card');
   cardEl.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive:true });
@@ -1467,19 +1423,15 @@
     const wrapper = document.getElementById(`balloon-${finalIdx}`);
     if (!wrapper) { showCinematicText(); return; }
 
-    // Burst animation on final balloon
     wrapper.classList.add('burst');
 
-    // Create floating particle balloons from all opened positions
     setTimeout(() => {
       spawnFloatingBalloons();
     }, 300);
 
-    // Fade the SVG rope
     const svg = document.getElementById('rope-svg');
     gsap.to(svg, { opacity:0, duration:2.5, delay:0.5, ease:'power2.in' });
 
-    // After burst + float, show cinematic text
     setTimeout(() => {
       showCinematicText();
     }, 2000);
@@ -1529,7 +1481,6 @@
     '😊وتجاوزنا ما ظنناه مستحيلاً.',
     'وفي النهاية.',
     'انتهت السنة.',
-
   ];
 
   function showCinematicText() {
@@ -1544,10 +1495,8 @@
       el.textContent = line;
       screen.appendChild(el);
 
-      // Show each line, then hide it before showing next
       setTimeout(() => {
         gsap.to(el, { opacity:1, y:0, duration:0.7, ease:'power2.out', onStart:() => { el.style.transform='translateY(20px)'; }});
-        // Keep last line visible, fade others
         if (i < CINEMATIC_LINES.length - 1) {
           setTimeout(() => gsap.to(el, { opacity:0, duration:0.5, ease:'power2.in' }), 1400);
         }
@@ -1556,7 +1505,6 @@
       delay += 1800;
     });
 
-    // After all lines, transition to ending screen
     setTimeout(() => {
       gsap.to(screen, { opacity:0, duration:0.8, ease:'power2.in', onComplete: () => {
         screen.classList.remove('active');
@@ -1606,7 +1554,6 @@
       container.appendChild(card);
     });
 
-    // After letters are shown, auto-show thanks section
     const lettersSection = document.getElementById('future-letters');
     const observer = new MutationObserver(() => {
       if (lettersSection.classList.contains('visible')) {
@@ -1625,7 +1572,6 @@
     section.classList.add('visible');
     setTimeout(() => section.scrollIntoView({ behavior:'smooth', block:'start' }), 300);
 
-    // Animate lines in with IntersectionObserver
     const lines = section.querySelectorAll('.thanks-line, .thanks-final-line');
     const obs = new IntersectionObserver((entries) => {
       entries.forEach((entry, i) => {
@@ -1643,7 +1589,6 @@
       `<p class="faculty-name">${n}</p>`
     ).join('');
 
-    // Also populate credits faculty
     const creditsF = document.getElementById('credits-faculty-container');
     if (creditsF) {
       creditsF.innerHTML = (state.faculty || []).map(n =>
@@ -1714,7 +1659,6 @@
     if (pCorrect && bCorrect) {
       state.secretFound = true;
       secretBalloon.classList.remove('revealed');
-      // Reveal secret memory
       const inner = document.getElementById('card-inner-content');
       inner.innerHTML = `
         <div class="card-season-badge" style="background:rgba(123,47,255,0.2);color:#e040fb;border:1px solid rgba(224,64,251,0.3)">✨ ذكرى سرية</div>
@@ -1727,7 +1671,6 @@
       gsap.fromTo(inner.querySelectorAll('*'), { opacity:0, y:15 }, { opacity:1, y:0, duration:0.5, stagger:0.1, ease:'power2.out' });
     } else {
       if (retryMsg) retryMsg.classList.add('visible');
-      // Shake wrong fields
       if (!pCorrect) {
         const pInput = document.getElementById('secret-p');
         if (pInput) { pInput.classList.add('error'); setTimeout(() => pInput.classList.remove('error'), 500); }
@@ -1760,12 +1703,14 @@
   }
 
   /* ----------------------------------------------------------------
-     21. SCROLL-BASED SEASON SYNC
+     21. SCROLL-BASED SEASON SYNC (Fixed Bug)
   ---------------------------------------------------------------- */
   function setupScrollSeasonSync() {
     const obs = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
+        // الحل هنا: بنشترط إن البالونة تكون واخدة كلاس visible 
+        // عشان المخفي ميعملش تغيير للخلفية وإنت بتعمل سكرول
+        if (entry.isIntersecting && entry.target.classList.contains('visible')) {
           const idx = parseInt(entry.target.dataset.index || '0');
           const mem = state.memories[idx];
           if (mem) {
@@ -1774,7 +1719,8 @@
           }
         }
       });
-    }, { threshold:0.5 });
+    }, { threshold: 0.5 });
+    
     document.querySelectorAll('.balloon-wrapper').forEach(b => obs.observe(b));
   }
 
@@ -1834,4 +1780,4 @@
   document.addEventListener('DOMContentLoaded', () => init());
   </script>
 </body>
-  </html>
+</html>
