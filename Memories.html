@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>أساسي إنجليزي — الفرقة الأولى | ذكريات 2025–2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;600;700;900&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS — UI UX PRO MAX SKILL APPLIED
+       Style: Motion-Driven + Seasonal Dark Ambient
+       Typography: Scheherazade New (display) / Cairo (body)
+       Anti-patterns: no scattered shadows, clean specificity
+    ============================================================ */
+    :root {
+      --font-display: 'Scheherazade New', serif;
+      --font-body:    'Cairo', sans-serif;
+      --font-accent:  'Amiri', serif;
+
+      /* Autumn */
+      --au-bg:   #0e0600;
+      --au-warm: #e8722a;
+      --au-gold: #d4a853;
+      --au-leaf: #c0392b;
+
+      /* Winter */
+      --wi-bg:   #03080f;
+      --wi-cool: #7ab8d4;
+      --wi-ice:  #b8d4e8;
+
+      /* Ramadan */
+      --ra-bg:   #07031a;
+      --ra-gold: #f0c060;
+      --ra-amb:  #e8900a;
+
+      /* Spring */
+      --sp-bg:      #030803;
+      --sp-green:   #4caf50;
+      --sp-blossom: #f8a5c2;
+      --sp-fresh:   #88d8a0;
+
+      /* Summer */
+      --su-bg:   #050308;
+      --su-gold: #ffd700;
+      --su-sky:  #87ceeb;
+      --su-warm: #ff8c42;
+
+      /* Globals */
+      --text-primary:   #f5f0e8;
+      --text-secondary: rgba(245,240,232,0.62);
+      --card-bg:        rgba(8,6,18,0.95);
+      --card-border:    rgba(255,255,255,0.10);
+      --card-radius:    22px;
+
+      /* Glass surface */
+      --glass-bg:     rgba(255,255,255,0.04);
+      --glass-border: rgba(255,255,255,0.09);
+
+      /* Motion */
+      --ease-smooth: cubic-bezier(0.4,0,0.2,1);
+      --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
+      --ease-out:    cubic-bezier(0.22,1,0.36,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+    body {
+      font-family: var(--font-body);
+      color: var(--text-primary);
+      background: #05040a;
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ============================================================
+       LOADING
+    ============================================================ */
+    #loading-screen {
+      position: fixed; inset: 0; background: #05040a; z-index: 9999;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 20px;
+    }
+    .loading-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem,6vw,2.4rem);
+      color: var(--text-primary); text-align: center; line-height: 1.5;
+      opacity: 0; animation: fadeUp 0.8s 0.3s forwards;
+    }
+    .loading-sub {
+      font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--text-secondary);
+      opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+    }
+    .loading-track {
+      width: min(240px,65vw); height: 2px;
+      background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden;
+      opacity: 0; animation: fadeUp 0.8s 0.9s forwards;
+    }
+    .loading-fill {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--au-gold), var(--au-warm));
+      border-radius: 2px; transition: width 0.1s linear;
+    }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(16px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* ============================================================
+       BACKGROUND LAYERS
+    ============================================================ */
+    .bg-layer {
+      position: fixed; inset: 0; z-index: 0;
+      transition: opacity 2s var(--ease-smooth); pointer-events: none;
+    }
+    #bg-autumn  { background: radial-gradient(ellipse 90% 65% at 28% 18%, #2a1200 0%, #130700 55%, #050200 100%); }
+    #bg-winter  { background: radial-gradient(ellipse 90% 65% at 72% 18%, #04102a 0%, #030c1e 55%, #020408 100%); }
+    #bg-ramadan { background: radial-gradient(ellipse 75% 75% at 50% 8%,  #180830 0%, #0c0420 55%, #060210 100%); }
+    #bg-spring  { background: radial-gradient(ellipse 90% 65% at 38% 18%, #0a1e0a 0%, #060d06 55%, #030503 100%); }
+    #bg-summer  { background: radial-gradient(ellipse 90% 65% at 50% 12%, #120e1e 0%, #09070e 55%, #040307 100%); }
+
+    #particle-canvas {
+      position: fixed; inset: 0; z-index: 1;
+      pointer-events: none; opacity: 0.65;
+    }
+
+    /* ============================================================
+       RAMADAN DECOR
+    ============================================================ */
+    #ramadan-deco {
+      position: fixed; inset: 0; z-index: 2;
+      pointer-events: none; opacity: 0; transition: opacity 1.6s ease;
+    }
+    #ramadan-deco.visible { opacity: 1; }
+    .r-lantern {
+      position: absolute; font-size: clamp(1.3rem,4vw,2.2rem);
+      filter: drop-shadow(0 0 8px rgba(240,192,96,0.55));
+      animation: lanternSway 3s ease-in-out infinite;
+    }
+    .r-star {
+      position: absolute; background: rgba(240,192,96,0.75);
+      border-radius: 50%; animation: starBlink 2s ease-in-out infinite;
+    }
+    .r-crescent {
+      position: absolute; top: 36px; left: 50%; transform: translateX(-50%);
+      font-size: 2.8rem;
+      filter: drop-shadow(0 0 18px rgba(240,192,96,0.75));
+      animation: crescentPulse 4s ease-in-out infinite;
+    }
+    @keyframes lanternSway  { 0%,100%{transform:rotate(-5deg) translateY(0)} 50%{transform:rotate(5deg) translateY(-7px)} }
+    @keyframes starBlink    { 0%,100%{opacity:.3;transform:scale(1)} 50%{opacity:1;transform:scale(1.5)} }
+    @keyframes crescentPulse{ 0%,100%{filter:drop-shadow(0 0 14px rgba(240,192,96,.6))} 50%{filter:drop-shadow(0 0 28px rgba(240,192,96,1))} }
+    #ramadan-ambient {
+      position: fixed; inset: 0; z-index: 2; pointer-events: none;
+      opacity: 0; transition: opacity 1.6s ease;
+      background: radial-gradient(ellipse 55% 35% at 50% 0%, rgba(240,192,96,0.055) 0%, transparent 70%);
+    }
+    #ramadan-ambient.visible { opacity: 1; }
+
+    /* ============================================================
+       HEADER
+    ============================================================ */
+    #site-header {
+      position: relative; z-index: 10; text-align: center;
+      padding: 56px 24px 36px;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+    }
+    .header-eyebrow {
+      font-size: 0.68rem; letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--text-secondary); font-weight: 300;
+    }
+    .header-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem,8vw,3.4rem); line-height: 1.28;
+      background: linear-gradient(135deg, #f5f0e8 0%, #d4a853 58%, #e8722a 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .header-rule {
+      width: 52px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--au-gold), transparent);
+      margin: 6px auto;
+    }
+    .header-sub { font-size: 0.88rem; color: var(--text-secondary); font-weight: 300; }
+
+    /* ============================================================
+       TIMELINE CONTAINER
+    ============================================================ */
+    #timeline-container {
+      position: relative; z-index: 10;
+      padding: 16px 0 80px;
+      width: 100%; max-width: 500px; margin: 0 auto;
+    }
+    #rope-svg {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 1; overflow: visible;
+    }
+
+    .timeline-row {
+      position: relative; z-index: 2; width: 100%;
+      display: flex; align-items: flex-start;
+      min-height: 118px; margin-bottom: 0;
+    }
+    .side-left         { justify-content: flex-start;  padding-left: 12%; }
+    .side-right        { justify-content: flex-end;    padding-right: 12%; }
+    .side-center       { justify-content: center; }
+    .side-branch-left  { justify-content: flex-start;  padding-left: 5%; }
+    .side-branch-right { justify-content: flex-end;    padding-right: 5%; }
+
+    /* ============================================================
+       BALLOON
+    ============================================================ */
+    .balloon-wrapper {
+      display: flex; flex-direction: column; align-items: center;
+      opacity: 0; transform: translateY(28px) scale(0.82);
+      transition: opacity 0.55s var(--ease-spring), transform 0.55s var(--ease-spring);
+      cursor: pointer; position: relative; z-index: 3;
+    }
+    .balloon-wrapper.visible  { opacity: 1; transform: translateY(0) scale(1); }
+    .balloon-wrapper.opened .balloon-body { transform: scale(0.86); opacity: 0.48; animation: none !important; }
+    .balloon-wrapper.burst  .balloon-body { animation: balloonBurst 0.55s forwards !important; }
+    @keyframes balloonBurst {
+      0%   { transform:scale(1); opacity:1; }
+      30%  { transform:scale(1.4); opacity:.8; }
+      60%  { transform:scale(0.2) rotate(28deg); opacity:.25; }
+      100% { transform:scale(0); opacity:0; }
+    }
+
+    .balloon-string {
+      width: 2px; height: 26px;
+      background: linear-gradient(180deg, rgba(200,180,140,0.55), transparent);
+    }
+    .balloon-body {
+      width: min(84px,21vw); height: min(104px,25vw);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      position: relative; display: flex; align-items: center;
+      justify-content: center; flex-direction: column; gap: 3px;
+      transition: transform 0.45s var(--ease-spring), opacity 0.45s ease;
+      /* unified shadow system — one token, not scattered */
+      box-shadow: 0 6px 24px rgba(0,0,0,0.45), inset 0 2px 7px rgba(255,255,255,0.13);
+      animation: balloonFloat 4.2s ease-in-out infinite;
+    }
+    .balloon-body::before {
+      content: ''; position: absolute; top: 11%; right: 19%;
+      width: 27%; height: 19%;
+      background: rgba(255,255,255,0.22); border-radius: 50%; filter: blur(3px);
+    }
+    .balloon-body::after {
+      content: ''; position: absolute; bottom: -5px; left: 50%;
+      transform: translateX(-50%); width: 9px; height: 7px;
+      background: inherit;
+      clip-path: polygon(50% 100%, 0 0, 100% 0); filter: brightness(0.68);
+    }
+    @keyframes balloonFloat {
+      0%,100% { transform:translateY(0) rotate(-1deg); }
+      33%      { transform:translateY(-7px) rotate(1deg); }
+      66%      { transform:translateY(-3.5px) rotate(-0.5deg); }
+    }
+
+    /* Season palettes */
+    .balloon-autumn  { background: linear-gradient(135deg, #c0392b, #e8722a, #d4a853); }
+    .balloon-winter  { background: linear-gradient(135deg, #2a5c88, #7ab8d4, #b8d4e8); }
+    .balloon-ramadan { background: linear-gradient(135deg, #682a98, #be6ee0, #f0c060); }
+    .balloon-spring  { background: linear-gradient(135deg, #186528, #4caf50, #88d8a0); }
+    .balloon-summer  { background: linear-gradient(135deg, #b05500, #ff8c42, #ffd700); }
+    .balloon-gold    {
+      background: linear-gradient(135deg, #b8860b, #ffd700, #fffacd, #ffd700);
+      box-shadow: 0 0 28px rgba(255,215,0,0.48), 0 6px 24px rgba(0,0,0,0.45);
+    }
+
+    /* Lantern variant */
+    .balloon-lantern {
+      width: min(78px,20vw) !important; height: min(108px,27vw) !important;
+      border-radius: 14% 14% 20% 20% / 10% 10% 24% 24% !important;
+      background: linear-gradient(158deg, #8b4513 0%, #c8860a 28%, #f0c060 54%, #e8900a 80%, #8b4513 100%) !important;
+      box-shadow: 0 0 18px rgba(240,192,96,0.55), 0 0 55px rgba(232,144,10,0.28),
+                  inset 0 0 18px rgba(255,200,80,0.38) !important;
+      animation: lanternGlow 2.2s ease-in-out infinite, balloonFloat 4.2s ease-in-out infinite !important;
+    }
+    .balloon-lantern::before {
+      content: '' !important; position: absolute !important;
+      top: 5% !important; left: 14% !important; right: 14% !important; height: 7% !important;
+      background: rgba(139,69,19,0.78) !important; border-radius: 2px !important; filter: none !important;
+    }
+    .balloon-lantern::after {
+      content: '' !important; position: absolute !important;
+      bottom: -11px !important; left: 50% !important; transform: translateX(-50%) !important;
+      width: 3px !important; height: 13px !important;
+      background: rgba(200,134,10,0.78) !important; clip-path: none !important; filter: none !important;
+    }
+    @keyframes lanternGlow {
+      0%,100% { box-shadow:0 0 14px rgba(240,192,96,.5),0 0 38px rgba(232,144,10,.24),inset 0 0 14px rgba(255,200,80,.28); }
+      50%      { box-shadow:0 0 28px rgba(240,192,96,.9),0 0 75px rgba(232,144,10,.5),inset 0 0 28px rgba(255,200,80,.55); }
+    }
+
+    .balloon-number   { font-family:var(--font-body); font-size:.64rem; font-weight:700; color:rgba(255,255,255,.88); letter-spacing:.04em; position:relative; z-index:1; }
+    .balloon-icon     { font-size:1.05rem; position:relative; z-index:1; }
+    .balloon-tap-hint { font-size:.58rem; color:rgba(255,255,255,.45); margin-top:5px; letter-spacing:.1em; animation:pulse 2.2s infinite; }
+    @keyframes pulse  { 0%,100%{opacity:.45} 50%{opacity:1} }
+    .balloon-label    { font-size:.66rem; color:var(--text-secondary); margin-top:4px; text-align:center; max-width:88px; line-height:1.3; }
+
+    /* ============================================================
+       MEMORY CARD OVERLAY  (glass surface)
+    ============================================================ */
+    .memory-card-overlay {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,0.72); backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: flex; align-items: flex-end; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.32s ease;
+    }
+    .memory-card-overlay.active { opacity: 1; pointer-events: all; }
+
+    .memory-card {
+      width: min(480px,100vw); max-height: 88vh;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px 24px 0 0;
+      padding: 0 0 env(safe-area-inset-bottom,0px);
+      overflow-y: auto; overflow-x: hidden;
+      transform: translateY(100%);
+      transition: transform 0.48s var(--ease-spring);
+      position: relative;
+    }
+    .memory-card-overlay.active .memory-card { transform: translateY(0); }
+
+    .card-drag-handle {
+      width: 38px; height: 4px;
+      background: rgba(255,255,255,0.18); border-radius: 2px;
+      margin: 15px auto 0;
+    }
+    .card-inner { padding: 18px 22px 30px; }
+
+    /* Season badge */
+    .card-season-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: .63rem; letter-spacing: .14em; text-transform: uppercase;
+      padding: 3px 11px; border-radius: 20px; margin-bottom: 12px; font-weight: 700;
+    }
+    .badge-autumn  { background:rgba(232,114,42,.18); color:#e8c490; border:1px solid rgba(232,114,42,.28); }
+    .badge-winter  { background:rgba(122,184,212,.18); color:#b8d4e8; border:1px solid rgba(122,184,212,.28); }
+    .badge-ramadan { background:rgba(240,192,96,.18);  color:#f0c060; border:1px solid rgba(240,192,96,.28); }
+    .badge-spring  { background:rgba(76,175,80,.18);   color:#88d8a0; border:1px solid rgba(76,175,80,.28); }
+    .badge-summer  { background:rgba(255,215,0,.18);   color:#ffd700; border:1px solid rgba(255,215,0,.28); }
+
+    .card-date  { font-size:.68rem; color:var(--text-secondary); margin-bottom:6px; letter-spacing:.07em; }
+    .card-title { font-family:var(--font-display); font-size:clamp(1.55rem,4.8vw,2.1rem); line-height:1.32; color:var(--text-primary); margin-bottom:14px; }
+
+    /* Card image */
+    .card-image-wrap {
+      width:100%; aspect-ratio:16/9; border-radius:13px; overflow:hidden;
+      margin-bottom:16px;
+      background: var(--glass-bg); border: 1px dashed var(--glass-border);
+      position:relative; display:flex; align-items:center; justify-content:center;
+    }
+    .card-image-wrap img { width:100%; height:100%; object-fit:cover; display:block; }
+
+    .card-chat-wrap { width:100%; border-radius:13px; overflow:hidden; margin-bottom:16px; border:1px solid var(--card-border); }
+    .card-chat-wrap img { width:100%; display:block; }
+
+    .placeholder-icon { display:flex; flex-direction:column; align-items:center; gap:9px; opacity:.28; }
+    .placeholder-icon svg { width:38px; height:38px; stroke:var(--text-primary); fill:none; }
+    .placeholder-icon span { font-size:.68rem; letter-spacing:.1em; color:var(--text-secondary); }
+
+    /* Cinematic video player */
+    .card-video-cinematic {
+      width:100%; aspect-ratio:16/9; border-radius:13px; overflow:hidden;
+      margin-bottom:16px; position:relative; background:#000; cursor:pointer;
+    }
+    .cinematic-poster {
+      position:absolute; inset:0; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; gap:14px;
+      background:linear-gradient(160deg,#090818 0%,#18102c 40%,#090818 100%);
+      z-index:2; transition:opacity .55s ease;
+    }
+    .cinematic-poster.hidden { opacity:0; pointer-events:none; }
+    .cinematic-intro-text {
+      font-family:var(--font-display); font-size:clamp(.95rem,3.2vw,1.35rem);
+      color:var(--au-gold); text-align:center; line-height:1.65; padding:0 18px;
+      opacity:0; animation:fadeUp 1s .4s forwards;
+    }
+    .cinematic-play-btn {
+      width:68px; height:68px; border-radius:50%;
+      background:rgba(255,255,255,.10); border:2px solid rgba(255,255,255,.38);
+      display:flex; align-items:center; justify-content:center;
+      transition:transform .28s var(--ease-spring), background .28s;
+      animation:fadeUp 1s .8s both;
+    }
+    .cinematic-play-btn:hover { transform:scale(1.14); background:rgba(255,255,255,.20); }
+    .cinematic-play-btn svg  { width:26px; height:26px; fill:white; margin-left:3px; }
+    .cinematic-reveal-anim   { animation:cinematicReveal .75s var(--ease-spring) forwards; }
+    @keyframes cinematicReveal { 0%{opacity:1;transform:scale(1)} 40%{opacity:.6;transform:scale(1.05)} 100%{opacity:0;transform:scale(.94)} }
+    .card-video-wrap { width:100%; height:100%; position:absolute; inset:0; }
+    .card-video-wrap iframe,
+    .card-video-wrap video { width:100%; height:100%; border:none; display:block; }
+    .video-placeholder {
+      width:100%; aspect-ratio:16/9; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; gap:10px;
+      background:var(--glass-bg); border:1px dashed var(--glass-border);
+      border-radius:13px; margin-bottom:16px;
+    }
+    .video-placeholder svg  { width:44px; height:44px; stroke:var(--text-secondary); fill:none; }
+    .video-placeholder span { font-size:.72rem; color:var(--text-secondary); }
+
+    .card-quote {
+      font-family:var(--font-display); font-size:1.08rem; line-height:1.82;
+      color:var(--au-gold); text-align:center; margin-bottom:12px;
+      padding:10px 14px; border-radius:10px;
+      background:rgba(212,168,83,.07); border:1px solid rgba(212,168,83,.18);
+    }
+    .card-description {
+      font-family:var(--font-body); font-size:.98rem; line-height:1.88;
+      color:var(--text-secondary); direction:rtl;
+    }
+    .card-description p + p { margin-top:10px; }
+
+    .card-close {
+      position:absolute; top:13px; left:14px;
+      width:30px; height:30px; border-radius:50%;
+      background:rgba(255,255,255,.09); border:none;
+      color:var(--text-primary); font-size:.95rem; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      transition:background .2s;
+    }
+    .card-close:hover { background:rgba(255,255,255,.18); }
+
+    /* ============================================================
+       SECRET CHALLENGE
+    ============================================================ */
+    .secret-challenge { padding: 6px 0 10px; }
+    .secret-challenge-q { font-family:var(--font-display); font-size:1.08rem; line-height:1.7; color:var(--text-primary); margin-bottom:18px; }
+    .secret-inputs { display:flex; flex-direction:column; gap:10px; margin-bottom:14px; }
+    .secret-input-row { display:flex; align-items:center; gap:9px; }
+    .secret-input-label { font-size:.82rem; color:var(--text-secondary); min-width:76px; direction:ltr; }
+    .secret-input {
+      flex:1; background:var(--glass-bg); border:1px solid rgba(255,255,255,.16);
+      border-radius:10px; padding:9px 13px; color:var(--text-primary);
+      font-family:var(--font-body); font-size:.88rem; outline:none;
+      transition:border-color .2s; direction:ltr;
+    }
+    .secret-input:focus { border-color:rgba(224,64,251,.58); }
+    .secret-input.error { border-color:rgba(255,80,80,.68); animation:shake .38s ease; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+    .secret-submit-btn {
+      width:100%; padding:11px; border-radius:11px;
+      background:linear-gradient(135deg, #7b2fff, #e040fb);
+      border:none; color:#fff; font-family:var(--font-body);
+      font-size:.88rem; font-weight:700; cursor:pointer;
+      transition:opacity .2s, transform .2s;
+    }
+    .secret-submit-btn:hover { opacity:.9; transform:scale(1.02); }
+    .secret-retry-msg { text-align:center; color:rgba(255,110,110,.9); font-size:.82rem; margin-top:9px; display:none; }
+    .secret-retry-msg.visible { display:block; }
+
+    /* ============================================================
+       CINEMATIC ENDING
+    ============================================================ */
+    #ending-cinematic {
+      position:fixed; inset:0; z-index:750;
+      background:rgba(0,0,0,0); display:none; flex-direction:column;
+      align-items:center; justify-content:center; text-align:center; padding:40px 30px;
+    }
+    #ending-cinematic.active { display:flex; }
+    .cinematic-line {
+      font-family:var(--font-display);
+      font-size:clamp(1.35rem,4.8vw,2.1rem); color:var(--text-primary);
+      line-height:1.8; opacity:0; position:absolute;
+    }
+
+    /* Ending screen */
+    #ending-screen {
+      position:fixed; inset:0; z-index:800; background:#000;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      opacity:0; pointer-events:none; transition:opacity 1s ease;
+      text-align:center; padding:40px 30px; gap:26px;
+    }
+    #ending-screen.active { opacity:1; pointer-events:all; }
+    .ending-gold-ring {
+      width:116px; height:116px; border-radius:50%;
+      border:2px solid var(--au-gold);
+      display:flex; align-items:center; justify-content:center;
+      animation:ringPulse 3.2s ease-in-out infinite;
+    }
+    @keyframes ringPulse {
+      0%,100% { box-shadow:0 0 18px rgba(212,168,83,.28); }
+      50%      { box-shadow:0 0 55px rgba(212,168,83,.68); }
+    }
+    .ending-emoji { font-size:2.9rem; }
+    .ending-quote {
+      font-family:var(--font-display);
+      font-size:clamp(1.35rem,4.8vw,1.95rem); line-height:1.72;
+      color:var(--text-primary); max-width:330px;
+    }
+    .ending-year { font-size:.72rem; color:var(--text-secondary); letter-spacing:.18em; }
+    .ending-cta  { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+
+    .btn-ghost {
+      background:transparent; border:1px solid rgba(255,255,255,.22);
+      color:var(--text-primary); padding:11px 22px; border-radius:40px;
+      font-family:var(--font-body); font-size:.83rem; cursor:pointer;
+      transition:background .24s, border-color .24s;
+    }
+    .btn-ghost:hover { background:rgba(255,255,255,.09); border-color:rgba(255,255,255,.46); }
+    .btn-gold {
+      background:linear-gradient(135deg, #d4a853, #ffd700);
+      border:none; color:#000; padding:11px 22px; border-radius:40px;
+      font-family:var(--font-body); font-size:.83rem; font-weight:700;
+      cursor:pointer; transition:opacity .24s;
+    }
+    .btn-gold:hover { opacity:.9; }
+
+    /* ============================================================
+       FUTURE LETTERS
+    ============================================================ */
+    #future-letters {
+      position:relative; z-index:10; padding:76px 18px;
+      max-width:580px; margin:0 auto; display:none;
+    }
+    #future-letters.visible { display:block; }
+    .section-heading {
+      font-family:var(--font-display); font-size:clamp(1.75rem,5.5vw,2.4rem);
+      text-align:center; margin-bottom:7px;
+      background:linear-gradient(135deg,#f5f0e8,#d4a853);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+    .section-sub { text-align:center; font-size:.78rem; color:var(--text-secondary); margin-bottom:36px; letter-spacing:.07em; }
+
+    .letter-card {
+      background: var(--glass-bg); border:1px solid var(--glass-border);
+      border-radius:16px; padding:22px; margin-bottom:14px;
+      position:relative; overflow:hidden;
+    }
+    .letter-card::before {
+      content:'"'; position:absolute; top:-8px; right:14px;
+      font-family:var(--font-display); font-size:4.5rem;
+      color:rgba(212,168,83,.10); line-height:1;
+    }
+    .letter-author { font-size:.72rem; color:var(--au-gold); font-weight:700; margin-bottom:8px; letter-spacing:.07em; }
+    .letter-body   { font-size:.9rem; line-height:1.92; color:var(--text-secondary); direction:rtl; }
+    .letter-year   { font-size:.62rem; color:rgba(255,255,255,.22); margin-top:10px; text-align:left; }
+
+    /* ============================================================
+       THANKS SECTION
+    ============================================================ */
+    #thanks-section {
+      position:relative; z-index:10; padding:76px 18px 96px;
+      max-width:580px; margin:0 auto; display:none; text-align:center;
+    }
+    #thanks-section.visible { display:block; }
+    .thanks-heading {
+      font-family:var(--font-display); font-size:clamp(1.9rem,6.5vw,2.9rem); margin-bottom:8px;
+      background:linear-gradient(135deg,#f0c060,#d4a853,#ffd700);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+    .thanks-divider { width:72px; height:1px; margin:14px auto 32px; background:linear-gradient(90deg,transparent,var(--ra-gold),transparent); }
+    .thanks-lines { display:flex; flex-direction:column; gap:18px; margin-bottom:44px; }
+    .thanks-line {
+      font-family:var(--font-display); font-size:clamp(1rem,3.3vw,1.25rem);
+      color:var(--text-secondary); line-height:1.72;
+      opacity:0; transform:translateY(18px);
+      transition:opacity .65s ease, transform .65s ease;
+    }
+    .thanks-line.revealed { opacity:1; transform:translateY(0); }
+    .thanks-final-line {
+      font-family:var(--font-display); font-size:clamp(1.15rem,3.8vw,1.55rem);
+      color:var(--ra-gold);
+      opacity:0; transform:translateY(18px);
+      transition:opacity .65s .28s ease, transform .65s .28s ease;
+    }
+    .thanks-final-line.revealed { opacity:1; transform:translateY(0); }
+    .faculty-thanks {
+      margin-top:52px; padding:28px 22px;
+      background:rgba(240,192,96,.045); border:1px solid rgba(240,192,96,.13);
+      border-radius:18px;
+    }
+    .faculty-thanks-title { font-family:var(--font-display); font-size:clamp(1.35rem,4.6vw,1.85rem); color:var(--ra-gold); margin-bottom:22px; }
+    .faculty-list { display:flex; flex-direction:column; gap:9px; }
+    .faculty-name {
+      font-family:var(--font-body); font-size:.93rem;
+      color:var(--text-secondary); line-height:1.8; padding:7px 14px;
+      border-radius:9px;
+      background:rgba(240,192,96,.035); border:1px solid rgba(240,192,96,.07);
+    }
+
+    /* ============================================================
+       SECRET BALLOON
+    ============================================================ */
+    #secret-balloon {
+      position:fixed; bottom:76px; right:14px; z-index:50;
+      opacity:0; transform:scale(0);
+      transition:opacity .48s ease, transform .48s var(--ease-spring);
+      cursor:pointer;
+    }
+    #secret-balloon.revealed { opacity:1; transform:scale(1); }
+    .secret-balloon-body {
+      width:52px; height:64px;
+      border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+      background:linear-gradient(135deg, #2c0050, #7b2fff, #e040fb);
+      display:flex; align-items:center; justify-content:center; font-size:1.3rem;
+      box-shadow:0 0 18px rgba(123,47,255,.48);
+      animation:secretPulse 2.2s ease-in-out infinite;
+    }
+    @keyframes secretPulse {
+      0%,100% { box-shadow:0 0 18px rgba(123,47,255,.48); }
+      50%      { box-shadow:0 0 38px rgba(224,64,251,.78); }
+    }
+
+    /* ============================================================
+       SCROLL PROMPT
+    ============================================================ */
+    #scroll-prompt {
+      position:fixed; bottom:22px; left:50%; transform:translateX(-50%);
+      z-index:50; display:flex; flex-direction:column; align-items:center; gap:5px;
+      opacity:1; transition:opacity .45s ease; pointer-events:none;
+    }
+    #scroll-prompt.hidden { opacity:0; }
+    .scroll-arrow {
+      width:22px; height:22px;
+      border-right:2px solid rgba(255,255,255,.38); border-bottom:2px solid rgba(255,255,255,.38);
+      transform:rotate(45deg); animation:scrollBounce 1.6s ease-in-out infinite;
+    }
+    @keyframes scrollBounce { 0%,100%{transform:rotate(45deg) translateY(0)} 50%{transform:rotate(45deg) translateY(5px)} }
+    .scroll-label { font-size:.58rem; color:rgba(255,255,255,.32); letter-spacing:.14em; text-transform:uppercase; }
+
+    /* ============================================================
+       CREDITS
+    ============================================================ */
+    #credits-section {
+      position:fixed; inset:0; z-index:900; background:#000;
+      display:none; flex-direction:column; align-items:center; overflow:hidden;
+    }
+    #credits-section.active { display:flex; }
+    .credits-scroll-wrap { width:100%; height:100%; overflow:hidden; position:relative; }
+    .credits-inner {
+      position:absolute; bottom:-100%; width:100%;
+      text-align:center; padding:78px 30px;
+      animation:creditsScroll 60s linear forwards; animation-play-state:paused;
+    }
+    .credits-inner.playing { animation-play-state:running; }
+    @keyframes creditsScroll { from{transform:translateY(0)} to{transform:translateY(calc(-100% - 100vh))} }
+    .credits-title { font-family:var(--font-display); font-size:1.35rem; color:var(--au-gold); margin:38px 0 18px; letter-spacing:.09em; }
+    .credits-name  { font-family:var(--font-body); font-size:.93rem; color:rgba(245,240,232,.72); line-height:2; }
+    .credits-close-btn {
+      position:fixed; top:18px; right:18px; z-index:902;
+      background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.18);
+      color:white; width:42px; height:42px; border-radius:50%;
+      font-size:1.15rem; cursor:pointer; display:none; align-items:center; justify-content:center;
+    }
+
+    @media (min-width:600px) {
+      .balloon-body { width:98px; height:118px; }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      *, *::before, *::after { animation-duration:.01ms !important; transition-duration:.3s !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOADING -->
+  <div id="loading-screen" role="status" aria-live="polite">
+    <p class="loading-title">أساسي إنجليزي<br/>الفرقة الأولى</p>
+    <p class="loading-sub">2025 — 2026</p>
+    <div class="loading-track"><div class="loading-fill" id="loading-fill"></div></div>
+  </div>
+
+  <!-- BACKGROUNDS -->
+  <div class="bg-layer" id="bg-autumn"  style="opacity:1"></div>
+  <div class="bg-layer" id="bg-winter"  style="opacity:0"></div>
+  <div class="bg-layer" id="bg-ramadan" style="opacity:0"></div>
+  <div class="bg-layer" id="bg-spring"  style="opacity:0"></div>
+  <div class="bg-layer" id="bg-summer"  style="opacity:0"></div>
+
+  <canvas id="particle-canvas" aria-hidden="true"></canvas>
+
+  <!-- RAMADAN DECOR -->
+  <div id="ramadan-deco" aria-hidden="true">
+    <div class="r-crescent">🌙</div>
+  </div>
+  <div id="ramadan-ambient" aria-hidden="true"></div>
+
+  <!-- SCROLL PROMPT -->
+  <div id="scroll-prompt" aria-hidden="true">
+    <div class="scroll-arrow"></div>
+    <span class="scroll-label">اكتشف</span>
+  </div>
+
+  <!-- MAIN -->
+  <main id="main" style="display:none">
+    <header id="site-header">
+      <p class="header-eyebrow">العام الدراسي ٢٠٢٥ — ٢٠٢٦</p>
+      <h1 class="header-title">شعبة أساسي إنجليزي</h1>
+      <div class="header-rule"></div>
+      <p class="header-sub">رحلة لن تُنسى</p>
+    </header>
+
+    <div id="timeline-container" role="list" aria-label="خط الذكريات التفاعلي">
+      <svg id="rope-svg" aria-hidden="true"></svg>
+    </div>
+
+    <section id="future-letters" aria-labelledby="letters-heading">
+      <h2 class="section-heading" id="letters-heading">رسائل إلى المستقبل</h2>
+      <p class="section-sub">كلمات كتبها من عاشوا هذه اللحظات</p>
+      <div id="letters-container"></div>
+    </section>
+
+    <section id="thanks-section" aria-labelledby="thanks-heading">
+      <h2 class="thanks-heading" id="thanks-heading">شكر وامتنان</h2>
+      <div class="thanks-divider"></div>
+      <div class="thanks-lines" id="thanks-lines">
+        <p class="thanks-line">إلى كل من ساهم في هذه الرحلة...</p>
+        <p class="thanks-line">إلى من قدم نصيحة...</p>
+        <p class="thanks-line">إلى من شارك معلومة...</p>
+        <p class="thanks-line">إلى من ساعد زميلًا...</p>
+        <p class="thanks-line">إلى من كان سببًا في ابتسامة...</p>
+      </div>
+      <p class="thanks-final-line" id="thanks-final">شكرًا لكم جميعًا وموفقين بإذن الله + كالمعتاد (دعوة حلوة لاخوكم😁).</p>
+      <div class="faculty-thanks">
+        <h3 class="faculty-thanks-title">كل الشكر والتقدير إلى هيئة التدريس</h3>
+        <div class="faculty-list" id="faculty-thanks-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MEMORY CARD -->
+  <div id="memory-card-overlay" class="memory-card-overlay" role="dialog" aria-modal="true" aria-label="ذكرى">
+    <div class="memory-card" id="memory-card">
+      <button class="card-close" id="card-close-btn" aria-label="إغلاق">✕</button>
+      <div class="card-drag-handle"></div>
+      <div class="card-inner" id="card-inner-content"></div>
+    </div>
+  </div>
+
+  <!-- SECRET BALLOON -->
+  <div id="secret-balloon" role="button" aria-label="ذكرى سرية" tabindex="0">
+    <div class="secret-balloon-body">✨</div>
+    <div class="balloon-string"></div>
+  </div>
+
+  <!-- CINEMATIC + ENDING -->
+  <div id="ending-cinematic" role="presentation" aria-hidden="true"></div>
+
+  <div id="ending-screen" role="dialog" aria-modal="true" aria-label="نهاية الرحلة">
+    <div class="ending-gold-ring"><span class="ending-emoji">🎓</span></div>
+    <blockquote class="ending-quote">
+      "ربما انتهى العام...<br/>لكن ذكرياته ستبقى دائمًا محفورة في قلوبنا."
+    </blockquote>
+    <p class="ending-year">أساسي إنجليزي — الفرقة الأولى — ٢٠٢٥/٢٠٢٦</p>
+    <div class="ending-cta">
+      <button class="btn-ghost" id="show-letters-btn">رسائل إلى المستقبل</button>
+    </div>
+    <button class="btn-ghost" id="close-ending-btn" style="margin-top:7px;font-size:.73rem;padding:7px 18px;">العودة للذكريات</button>
+  </div>
+
+  <!-- CREDITS -->
+  <div id="credits-section" aria-label="هيئة التدريس">
+    <button class="credits-close-btn" id="credits-close-btn" aria-label="إغلاق">✕</button>
+    <div class="credits-scroll-wrap">
+      <div class="credits-inner" id="credits-inner">
+        <div style="height:55px"></div>
+        <p class="credits-title" style="font-size:1.75rem">أساسي إنجليزي</p>
+        <p class="credits-title">الفرقة الأولى · ٢٠٢٥/٢٠٢٦</p>
+        <div style="height:36px"></div>
+        <p class="credits-title">أعضاء هيئة التدريس</p>
+        <div id="credits-faculty-container"></div>
+        <div style="height:75px"></div>
+        <p style="font-family:var(--font-display);font-size:1.15rem;color:var(--au-gold)">شكراً لكم جميعاً</p>
+        <p style="font-size:.78rem;color:rgba(255,255,255,.32);margin-top:10px">نهاية · ٢٠٢٥/٢٠٢٦</p>
+        <div style="height:95px"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  /* ================================================================
+     MEMORY BALLOON — COMPLETE JS
+  ================================================================ */
+
+  /* --- STATE --- */
+  const state = {
+    memories:[], letters:[], faculty:[],
+    openedSet: new Set(),
+    currentSeason: 'autumn',
+    secretFound: false,
+    layoutBuilt: false,
+    finalSequenceRunning: false,
+    audioUnlocked: false,
+    bgMusic:{
+      autumn:  new Audio('sounds/autumn.mp3'),
+      winter:  new Audio('sounds/winter.mp3'),
+      ramadan: new Audio('sounds/ramadan.mp3'),
+      spring:  new Audio('sounds/spring.mp3'),
+      summer:  new Audio('sounds/summer.mp3'),
+    },
+    sfx:{
+      pop:     new Audio('Pop.mp3'),
+      woosh:   new Audio('sounds/woosh.mp3'),
+      success: new Audio('sounds/success.mp3'),
+      error:   new Audio('sounds/error.mp3'),
+      burst:   new Audio('sounds/burst.mp3'),
+    }
+  };
+
+  /* --- AUDIO --- */
+  Object.values(state.bgMusic).forEach(a => { a.loop=true; a.volume=0; });
+
+  function unlockAudio() {
+    if (state.audioUnlocked) return;
+    state.audioUnlocked = true;
+    Object.values(state.bgMusic).forEach(a => a.play().then(()=>a.pause()).catch(()=>{}));
+    Object.values(state.sfx).forEach(a => a.play().then(()=>a.pause()).catch(()=>{}));
+    switchMusic(state.currentSeason);
+  }
+  document.body.addEventListener('click',      unlockAudio, {once:true});
+  document.body.addEventListener('touchstart', unlockAudio, {once:true});
+
+  function switchMusic(newSeason) {
+    if (!state.audioUnlocked || state.finalSequenceRunning) return;
+    Object.keys(state.bgMusic).forEach(s => {
+      const a = state.bgMusic[s];
+      if (s===newSeason) { a.play().catch(()=>{}); gsap.to(a,{volume:.38,duration:2}); }
+      else               { gsap.to(a,{volume:0,duration:2,onComplete:()=>a.pause()}); }
+    });
+  }
+
+  /* --- SEASONS --- */
+  const SEASONS = {
+    autumn:  {months:[9,10,11], bg:'bg-autumn',  balloonClass:'balloon-autumn',  badge:'badge-autumn',  label:'خريف',  icon:'🍂'},
+    winter:  {months:[12,1,2],  bg:'bg-winter',  balloonClass:'balloon-winter',  badge:'badge-winter',  label:'شتاء',  icon:'❄️'},
+    ramadan: {months:[],        bg:'bg-ramadan', balloonClass:'balloon-ramadan', badge:'badge-ramadan', label:'رمضان', icon:'🌙'},
+    spring:  {months:[3,4],     bg:'bg-spring',  balloonClass:'balloon-spring',  badge:'badge-spring',  label:'ربيع',  icon:'🌸'},
+    summer:  {months:[5,6],     bg:'bg-summer',  balloonClass:'balloon-summer',  badge:'badge-summer',  label:'صيف',   icon:'☀️'},
+  };
+
+  function detectSeason(mem) {
+    if (mem.season) return mem.season;
+    if (!mem.date)  return 'autumn';
+    const m = parseInt(mem.date.split('-')[1] || '9');
+    for (const [k,s] of Object.entries(SEASONS)) if (s.months.includes(m)) return k;
+    return 'autumn';
+  }
+
+  /* --- DEFAULT DATA --- */
+  function getDefaultMemories() {
+    return [
+      {id:1,  title:'أول يوم',                         date:'28 سبتمبر 2025', season:'autumn',  type:'image', imageUrl:'01-first-day.jpg',        description:'من هنا بدأت الرحلة...'},
+      {id:2,  title:'أول محاضرة',                      date:'أكتوبر 2025',    season:'autumn',  type:'image', imageUrl:'First_lecture.jpg',       description:'هنا اكتشفنا ان الشخص اللي بيوقف في المكان ده اسمه دكتور مش مستر 😅'},
+      {id:3,  title:'أول تكليف',                       date:'أكتوبر 2025',    season:'autumn',  chatScreenshot:'First_assignment.png',             description:'وكان من د. هبة القاضي'},
+      {id:4,  title:'محاضرات د. وفاء',                 date:'نوفمبر 2025',    season:'autumn',  type:'image', imageUrl:'Sudden.jpg',              description:'شكلنا لما استوعبنا إن د.وفاء كانت بتملي في أسئلة الشباتر واحنا فاكرينها بتقرا 😅'},
+      {id:5,  title:'أول ميدتيرم',                     date:'نوفمبر 2025',    season:'autumn',  type:'image', imageUrl:'First_mid.png',           description:'برضوا كان من د. هبة القاضي وكان شفوي 🥲'},
+      {id:6,  title:'طلب صغير',                        date:'ديسمبر 2025',    season:'winter',  chatScreenshot:'Pray.jpg',                         description:'معلش 😅بس كان لازم أحطها'},
+      {id:7,  title:'فيديو ذكريات الترم الأول',        date:'يناير 2026',     season:'winter',  type:'video', videoUrl:'First_semester.mp4',      description:'لحظات لا تُنسى من الترم الأول'},
+      {id:8,  title:'نهاية الترم الأول',               date:'يناير 2026',     season:'winter',  type:'text',                                       description:'انتهى الترم الأول وكانت رحلة مليئة بالتحديات والأخطاء التي جعلتنا أقوى.'},
+      {id:9,  title:'بداية الترم الثاني',              date:'فبراير 2026',    season:'winter',  type:'text',                                       description:'بعد النتيجة المبشرة🥲، قررنا نبدأ صفحة جديدة'},
+      {id:10, title:'أول محاضرة في الترم الثاني',      date:'فبراير 2026',    season:'winter',  type:'image', imageUrl:'First_lecture_2.jpg',     description:'ورجعنا من جديد بروح معنوية عالية😕 💪'},
+      {id:11, title:'التدريب الميداني',                 date:'فبراير 2026',    season:'winter',  chatScreenshot:'Practical.png',                    description:'ونزلنا اول تدريب ميداني لينا_وكانت فعلا تجربة لا تنسى🤍'},
+      {id:12, title:'أهلا رمضان',                      date:'مارس 2026',      season:'ramadan', type:'text',                                       description:'وبعد طول غياب....هلَّ علينا شهر الخير 🥰'},
+      {id:13, title:'موقف رمضاني',                     date:'مارس 2026',      season:'ramadan', type:'image', imageUrl:'Ramadan.png',             description:'الناس المفروض تفرح وتبتهج....احنا في عالم موازي بنحاول نقنع الدكاترة يلغوا أول اسبوع من رمضان😅'},
+      {id:14, title:'وداعا رمضان',                     date:'أبريل 2026',     season:'spring',  type:'text',                                       description:'وقبل أن نلاحظ\nانتهى رمضان🥺.'},
+      {id:15, title:'أفكار مشروع ريادة الاعمال',       date:'أبريل 2026',     season:'spring',  chatScreenshot:'Project.png',                      description:'الافكار اللي كانت بتجيلنا للمشروع 😅'},
+      {id:16, title:'بداية الميدتيرم',                  date:'أبريل 2026',     season:'spring',  type:'text',                                       description:'وقت الجد بقى — أو ده اللي قلناه لنفسنا 😅'},
+      {id:17, title:'لسه بنقول الحمد لله خلصنا ميدات...',date:'مايو 2026',    season:'summer',  type:'text',                                       description:'دخلنا فاينال علطول 🥲'},
+      {id:18, title:'العد التنازلي للنهاية',            date:'مايو 2026',      season:'summer',  type:'text',                                       description:'كل يوم بيعدي هو خطوة نحو النهاية😥...'},
+      {id:19, title:'آخر أيام الدراسة',                date:'يونيو 2026',     season:'summer',  type:'image', imageUrl:'Last_day.jpg',            description:'الأيام الأخيرة دايمًا ليها طعم خاص.'},
+      {id:20, title:'آخر فاينال',                      date:'10 يونيو 2026',  season:'summer',  type:'text',  isFinal:true,                       description:'وصلنا للنهاية.\n\nبعد كل هذا الجهد، كل هذه الليالي، كل هذه اللحظات — وصلنا.'},
+    ];
+  }
+  function getDefaultLetters() {
+    return [
+      {author:'واحد حكيم مش فاكر اسمه😅', year:2026, body:'إلى من سيمشي في هذا الطريق... صبرا، لأن كل شيء يستحق في النهاية.'},
+      {author:'طالب من الفرقة الأولى',      year:2026, body:'صدقني الإنجليزي مش مستحيل، بس محتاج وقت ومجهود. لا تستسلم.'},
+      {author:'من قلب الفرقة الأولى',       year:2026, body:'أجمل ما في هذا العام هو الناس اللي عشنا معاهم كل لحظة منه.'},
+    ];
+  }
+  function getDefaultFaculty() {
+    return ['وآخر دعوانا أن الحمد لله رب العالمين'];
+  }
+
+  /* --- DATA LOADING --- */
+  async function loadData() {
+    try {
+      const [memRes, letRes, stuRes] = await Promise.allSettled([
+        fetch('data/memories.json'),
+        fetch('data/future_letters.json'),
+        fetch('data/students.json'),
+      ]);
+      state.memories = (memRes.status==='fulfilled'&&memRes.value.ok) ? await memRes.value.json() : getDefaultMemories();
+      state.letters  = (letRes.status==='fulfilled'&&letRes.value.ok) ? await letRes.value.json() : getDefaultLetters();
+      if (stuRes.status==='fulfilled'&&stuRes.value.ok) {
+        const d = await stuRes.value.json(); state.faculty = d.faculty||getDefaultFaculty();
+      } else { state.faculty = getDefaultFaculty(); }
+    } catch { state.memories=getDefaultMemories(); state.letters=getDefaultLetters(); state.faculty=getDefaultFaculty(); }
+  }
+
+  /* --- PARTICLE ENGINE --- */
+  const canvas = document.getElementById('particle-canvas');
+  const ctx    = canvas.getContext('2d');
+  const particles = [];
+
+  function resizeCanvas() { canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
+
+  class Particle {
+    constructor() { this.reset(true); }
+    reset(init=false) {
+      this.x=Math.random()*canvas.width;
+      this.y=init ? Math.random()*canvas.height : -20;
+      this.size    =Math.random()*5+2;
+      this.speedX  =(Math.random()-.5)*1.2;
+      this.speedY  =Math.random()*1.4+.45;
+      this.opacity =Math.random()*.65+.2;
+      this.rotation=Math.random()*Math.PI*2;
+      this.rotSpeed=(Math.random()-.5)*.04;
+      this.wobble  =Math.random()*Math.PI*2;
+      this.colorIdx=Math.floor(Math.random()*4);
+    }
+    update() {
+      this.x+=this.speedX+Math.sin(this.wobble)*.38;
+      this.y+=this.speedY; this.rotation+=this.rotSpeed; this.wobble+=.02;
+      if (this.y>canvas.height+18) this.reset();
+    }
+    draw(season) {
+      ctx.save(); ctx.translate(this.x,this.y); ctx.rotate(this.rotation); ctx.globalAlpha=this.opacity;
+      switch(season) {
+        case 'autumn':
+          ctx.fillStyle=['#c0392b','#e8722a','#d4a853','#8b4513'][this.colorIdx];
+          ctx.beginPath(); ctx.ellipse(0,0,this.size,this.size*1.6,0,0,Math.PI*2); ctx.fill(); break;
+        case 'winter':
+          ctx.strokeStyle='rgba(184,212,232,.8)'; ctx.lineWidth=.8;
+          for(let i=0;i<6;i++){ctx.save();ctx.rotate(i*Math.PI/3);ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(0,this.size*2);ctx.stroke();ctx.restore();}
+          break;
+        case 'ramadan':
+          ctx.fillStyle=`rgba(240,192,96,${this.opacity})`;
+          ctx.beginPath(); ctx.arc(0,0,this.size*.7,0,Math.PI*2); ctx.fill(); break;
+        case 'spring':
+          ctx.fillStyle=['#f8a5c2','#88d8a0','#fffde7','#fce4ec'][this.colorIdx];
+          ctx.beginPath();
+          for(let p=0;p<5;p++){const a=(p*4*Math.PI)/5-Math.PI/2;const r=p===0?this.size:this.size*.4;p===0?ctx.moveTo(Math.cos(a)*r,Math.sin(a)*r):ctx.lineTo(Math.cos(a)*r,Math.sin(a)*r);}
+          ctx.closePath(); ctx.fill(); break;
+        case 'summer':
+          ctx.fillStyle=`rgba(255,215,0,${this.opacity*.48})`;
+          ctx.beginPath(); ctx.arc(0,0,this.size*.5,0,Math.PI*2); ctx.fill(); break;
+      }
+      ctx.restore();
+    }
+  }
+
+  function initParticles(season) {
+    particles.length=0;
+    const n=season==='ramadan'?58:season==='winter'?48:38;
+    for(let i=0;i<n;i++) particles.push(new Particle());
+  }
+  function animateParticles() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{p.update();p.draw(state.currentSeason);});
+    requestAnimationFrame(animateParticles);
+  }
+
+  /* --- SEASON TRANSITION --- */
+  function transitionToSeason(season) {
+    if (state.currentSeason===season) return;
+    if (state.audioUnlocked&&!state.finalSequenceRunning) {
+      state.sfx.woosh.currentTime=0; state.sfx.woosh.volume=.38; state.sfx.woosh.play().catch(()=>{});
+    }
+    state.currentSeason=season;
+    switchMusic(season);
+    Object.keys(SEASONS).forEach(k=>{
+      const el=document.getElementById('bg-'+k);
+      if(el) el.style.opacity=k===season?'1':'0';
+    });
+    const deco=document.getElementById('ramadan-deco');
+    const amb =document.getElementById('ramadan-ambient');
+    if (season==='ramadan'){deco.classList.add('visible');amb.classList.add('visible');}
+    else{deco.classList.remove('visible');amb.classList.remove('visible');}
+    initParticles(season);
+  }
+
+  /* --- LAYOUT --- */
+  const LAYOUT = ['C','R','L','R','L','C','R','L','C','R','L','C','R','L','R','C','L','R','L','C'];
+  const BRANCH_I    = new Set([3,7,11,15]);
+  const RECONNECT_I = new Set([5,9,13,17]);
+
+  function getRowClass(idx) {
+    const s=LAYOUT[idx%LAYOUT.length]||'C';
+    if (BRANCH_I.has(idx))    return s==='R'?'side-branch-right':'side-branch-left';
+    if (RECONNECT_I.has(idx)) return s==='R'?'side-right':'side-left';
+    if (s==='L') return 'side-left';
+    if (s==='R') return 'side-right';
+    return 'side-center';
+  }
+
+  /* --- BUILD TIMELINE --- */
+  const timelineContainer = document.getElementById('timeline-container');
+
+  function buildTimeline() {
+    const svg=document.getElementById('rope-svg');
+    timelineContainer.innerHTML='';
+    timelineContainer.appendChild(svg);
+
+    state.memories.forEach((mem,idx)=>{
+      const season=detectSeason(mem);
+      const sd=SEASONS[season];
+      const isFinal=mem.isFinal||idx===state.memories.length-1;
+      const isLantern=season==='ramadan';
+
+      const row=document.createElement('div');
+      row.className=`timeline-row ${getRowClass(idx)}`;
+
+      const wrap=document.createElement('div');
+      wrap.className='balloon-wrapper';
+      wrap.id=`balloon-${idx}`;
+      wrap.dataset.index=idx;
+      wrap.setAttribute('role','listitem');
+      wrap.setAttribute('aria-label',`ذكرى: ${mem.title}`);
+      wrap.setAttribute('tabindex','0');
+
+      const bClass=isLantern?'balloon-lantern':isFinal?'balloon-gold':sd.balloonClass;
+      const icon=isFinal?'⭐':isLantern?'🕌':sd.icon;
+
+      wrap.innerHTML=`
+        <div class="balloon-string" aria-hidden="true"></div>
+        <div class="balloon-body ${bClass}" aria-hidden="true">
+          <span class="balloon-number">${idx+1}</span>
+          <span class="balloon-icon">${icon}</span>
+        </div>
+        <span class="balloon-label">${mem.title}</span>
+        ${idx===0?'<span class="balloon-tap-hint" aria-hidden="true">اضغط للاكتشاف</span>':''}
+      `;
+
+      wrap.addEventListener('click',  ()=>openMemory(idx));
+      wrap.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openMemory(idx);}});
+
+      row.appendChild(wrap);
+      timelineContainer.appendChild(row);
+    });
+
+    setTimeout(()=>{
+      const first=document.getElementById('balloon-0');
+      if(first) first.classList.add('visible');
+    },200);
+
+    requestAnimationFrame(()=>requestAnimationFrame(()=>updateRopeSVG()));
+  }
+
+  /* --- ROPE SVG --- */
+  function getBalloonCenter(el) {
+    const r=el.getBoundingClientRect();
+    const c=timelineContainer.getBoundingClientRect();
+    return {x:r.left+r.width/2-c.left, y:r.top+r.height/2-c.top+timelineContainer.scrollTop};
+  }
+
+  function updateRopeSVG() {
+    const svg=document.getElementById('rope-svg');
+    svg.innerHTML='';
+    const vis=[];
+    document.querySelectorAll('.balloon-wrapper.visible').forEach(el=>vis.push({idx:parseInt(el.dataset.index),el}));
+    if(vis.length<2) return;
+    const cr=timelineContainer.getBoundingClientRect();
+    svg.setAttribute('viewBox',`0 0 ${cr.width} ${timelineContainer.scrollHeight}`);
+    svg.style.height=timelineContainer.scrollHeight+'px';
+
+    const colorMap={
+      autumn:'rgba(212,168,83,.48)', winter:'rgba(122,184,212,.42)',
+      ramadan:'rgba(240,192,96,.58)', spring:'rgba(76,175,80,.42)', summer:'rgba(255,140,66,.42)',
+    };
+
+    for(let i=0;i<vis.length-1;i++){
+      const a=vis[i], b=vis[i+1];
+      const ca=getBalloonCenter(a.el), cb=getBalloonCenter(b.el);
+      const midX=(ca.x+cb.x)/2, midY=(ca.y+cb.y)/2;
+      const dx=cb.x-ca.x, dy=cb.y-ca.y;
+      const dist=Math.sqrt(dx*dx+dy*dy);
+      const isBranch=BRANCH_I.has(b.idx)||RECONNECT_I.has(b.idx);
+      const cf=isBranch?.34:.17;
+      const co=dist*cf;
+      const perpX=-dy/dist*co, perpY=dx/dist*co;
+      const flip=i%2===0?1:-1;
+      const cpX=midX+perpX*flip, cpY=midY+perpY*flip;
+      const season=detectSeason(state.memories[a.idx]);
+      const rc=colorMap[season]||'rgba(200,180,140,.48)';
+      const isRam=season==='ramadan';
+
+      const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+      path.setAttribute('d',`M ${ca.x} ${ca.y} Q ${cpX} ${cpY} ${cb.x} ${cb.y}`);
+      path.setAttribute('stroke',rc);
+      path.setAttribute('stroke-width',isRam?'2.4':'1.9');
+      path.setAttribute('fill','none');
+      path.setAttribute('stroke-linecap','round');
+      if(isRam){path.setAttribute('stroke-dasharray','6 4');path.style.filter='drop-shadow(0 0 3px rgba(240,192,96,.38))';}
+      svg.appendChild(path);
+
+      if(BRANCH_I.has(b.idx)){
+        const t=document.createElementNS('http://www.w3.org/2000/svg','path');
+        const tEx=cpX+flip*28, tEy=cpY-18;
+        t.setAttribute('d',`M ${cpX} ${cpY} Q ${cpX+flip*18} ${cpY-28} ${tEx} ${tEy}`);
+        t.setAttribute('stroke',rc); t.setAttribute('stroke-width','1.4');
+        t.setAttribute('fill','none'); t.setAttribute('opacity','.38'); t.setAttribute('stroke-linecap','round');
+        svg.appendChild(t);
+        const dot=document.createElementNS('http://www.w3.org/2000/svg','circle');
+        dot.setAttribute('cx',tEx); dot.setAttribute('cy',tEy);
+        dot.setAttribute('r','2.5'); dot.setAttribute('fill',rc); dot.setAttribute('opacity','.48');
+        svg.appendChild(dot);
+      }
+    }
+  }
+
+  window.addEventListener('resize',()=>{resizeCanvas();if(state.layoutBuilt)updateRopeSVG();},{passive:true});
+
+  /* --- OPEN MEMORY --- */
+  function openMemory(idx) {
+    if(state.finalSequenceRunning) return;
+    const mem=state.memories[idx]; if(!mem) return;
+    const season=detectSeason(mem);
+    const sd=SEASONS[season];
+    const wrap=document.getElementById(`balloon-${idx}`); if(!wrap) return;
+
+    if(state.audioUnlocked){state.sfx.pop.currentTime=0;state.sfx.pop.volume=.58;state.sfx.pop.play().catch(()=>{});}
+
+    if(!state.openedSet.has(idx)){state.openedSet.add(idx);wrap.classList.add('opened');}
+
+    transitionToSeason(season);
+
+    const isFinal=mem.isFinal||idx===state.memories.length-1;
+    if(isFinal){closeCard();launchFinalBurstSequence(idx);return;}
+
+    const inner=document.getElementById('card-inner-content');
+    inner.innerHTML=buildCardHTML(mem,sd);
+
+    const overlay=document.getElementById('memory-card-overlay');
+    overlay.classList.add('active');
+    overlay.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+
+    gsap.fromTo(
+      inner.querySelectorAll('.card-season-badge,.card-date,.card-title,.card-image-wrap,.card-video-cinematic,.video-placeholder,.card-quote,.card-description,.card-chat-wrap'),
+      {opacity:0,y:18},{opacity:1,y:0,duration:.48,stagger:.07,ease:'power2.out',delay:.28}
+    );
+
+    setTimeout(()=>revealNext(idx),800);
+  }
+
+  /* --- BUILD CARD HTML --- */
+  function buildCardHTML(mem,sd) {
+    let p=[];
+    p.push(`<div class="card-season-badge ${sd.badge}">${sd.icon} ${sd.label}</div>`);
+    if(mem.date) p.push(`<p class="card-date">${mem.date}</p>`);
+    p.push(`<h2 class="card-title">${mem.title}</h2>`);
+    if(mem.quote) p.push(`<blockquote class="card-quote">${mem.quote}</blockquote>`);
+
+    if(mem.type==='video'||mem.video){
+      const src=mem.video||mem.videoUrl||'';
+      if(src){
+        let embed='';
+        if(src.includes('youtube')||src.includes('youtu.be')){
+          const vid=src.includes('youtu.be')?src.split('/').pop().split('?')[0]:(()=>{try{return new URL(src).searchParams.get('v');}catch{return '';}})();
+          if(vid) embed=`<div class="card-video-wrap"><iframe src="https://www.youtube.com/embed/${vid}?rel=0" allow="accelerometer;autoplay;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>`;
+        } else {
+          embed=`<div class="card-video-wrap"><video src="${src}" controls playsinline></video></div>`;
+        }
+        p.push(`
+          <div class="card-video-cinematic" id="cv-${mem.id||0}">
+            <div class="cinematic-poster" id="cp-${mem.id||0}">
+              <p class="cinematic-intro-text">لحظات لن تُنسى...<br/>من الترم الأول</p>
+              <button class="cinematic-play-btn" aria-label="تشغيل الفيديو" onclick="revealCinematicVideo(${mem.id||0})">
+                <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </button>
+            </div>
+            ${embed}
+          </div>`);
+      } else {
+        p.push(`<div class="video-placeholder"><svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="rgba(255,255,255,.28)" stroke="none"/></svg><span>فيديو قريبًا</span></div>`);
+      }
+    }
+
+    const imgSrc=mem.image||mem.imageUrl||'';
+    if((mem.type==='image'||imgSrc)&&!mem.video&&mem.type!=='video'){
+      if(imgSrc) p.push(`<div class="card-image-wrap"><img src="${imgSrc}" alt="${mem.title}" loading="lazy"/></div>`);
+      else if(mem.imagePlaceholder) p.push(`<div class="card-image-wrap"><div class="placeholder-icon"><svg viewBox="0 0 24 24" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>صورة قريبًا</span></div></div>`);
+    }
+
+    if(mem.chatScreenshot) p.push(`<div class="card-chat-wrap"><img src="${mem.chatScreenshot}" alt="لقطة شاشة" loading="lazy"/></div>`);
+
+    if(mem.description){
+      const d=mem.description.split('\n').filter(Boolean).map(l=>`<p>${l}</p>`).join('');
+      p.push(`<div class="card-description">${d}</div>`);
+    }
+    return p.join('');
+  }
+
+  window.revealCinematicVideo=function(id){
+    const poster=document.getElementById(`cp-${id}`);
+    if(!poster) return;
+    poster.classList.add('cinematic-reveal-anim');
+    setTimeout(()=>poster.classList.add('hidden'),680);
+  };
+
+  /* --- REVEAL NEXT --- */
+  function revealNext(idx) {
+    const next=idx+1;
+    const el=document.getElementById(`balloon-${next}`);
+    if(!el||el.classList.contains('visible')) return;
+    setTimeout(()=>{
+      el.classList.add('visible');
+      state.layoutBuilt=true;
+      requestAnimationFrame(()=>updateRopeSVG());
+      el.scrollIntoView({behavior:'smooth',block:'center'});
+      document.querySelectorAll('.balloon-tap-hint').forEach(h=>{
+        const wi=parseInt(h.closest('.balloon-wrapper')?.dataset.index||'0');
+        if(wi!==next) h.remove();
+      });
+    },500);
+  }
+
+  /* --- CLOSE CARD --- */
+  function closeCard() {
+    const ov=document.getElementById('memory-card-overlay');
+    ov.classList.remove('active'); ov.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+    document.getElementById('memory-card').style.transform='';
+  }
+
+  document.getElementById('card-close-btn').addEventListener('click',closeCard);
+  document.getElementById('memory-card-overlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeCard();});
+
+  let touchStartY=0;
+  const cardEl=document.getElementById('memory-card');
+  cardEl.addEventListener('touchstart',e=>{touchStartY=e.touches[0].clientY;},{passive:true});
+  cardEl.addEventListener('touchmove', e=>{const dy=e.touches[0].clientY-touchStartY;if(dy>0)cardEl.style.transform=`translateY(${dy}px)`;},{passive:true});
+  cardEl.addEventListener('touchend',  e=>{if(e.changedTouches[0].clientY-touchStartY>115)closeCard();else cardEl.style.transform='';});
+
+  /* --- FINAL SEQUENCE --- */
+  function launchFinalBurstSequence(finalIdx) {
+    state.finalSequenceRunning=true;
+    closeCard(); document.body.style.overflow='hidden';
+    Object.values(state.bgMusic).forEach(a=>gsap.to(a,{volume:0,duration:2.4,onComplete:()=>a.pause()}));
+
+    const fw=document.getElementById(`balloon-${finalIdx}`);
+    const fb=fw?.querySelector('.balloon-body');
+
+    if(fb){
+      if(state.audioUnlocked){state.sfx.burst.currentTime=0;state.sfx.burst.volume=.78;state.sfx.burst.play().catch(()=>{});}
+      gsap.timeline()
+        .to(fb,{scale:1.32,duration:.17,ease:'power2.out'})
+        .to(fb,{scale:0,opacity:0,duration:.33,ease:'back.in(2)',onComplete:()=>{if(fw)fw.style.visibility='hidden';}});
+    } else if(fw){ fw.classList.add('burst'); }
+
+    const rope=document.getElementById('rope-svg');
+    if(rope) gsap.to(rope,{opacity:0,duration:2.1,delay:.28,ease:'power1.inOut'});
+
+    setTimeout(()=>{
+      const all=[...document.querySelectorAll('.balloon-wrapper.visible')].filter(el=>el.id!==`balloon-${finalIdx}`);
+      all.forEach(el=>{
+        const lbl=el.querySelector('.balloon-label');
+        const hnt=el.querySelector('.balloon-tap-hint');
+        if(lbl) gsap.to(lbl,{opacity:0,duration:.28});
+        if(hnt) gsap.to(hnt,{opacity:0,duration:.28});
+        el.style.pointerEvents='none';
+      });
+      all.forEach(el=>{
+        const body=el.querySelector('.balloon-body');
+        const str =el.querySelector('.balloon-string');
+        const delay=.04+Math.random()*.58;
+        const dur  =2.7+Math.random()*1.7;
+        const driftX=(Math.random()-.5)*155;
+        const wobble=(Math.random()-.5)*28;
+        el.classList.remove('opened');
+        if(body) body.style.animation='none';
+        gsap.to(el,{y:-(window.innerHeight+240),x:driftX,opacity:0,scale:.34+Math.random()*.18,rotation:wobble,duration:dur,delay,ease:'power1.in',onComplete:()=>{el.style.visibility='hidden';}});
+        if(str) gsap.to(str,{opacity:0,duration:dur*.48,delay,ease:'power1.in'});
+      });
+      const longest=.6+2.7+1.7;
+      gsap.to(document.getElementById('timeline-container'),{opacity:0,duration:1.4,delay:longest*.58,ease:'power2.inOut'});
+      gsap.to(document.getElementById('site-header'),       {opacity:0,duration:1.2,delay:longest*.48,ease:'power2.inOut'});
+      setTimeout(()=>showCinematicText(),(longest+.38)*1000);
+    },380);
+  }
+
+  /* --- CINEMATIC TEXT --- */
+  const LINES=[
+    'من أول يوم...','إلى آخر فاينال...','مررنا بالكثير.',
+    '🤣ضحكنا.','🥲بكينا.','😖توترنا.','🥱سهرنا.',
+    '😊وتجاوزنا ما ظنناه مستحيلاً.','وفي النهاية.','انتهى العام الدراسي.',
+  ];
+
+  function showCinematicText() {
+    const scr=document.getElementById('ending-cinematic');
+    scr.classList.add('active'); scr.innerHTML='';
+    gsap.to(['#bg-autumn','#bg-winter','#bg-ramadan','#bg-spring','#bg-summer','#particle-canvas','#ramadan-deco','#ramadan-ambient'],{opacity:0,duration:1.4,ease:'power2.inOut',stagger:.04});
+    gsap.to(scr,{background:'rgba(0,0,0,1)',duration:1.4,ease:'power2.inOut'});
+
+    let delay=380;
+    LINES.forEach((line,i)=>{
+      const el=document.createElement('p'); el.className='cinematic-line'; el.textContent=line;
+      scr.appendChild(el);
+      setTimeout(()=>{
+        gsap.fromTo(el,{opacity:0,y:16},{opacity:1,y:0,duration:.72,ease:'power2.out'});
+        if(i<LINES.length-1) setTimeout(()=>gsap.to(el,{opacity:0,duration:.48,ease:'power2.in'}),1350);
+      },delay);
+      delay+=1750;
+    });
+    setTimeout(()=>gsap.to(scr,{opacity:0,duration:.85,ease:'power2.in',onComplete:()=>{scr.classList.remove('active');showEnding();}}),delay+750);
+  }
+
+  /* --- ENDING SCREEN --- */
+  function showEnding() {
+    const es=document.getElementById('ending-screen'); es.classList.add('active');
+    gsap.fromTo('.ending-gold-ring',{scale:0,opacity:0},{scale:1,opacity:1,duration:.78,ease:'back.out(1.7)',delay:.18});
+    gsap.fromTo('.ending-quote',    {opacity:0,y:28},   {opacity:1,y:0,   duration:.78,ease:'power2.out',   delay:.58});
+    gsap.fromTo('.ending-year',     {opacity:0},        {opacity:1,       duration:.58,                     delay:1.05});
+    gsap.fromTo('.ending-cta',      {opacity:0,y:18},   {opacity:1,y:0,   duration:.55,                     delay:1.35});
+  }
+
+  document.getElementById('close-ending-btn').addEventListener('click',()=>document.getElementById('ending-screen').classList.remove('active'));
+  document.getElementById('show-letters-btn').addEventListener('click',()=>{
+    document.getElementById('ending-screen').classList.remove('active');
+    const ls=document.getElementById('future-letters'); ls.classList.add('visible');
+    setTimeout(()=>ls.scrollIntoView({behavior:'smooth'}),100);
+  });
+
+  /* --- LETTERS --- */
+  function buildLetters() {
+    const c=document.getElementById('letters-container'); c.innerHTML='';
+    (state.letters||[]).forEach(l=>{
+      const card=document.createElement('div'); card.className='letter-card';
+      card.innerHTML=`<p class="letter-author">${l.author||'مجهول'}</p><p class="letter-body">${l.body||''}</p><p class="letter-year">${l.year||''}</p>`;
+      c.appendChild(card);
+    });
+    const ls=document.getElementById('future-letters');
+    const obs=new MutationObserver(()=>{if(ls.classList.contains('visible')){setTimeout(showThanksSection,600);obs.disconnect();}});
+    obs.observe(ls,{attributes:true,attributeFilter:['class']});
+  }
+
+  /* --- THANKS --- */
+  function showThanksSection() {
+    const s=document.getElementById('thanks-section'); s.classList.add('visible');
+    setTimeout(()=>s.scrollIntoView({behavior:'smooth',block:'start'}),280);
+    const lines=s.querySelectorAll('.thanks-line,.thanks-final-line');
+    const obs=new IntersectionObserver((entries)=>{
+      entries.forEach((e,i)=>{if(e.isIntersecting) setTimeout(()=>e.target.classList.add('revealed'),i*190);});
+    },{threshold:.2});
+    lines.forEach(l=>obs.observe(l));
+  }
+
+  function buildThanksSection() {
+    const list=document.getElementById('faculty-thanks-list');
+    list.innerHTML=(state.faculty||[]).map(n=>`<p class="faculty-name">${n}</p>`).join('');
+    const cf=document.getElementById('credits-faculty-container');
+    if(cf) cf.innerHTML=(state.faculty||[]).map(n=>`<p class="credits-name">${n}</p>`).join('');
+  }
+
+  /* --- SECRET BALLOON --- */
+  const secretBalloon=document.getElementById('secret-balloon');
+  let scrollCount=0;
+  window.addEventListener('scroll',()=>{
+    scrollCount++;
+    if(scrollCount>40&&!state.secretFound) secretBalloon.classList.add('revealed');
+    if(scrollCount>10) document.getElementById('scroll-prompt').classList.add('hidden');
+  },{passive:true});
+  secretBalloon.addEventListener('click',  openSecretChallenge);
+  secretBalloon.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openSecretChallenge();}});
+
+  function openSecretChallenge() {
+    if(state.audioUnlocked){state.sfx.pop.currentTime=0;state.sfx.pop.volume=.48;state.sfx.pop.play().catch(()=>{});}
+    const inner=document.getElementById('card-inner-content');
+    inner.innerHTML=`
+      <div class="card-season-badge" style="background:rgba(123,47,255,.18);color:#e040fb;border:1px solid rgba(224,64,251,.28)">✨ ذكرى سرية</div>
+      <h2 class="card-title">عرّف عن نفسك 🧐</h2>
+      <div class="secret-challenge">
+        <p class="secret-challenge-q">أكمل جملة دكتور نبيل المشهورة من الترم الأول:</p>
+        <div class="secret-inputs">
+          <div class="secret-input-row">
+            <span class="secret-input-label">P for ______</span>
+            <input class="secret-input" id="secret-p" type="text" placeholder="..." autocomplete="off" dir="ltr"/>
+          </div>
+          <div class="secret-input-row">
+            <span class="secret-input-label">B for ______</span>
+            <input class="secret-input" id="secret-b" type="text" placeholder="..." autocomplete="off" dir="ltr"/>
+          </div>
+        </div>
+        <button class="secret-submit-btn" id="secret-submit-btn">تأكيد</button>
+        <p class="secret-retry-msg" id="secret-retry-msg">حاجة من الاتنين يا إما أنت مش تبعنا يا إما أنت مش تبعنا 😅</p>
+      </div>`;
+    const overlay=document.getElementById('memory-card-overlay');
+    overlay.classList.add('active'); overlay.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+    document.getElementById('secret-submit-btn').addEventListener('click',checkSecretAnswer);
+    document.getElementById('secret-p').addEventListener('keydown',e=>{if(e.key==='Enter')checkSecretAnswer();});
+    document.getElementById('secret-b').addEventListener('keydown',e=>{if(e.key==='Enter')checkSecretAnswer();});
+  }
+
+  function checkSecretAnswer() {
+    const pv=(document.getElementById('secret-p')?.value||'').trim().toLowerCase();
+    const bv=(document.getElementById('secret-b')?.value||'').trim().toLowerCase();
+    const retry=document.getElementById('secret-retry-msg');
+    const pc=pv==='pen', bc=bv==='book';
+    if(pc&&bc){
+      if(state.audioUnlocked){state.sfx.success.currentTime=0;state.sfx.success.volume=.68;state.sfx.success.play().catch(()=>{});}
+      state.secretFound=true; secretBalloon.classList.remove('revealed');
+      const inner=document.getElementById('card-inner-content');
+      inner.innerHTML=`
+        <div class="card-season-badge" style="background:rgba(123,47,255,.18);color:#e040fb;border:1px solid rgba(224,64,251,.28)">✨ ذكرى سرية</div>
+        <h2 class="card-title">برافو! 🎉</h2>
+        <div class="card-description">
+          <p>"ما دام عرفت الجملة دي ...</p>
+          <p>فأنت بالفعل تبع القافلة 😄"</p>
+          <p>في مقولة بتقول:</p>
+          <p>"ابتسم فأسنانك ليست عورة😁"</p>
+          <p>أضحك الله سنك وزادك سعادة فوق سعادتك 😊</p>
+        </div>`;
+      gsap.fromTo(inner.querySelectorAll('*'),{opacity:0,y:14},{opacity:1,y:0,duration:.48,stagger:.09,ease:'power2.out'});
+    } else {
+      if(state.audioUnlocked){state.sfx.error.currentTime=0;state.sfx.error.volume=.48;state.sfx.error.play().catch(()=>{});}
+      if(retry) retry.classList.add('visible');
+      if(!pc){const i=document.getElementById('secret-p');if(i){i.classList.add('error');setTimeout(()=>i.classList.remove('error'),420);}}
+      if(!bc){const i=document.getElementById('secret-b');if(i){i.classList.add('error');setTimeout(()=>i.classList.remove('error'),420);}}
+    }
+  }
+
+  /* --- RAMADAN STARS --- */
+  function setupRamadanStars() {
+    const deco=document.getElementById('ramadan-deco');
+    ['🏮','🪔','✨','🌙'].forEach((e,i)=>{
+      const d=document.createElement('div'); d.className='r-lantern'; d.textContent=e;
+      d.style.cssText=`top:${10+Math.random()*24}%;${Math.random()>.5?'left':'right'}:${5+Math.random()*18}%;animation-delay:${Math.random()*2}s;animation-duration:${2.4+Math.random()*2}s;font-size:${1.15+Math.random()}rem;`;
+      deco.appendChild(d);
+    });
+    for(let i=0;i<28;i++){
+      const s=document.createElement('div'); s.className='r-star';
+      s.style.cssText=`top:${Math.random()*68}%;left:${Math.random()*100}%;animation-delay:${Math.random()*3}s;animation-duration:${1.4+Math.random()*2}s;width:${2+Math.random()*3}px;height:${2+Math.random()*3}px;`;
+      deco.appendChild(s);
+    }
+  }
+
+  /* --- SCROLL SEASON SYNC --- */
+  function setupScrollSeasonSync() {
+    const obs=new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting&&e.target.classList.contains('visible')&&!state.finalSequenceRunning){
+          const idx=parseInt(e.target.dataset.index||'0');
+          const mem=state.memories[idx];
+          if(mem){const s=detectSeason(mem);if(s!==state.currentSeason)transitionToSeason(s);}
+        }
+      });
+    },{threshold:.5});
+    document.querySelectorAll('.balloon-wrapper').forEach(b=>obs.observe(b));
+  }
+
+  /* --- CREDITS CLOSE --- */
+  document.getElementById('credits-close-btn').addEventListener('click',()=>{
+    const s=document.getElementById('credits-section');
+    const i=document.getElementById('credits-inner');
+    s.classList.remove('active'); i.classList.remove('playing');
+    document.getElementById('credits-close-btn').style.display='none';
+  });
+
+  /* --- INIT --- */
+  async function init() {
+    resizeCanvas();
+    const fill=document.getElementById('loading-fill');
+    let prog=0;
+    const t=setInterval(()=>{prog=Math.min(prog+Math.random()*12,88);fill.style.width=prog+'%';},100);
+
+    await loadData();
+
+    clearInterval(t); fill.style.width='100%';
+    await new Promise(r=>setTimeout(r,580));
+
+    gsap.to('#loading-screen',{opacity:0,duration:.55,ease:'power2.in',onComplete:()=>{
+      document.getElementById('loading-screen').style.display='none';
+      const main=document.getElementById('main'); main.style.display='block';
+      gsap.from(main,{opacity:0,duration:.75,ease:'power2.out'});
+      buildTimeline(); buildLetters(); buildThanksSection();
+      initParticles('autumn'); animateParticles();
+      setupRamadanStars();
+      setTimeout(()=>{setupScrollSeasonSync();state.layoutBuilt=true;},380);
+    }});
+  }
+
+  document.addEventListener('DOMContentLoaded',()=>init());
+  </script>
+</body>
+</html>
